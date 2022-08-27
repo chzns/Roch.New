@@ -1,0 +1,427 @@
+﻿//        Copyright (C) 2011-2013 xxxxxxxx
+//        All rights reserved
+//
+//        filename :$ClassName$
+//        description :$ClassDescript$数据映射
+//
+//        created by $UserName$ at  $Datetime$
+//        Email : $Email$
+//
+//======================================================================
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Text;
+
+using $NameSpace$.DomainModel;
+using $NameSpace$.Framework;
+
+namespace $NameSpace$.ORMapper
+{
+    /// <summary>
+    ///  $ClassDescript$数据映射
+    /// </summary>
+    public partial class $ClassName$Mapper : ORMapper
+    {
+        private const string SQL = "SELECT $Fields$ FROM $TableName$";
+
+        #region 分页操作
+        /// <summary>
+        /// 分页获取例子
+        /// </summary>
+        /// <param name="sortProperty">排序属性</param>
+        /// <param name="pageIndex">第几页</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <param name="itemCount">总记录数</param>
+        /// <param name="filter">条件</param>
+        /// <returns></returns>
+        public List<$ClassName$> Search$ClassName$s(string sortProperty, int pageIndex, int pageSize, out int itemCount, $ClassName$_SearchingFilter filter)
+        {
+            itemCount = 0;
+            if (string.IsNullOrEmpty(sortProperty))
+            {
+                sortProperty = "$PK$ ASC";
+            }
+
+            StringBuilder filterString = new StringBuilder();
+
+            if (filterString.Length != 0)
+            {
+                filterString.Remove(filterString.Length - 5, 5);
+            }
+
+            object[] parameters = new object[] { "$PageTableName$", "$PagePK$", sortProperty, pageIndex, pageSize, "$Fields$", filterString.ToString(), string.Empty };
+
+            List<$ClassName$> $LowerClassName$s = new List<$ClassName$>();
+            DataSet ds = ExcuteDataSet("p_SearchData", new string[] { "@tables", "@pk", "@sort", "@currentPage", "@pageSize", "@fields", "@filter", "@Group" }, parameters);
+
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                $ClassName$ $LowerClassName$ = Genearated$ClassName$FromDatarow(row);
+                $LowerClassName$s.Add($LowerClassName$);
+            }
+
+            foreach (DataRow row in ds.Tables[1].Rows)
+            {
+                itemCount = GetRowInt32(row, "itemCount");
+            }
+
+            return $LowerClassName$s;
+        }
+
+        /// <summary>
+        /// 根据数据行生成$ClassDescript$
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        private $ClassName$ Genearated$ClassName$FromDatarow(DataRow row)
+        {
+            $ClassName$ $LowerClassName$ = new $ClassName$();
+            
+            $DataRowToClassName$
+            
+            return $LowerClassName$;
+        }
+        #endregion
+
+        #region 单步CRUDI操作
+        /// <summary>
+        /// 检索$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <returns></returns>
+        public $ClassName$ Retrieve($PKType$ $LowerClassName$Id)
+        {
+            using (DbConnection cn = base.CreateConnection())
+            {
+                cn.Open();
+                DbTransaction tran = cn.BeginTransaction();
+
+                try
+                {
+                    $ClassName$ $LowerClassName$ = m_Retrieve$ClassName$($LowerClassName$Id, cn, tran);
+                    tran.Commit();
+
+                    return $LowerClassName$;
+                }
+                catch (Exception exception)
+                {
+                    tran.Rollback();
+                    ProcessErrorInformation(exception);
+
+                    return null;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 添加$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <returns></returns>
+        public int Insert($ClassName$ $LowerClassName$)
+        {
+            using (DbConnection cn = base.CreateConnection())
+            {
+                cn.Open();
+                DbTransaction tran = cn.BeginTransaction();
+
+                try
+                {
+                    m_Insert$ClassName$($LowerClassName$, cn, tran);
+                    tran.Commit();
+
+                    return DataAccessReturnValue.SUCCESS;
+                }
+                catch (Exception exception)
+                {
+                    tran.Rollback();
+                    return ProcessErrorInformation(exception);
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <returns></returns>
+        public int Update($ClassName$ $LowerClassName$)
+        {
+            using (DbConnection cn = base.CreateConnection())
+            {
+                cn.Open();
+                DbTransaction tran = cn.BeginTransaction();
+
+                try
+                {
+                    m_Update$ClassName$($LowerClassName$, cn, tran);
+                    tran.Commit();
+
+                    return DataAccessReturnValue.SUCCESS;
+                }
+                catch (Exception exception)
+                {
+                    tran.Rollback();
+                    return ProcessErrorInformation(exception);
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 删除$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <returns></returns>
+        public int Delete($PKType$ $LowerClassName$Id)
+        {
+            using (DbConnection cn = base.CreateConnection())
+            {
+                cn.Open();
+                DbTransaction tran = cn.BeginTransaction();
+
+                try
+                {
+                    m_Delete$ClassName$($LowerClassName$Id, cn, tran);
+                    tran.Commit();
+
+                    return DataAccessReturnValue.SUCCESS;
+                }
+                catch (Exception exception)
+                {
+                    tran.Rollback();
+                    return ProcessErrorInformation(exception);
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 是否存在$ClassDescript$
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsHaveRecord()
+        {
+            using (DbConnection cn = base.CreateConnection())
+            {
+                cn.Open();
+                DbTransaction tran = cn.BeginTransaction();
+
+                try
+                {
+                    bool isHaveRecord = m_IsHaveRecord(cn, tran);
+                    tran.Commit();
+
+                    return isHaveRecord;
+                }
+                catch (Exception exception)
+                {
+                    tran.Rollback();
+                    ProcessErrorInformation(exception);
+
+                    throw exception;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+        }
+        #endregion
+        
+        #region 事务CRUDI操作
+        /// <summary>
+        /// 检索$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">主键</param>
+        /// <returns></returns>
+        public $ClassName$ Excute_Retrieve$ClassName$($PKType$ $LowerClassName$Id)
+        {            
+            try
+            {
+                return m_Retrieve$ClassName$($LowerClassName$Id, CurrentConnection, CurrentTransaction);                
+            }
+            catch (Exception exception)
+            {
+                ProcessErrorInformation(exception);
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 添加$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        public int Excute_Insert$ClassName$($ClassName$ $LowerClassName$)
+        {
+            try
+            {
+                m_Insert$ClassName$($LowerClassName$, CurrentConnection, CurrentTransaction);
+
+                return DataAccessReturnValue.SUCCESS;
+            }
+            catch (Exception exception)
+            {
+                return ProcessErrorInformation(exception);
+            }
+        }
+
+        /// <summary>
+        /// 更新$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        public int Excute_Update$ClassName$($ClassName$ $LowerClassName$)
+        {
+            try
+            {
+                m_Update$ClassName$($LowerClassName$, CurrentConnection, CurrentTransaction);
+
+                return DataAccessReturnValue.SUCCESS;
+            }
+            catch (Exception exception)
+            {
+                return ProcessErrorInformation(exception);
+            }
+        }
+
+        /// <summary>
+        /// 删除$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">主键</param>
+        public int Excute_Delete$ClassName$($PKType$ $LowerClassName$Id)
+        {
+            try
+            {
+                m_Delete$ClassName$($LowerClassName$Id, CurrentConnection, CurrentTransaction);
+
+                return DataAccessReturnValue.SUCCESS;
+            }
+            catch (Exception exception)
+            {
+                return ProcessErrorInformation(exception);
+            }
+        }
+        
+        /// <summary>
+        /// 是否存在$ClassDescript$
+        /// </summary>
+        /// <returns></returns>
+        public Boolean Excute_IsHaveRecord()
+        {
+            try
+            {
+                return m_IsHaveRecord(CurrentConnection, CurrentTransaction);
+            }
+            catch (Exception exception)
+            {
+                ProcessErrorInformation(exception);
+
+                throw exception;
+            }
+        }
+        #endregion
+
+        #region CRUDI操作
+        /// <summary>
+        /// 检索$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <param name="cn">数据库连接</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public $ClassName$ m_Retrieve$ClassName$($PKType$ $LowerClassName$Id, DbConnection cn, DbTransaction tran)
+        {
+            string sql = string.Format("{0} WHERE $PK$='{1}'", SQL, $LowerClassName$Id);
+            DataTable dt = ExcuteDataTable(sql, cn, tran);
+            foreach (DataRow row in dt.Rows)
+            {
+                return Genearated$ClassName$FromDatarow(row);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 添加$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <param name="cn">数据库连接</param>
+        /// <param name="tran">事务</param>
+        public void m_Insert$ClassName$($ClassName$ $LowerClassName$, DbConnection cn, DbTransaction tran)
+        {
+            int actualEffectRows = 0;
+            string insertSQL = string.Format("INSERT INTO $TableName$($Fields$) VALUES($InsertFieldsFormat$)",$InsertFieldsValue$);
+            actualEffectRows = ExcuteNonQuery(insertSQL, cn, tran);
+
+            if (actualEffectRows != expactEffectRows)
+            {
+                throw new ORException(DataAccessReturnValue.INVALID_EFFECT_ROWS);
+            }
+        }
+
+        /// <summary>
+        /// 更新$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <param name="cn">数据库连接</param>
+        /// <param name="tran">事务</param>
+        public void m_Update$ClassName$($ClassName$ $LowerClassName$, DbConnection cn, DbTransaction tran)
+        {
+            int actualEffectRows = 0;
+            string updateSQL = string.Format("UPDATE $TableName$ SET $UpdateFieldFormat$ WHERE $PK$='{$FieldCount$}'", $UpdateFieldValue$,$LowerClassName$.$PKProperty$);
+            actualEffectRows = ExcuteNonQuery(updateSQL, cn, tran);
+
+            if (actualEffectRows != expactEffectRows)
+            {
+                throw new ORException(DataAccessReturnValue.INVALID_EFFECT_ROWS);
+            }
+        }
+
+        /// <summary>
+        /// 删除$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <param name="cn">数据库连接</param>
+        /// <param name="tran">事务</param>
+        public void m_Delete$ClassName$($PKType$ $LowerClassName$Id, DbConnection cn, DbTransaction tran)
+        {
+            int actualEffectRows = 0;
+            string deleteSQL = string.Format("DELETE FROM $TableName$ WHERE $PK$='{0}'", $LowerClassName$Id);
+            actualEffectRows = ExcuteNonQuery(deleteSQL, cn, tran);
+
+            if (actualEffectRows != expactEffectRows)
+            {
+                throw new ORException(DataAccessReturnValue.INVALID_EFFECT_ROWS);
+            }
+        }
+        
+        /// <summary>
+        /// 是否存在数据
+        /// </summary>
+        /// <param name="cn">数据库连接</param>
+        /// <param name="tran">事务</param>
+        private bool m_IsHaveRecord(DbConnection cn, DbTransaction tran)
+        {
+            return IsHaveRecord("SELECT COUNT(*) FROM $TableName$", cn, tran);
+        }
+        #endregion    
+    }
+}

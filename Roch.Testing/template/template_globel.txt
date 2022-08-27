@@ -1,0 +1,25 @@
+﻿ 
+--应用和加载
+ import global from './global.vue'
+
+<global :ShowFlag="ShowFlag"
+            ref="mychild"
+            @interface="refreshParam">
+    </global>
+
+
+---Data设置显示
+
+ShowFlag: {
+          WorkLocation: true,
+}
+  QueryOptions: {}
+
+
+--传值
+ refreshParam(param) {
+        const vm = this
+        console.log('refreshParam start')
+        console.log(param)
+        vm.QueryOptions.WorkLocationOptions = param.WorkLocationOptions
+      },

@@ -1,0 +1,312 @@
+
+<template>
+  <div class="report-view-container">
+    <ReportViewTable
+      ref="report"
+      :queryReport="getList"
+      :listQuery="listQuery"
+      :tableHeight="tableHeight"
+      v-bind:size="'mini'"
+      :headerInfo="headerInfo"
+      :filename="'$table_name$'"
+    >
+      <div slot="filterRow" ref="filterRow">
+        <el-form :inline="true" class="demo-form-inline">
+          <el-row>
+            <el-form-item :label="$t('app.$table_name$Name')">
+              <el-input v-model="listQuery.$table_name$Name" size="mini"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-search"
+                @click="refresh()"
+              >{{$t('search')}}</el-button>
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-circle-plus-outline"
+                @click="handleCreate"
+                v-if="isAdminRole"
+              >{{$t('add')}}</el-button>
+            </el-form-item>
+          </el-row>
+        </el-form>
+      </div>
+      <el-table-column prop="index" :label="$t('app.No')" width="70"></el-table-column>
+      $Gettable_column$
+      <el-table-column
+        align="center"
+        :label="$t('table.actions')"
+        width="230"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            plain
+            size="mini"
+            @click="handleUpdate(scope.row)"
+            v-if="isAdminRole"
+          >{{$t('table.edit')}}</el-button>
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            @click="handleDelete(scope.row)"
+            v-if="isAdminRole"
+          >{{$t('table.delete')}}</el-button>
+        </template>
+      </el-table-column>
+    </ReportViewTable>
+
+    <el-dialog
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible"
+      @close="resetTemp()"
+    >
+      <el-form
+        :rules="rules"
+        ref="dataForm"
+        :model="temp"
+        label-position="left"
+        label-width="180px"
+        style="width: 400px; margin-left:50px;"
+      >
+       $get_dialog$
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
+        <el-button
+          v-if="dialogStatus=='create'"
+          type="primary"
+          @click="createData"
+        >{{$t('table.confirm')}}</el-button>
+        <el-button v-else type="primary" @click="updateData()">{{$t('table.confirm')}}</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import ReportViewTable from '@/components/ReportViewTable'
+import {
+  Get$table_name$,
+  Ins$table_name$,
+  Upd$table_name$,
+  Del$table_name$
+} from '@/api/app/$table_name$Api'
+import { IsAdminRole } from '@/api/app/securityApi'
+
+export default {
+  name: '$table_name$',
+  components: {
+    ReportViewTable
+  },
+  data() {
+    return {
+      tableHeight: {
+        height: 0
+      },
+      isAdminRole: false,
+      showAddress: false,
+      temp: {
+        $table_name$Name: '',
+        Seq: '',
+        Type: ''
+      },
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      listQuery: {
+        Id: null,
+        $table_name$Name: null,
+        Seq: null,
+        Type: null
+      },
+      headerInfo: [
+        {
+          column: 'PriorityName',
+          header: 'PriorityName'
+        },
+        {
+          column: 'Seq',
+          header: 'Seq'
+        },
+        {
+          column: 'Type',
+          header: 'Type'
+        }
+      ],
+      rules: {
+        PriorityName: [
+          {
+            required: true,
+            message: 'PriorityName is required',
+            trigger: 'blur'
+          },
+          {
+            max: 50,
+            message: 'Length of PriorityName should be less than 50',
+            trigger: 'blur'
+          }
+        ],
+        Seq: [
+          { required: true, message: 'Seq is required', trigger: 'blur' },
+          {
+            type: 'number',
+            message: 'Number only',
+            trigger: 'blur',
+            transform(value) {
+              return Number(value)
+            }
+          }
+        ],
+        Type: [
+          { required: true, message: 'Type is required', trigger: 'blur' },
+          {
+            max: 50,
+            message: 'Length of Type should be less than 50',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  asyncComputed: {
+    GetAdminRole: async function() {
+      const vm = this
+      IsAdminRole().then(response => {
+        if (response.data === 1) {
+          vm.isAdminRole = true
+        } else {
+          vm.isAdminRole = false
+        }
+      })
+    }
+  },
+  methods: {
+    getList() {
+      console.log(this.listQuery)
+      var list = Get$table_name$(this.listQuery)
+      console.log(list)
+      return list
+    },
+    created() {
+      this.getList()
+    },
+    refresh() {
+      this.$refs.report.getList()
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          Ins$table_name$(this.temp)
+            .then(response => {
+              this.dialogFormVisible = false
+              this.refresh()
+              this.$notify.success({
+                title: this.$t('success'),
+                message: this.$t('msg.addSuccess', [this.temp.BU])
+              })
+              this.resetTemp()
+            })
+            .catch(err => {
+              this.$notify.error({
+                title: this.$t('error'),
+                message: err.response.data
+              })
+            })
+        }
+      })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateData() {
+      this.$refs['dataForm'].validate(valid => {
+        if (valid) {
+          Upd$table_name$(this.temp)
+            .then(response => {
+              this.dialogFormVisible = false
+              this.refresh()
+              this.$notify.success({
+                title: this.$t('success'),
+                message: this.$t('msg.updateSuccess', [this.temp.BU])
+              })
+              this.resetTemp()
+            })
+            .catch(err => {
+              this.$notify.error({
+                title: this.$t('error'),
+                message: err.response.data
+              })
+            })
+        }
+      })
+    },
+    handleDelete(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      var vm = this
+      this.$dialog
+        .confirm(this.$t('msg.confirmDelete', [this.temp.BU]), {
+          okText: 'Yes',
+          cancelText: 'No'
+        })
+        .then(function() {
+          vm.deleteData()
+        })
+        .catch(function() {
+          console.log('Clicked on cancel')
+        })
+    },
+    deleteData() {
+      Del$table_name$(this.temp)
+        .then(response => {
+          this.refresh()
+          this.$notify.success({
+            title: this.$t('success'),
+            message: this.$t('msg.deleteSuccess', [])
+          })
+          this.resetTemp()
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: this.$t('error'),
+            message: err.response.data
+          })
+        })
+    },
+    resetTemp() {
+      this.temp = {
+        $table_name$Name: '',
+        Seq: '',
+        Type: ''
+      }
+    }
+  }
+}
+</script>
+<style scoped>
+.el-form-item {
+  margin-bottom: 8px;
+  margin: 8px;
+}
+</style>

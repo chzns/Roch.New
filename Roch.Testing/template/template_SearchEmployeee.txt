@@ -1,0 +1,26 @@
+
+                    <searchFilterEmployee ref="$compent$" style="width:220px"
+                                          :disabled="HiringInfoEnabled"
+                                          :ShowEmployeeName="true"
+                                          :ShowFlag="ShowFlag"
+                                          v-model="$model_main$.$model_id$"
+                                          @selectedChanged="$change_Method$"></searchFilterEmployee>
+              
+   
+
+
+   
+     if (this.$refs.$compent$ !== undefined) {
+          this.$refs.$compent$.employeeSelected = ''
+        }
+
+     $change_Method$(param) {
+        this.ShowFlag.UserType = ''
+        if (param !== undefined) {
+          this.$model_main$.$model_email$ = param.EmailAddress
+          this.$model_main$.$model_id$ = this.$refs.$compent$.employeeSelected
+        }
+        console.log(param)
+      },
+
+    

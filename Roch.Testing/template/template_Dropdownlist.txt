@@ -1,0 +1,49 @@
+<template>
+  <div>
+    <elForm>
+      <el-form-item :label="$t('DataList.xxxx')" label-width="110px">
+        <!-- <label class="el-form-item__label" style="width: 10px; color: red;">*</label> -->
+        <el-select
+          placeholder=""
+          v-model="$dropdown$Selected"
+          filterable
+          @change="on$dropdown$SelectionChanged"
+          @clear="on$dropdown$SelectionCleared"
+          ref="selection"
+        >
+          <el-option
+            v-for="item in $dropdown$Options"
+            :key="item.$dropdown_id$"
+            :label="item.$dropdown_text$"
+            :value="item.$dropdown_id$"
+            :text="item.$dropdown_text$"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+    </elForm>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      $dropdown$Options: [
+        { $dropdown_id$: 'aaaa_id', $dropdown_text$: 'aaaa_text' },
+        { $dropdown_id$: 'bbbb_id', $dropdown_text$: 'bbbb_text' }
+      ],
+      $dropdown$Selected: {}
+    }
+  },
+  methods: {
+    on$dropdown$SelectionChanged() {
+      console.log('onSelectionChanged')
+      console.log(this.abcSelected)
+    },
+    on$dropdown$SelectionCleared() {
+      console.log('onSelectionCleared')
+    }
+  }
+}
+</script>
+<style scoped>
+</style>

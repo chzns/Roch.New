@@ -1,0 +1,136 @@
+﻿//        Copyright (C) 2011-2013 xxxxxxxx
+//        All rights reserved
+//
+//        filename :$ClassName$
+//        description :$ClassDescript$
+//
+//        created by $UserName$ at  $Datetime$
+//        Email : $Email$
+//
+//======================================================================
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+using $NameSpace$.Framework;
+using $NameSpace$.DomainModel;
+using $NameSpace$.ORMapper;
+
+namespace $NameSpace$.DomainFace
+{
+    /// <summary>
+    ///  $ClassDescript$
+    /// </summary>
+    public class $ClassName$Face
+    {
+        /// <summary>
+        /// 分页获取$ClassDescript$
+        /// </summary>
+        /// <param name="sortProperty">排序字段</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">显示数</param>
+        /// <param name="itemCount">总数</param>
+        /// <param name="filter">$ClassDescript$条件</param>
+        /// <returns></returns>
+        public static List<$ClassName$> Find$ClassName$sOfPage(string sortProperty, int pageIndex, int pageSize, out int itemCount, $ClassName$_SearchingFilter filter)
+        {
+            return new $ClassName$Mapper().Search$ClassName$s(sortProperty, pageIndex, pageSize, out itemCount, filter);
+        }
+
+        /// <summary>
+        /// 检索指定的$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <returns></returns>
+        public static $ClassName$ Find$ClassName$($PKType$ $LowerClassName$Id)
+        {
+            return new $ClassName$Mapper().Retrieve($LowerClassName$Id);
+        }
+
+        /// <summary>
+        /// 保存$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <returns></returns>
+        public static int Save$ClassName$($ClassName$ $LowerClassName$)
+        {
+            int returnValue = new $ClassName$Mapper().Insert($LowerClassName$);
+            if (returnValue == DataAccessReturnValue.SUCCESS)
+            {
+                //操作日志补充
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 更新$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <returns></returns>
+        public static int Update$ClassName$($ClassName$ $LowerClassName$)
+        {
+            int returnValue = new $ClassName$Mapper().Update($LowerClassName$);
+            if (returnValue == DataAccessReturnValue.SUCCESS)
+            {
+                //操作日志补充
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 删除$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <returns></returns>
+        public static int Delete$ClassName$($PKType$ $LowerClassName$Id)
+        {
+            ORMappingManager.NewCurrent();
+            ORMappingManager.Current.NewTransaction();
+
+            try
+            {
+                $ClassName$Mapper mapper = new $ClassName$Mapper();
+                $ClassName$ $LowerClassName$ = mapper.Excute_Retrieve$ClassName$($LowerClassName$Id);
+
+                int returnValue = mapper.Excute_Delete$ClassName$($LowerClassName$Id);
+                if (returnValue == DataAccessReturnValue.SUCCESS)
+                {
+                    //操作日志补充
+                }
+
+                return returnValue;
+            }
+            catch (ORException orErr)
+            {
+                ORMappingManager.Current.Rollback();
+
+                if (orErr.Number == ORException.INVALID_EFFECT_ROWS)
+                {
+                    throw new FaceException("要删除的$ClassDescript$已经被其它用户修改或删除");
+                }
+                if (orErr.Number == ORException.FK_ERROR)
+                {
+                    throw new FaceException("此$ClassDescript$下包含其它资料，不能删除");
+                }
+                else
+                {
+                    Loger.Instance.WriteErrorLog(orErr.ToString());
+                    throw new FaceException("删除失败");
+                }
+            }
+            catch (System.Exception err)
+            {
+                ORMappingManager.Current.Rollback();
+
+                Loger.Instance.WriteErrorLog(err.ToString());
+                throw new FaceException("删除失败");
+            }
+            finally
+            {
+                ORMappingManager.Current.Close();
+            }
+        }
+    }
+}

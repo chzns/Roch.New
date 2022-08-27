@@ -1,0 +1,50 @@
+<template>
+  <elForm>
+    <el-form-item :label="$t('DataList.xxxx')" label-width="110px">
+      <el-date-picker
+        v-model="$date_model$"
+        type="datetime"
+        placeholder="Select date and time"
+        :picker-options="pickerOptions"
+      ></el-date-picker>
+    </el-form-item>
+  </elForm>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      $date_model$: '',
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: 'Today',
+            onClick(picker) {
+              picker.$emit('pick', new Date())
+            }
+          },
+          {
+            text: 'Yesterday',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
+              picker.$emit('pick', date)
+            }
+          },
+          {
+            text: 'A week ago',
+            onClick(picker) {
+              const date = new Date()
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', date)
+            }
+          }
+        ]
+      }
+    }
+  },
+  methods: {}
+}
+</script>
+<style scoped>
+</style>

@@ -1,0 +1,48 @@
+import request from '@/utils/request'
+import store from '@/store'
+const baseUrl = process.env.APP_API
+
+export function Get$table_name$({
+  $table_name$Name,
+  page,
+  limit
+}) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Get$table_name$',
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Pagination-Page': page,
+        'Pagination-Limit': limit
+      },
+      params: {
+        $table_name$Name
+      }
+    })
+  })
+}
+
+export function Ins$table_name$(data) {
+  return request({
+    url: baseUrl + '/api/$table_name$/Ins$table_name$',
+    method: 'post',
+    data: data
+  })
+}
+
+export function Upd$table_name$(data) {
+  return request({
+    url: baseUrl + '/api/$table_name$/Upd$table_name$',
+    method: 'post',
+    data: data
+  })
+}
+
+export function Del$table_name$(data) {
+  return request({
+    url: baseUrl + '/api/$table_name$/Del$table_name$',
+    method: 'post',
+    data: data
+  })
+}

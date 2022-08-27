@@ -1,0 +1,31 @@
+import searchFilterEmployee from './components/SearchFilter/searchFilterEmployee'
+
+components: {
+    AgGridVue,
+    searchFilterEmployee
+  },
+
+
+<div><child @clicked="on$control_name$Changed"></child></div>
+Teamplate上方加这个
+
+     <searchFilterEmployee
+              ref="$control_name$_search"
+              :ShowEmployeeName="true"
+              :ShowFlag="ShowFlag"
+              :LabelText="$t('listQuery_UI.xxxx')"
+              @selectedChanged="on$control_name$Changed"
+    ></searchFilterEmployee>
+
+
+  on$control_name$Changed(param) {
+      console.log(param)
+    },
+
+
+修改存储过程
+BL_GetEmployeeByIdP
+
+this.$refs.$control_name$_search.employeeSelected = null
+
+

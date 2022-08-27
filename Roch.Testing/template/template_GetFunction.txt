@@ -1,0 +1,81 @@
+﻿ -1. $table_name$.cs
+ public partial class $function_name$Search
+    {
+        public string CreatedBy { get; set; }
+        $getModel$
+
+    }
+
+
+    public class $function_name$Parameters : Page
+    { 
+         $getModel$
+    
+    }
+
+--2.$table_name$.Respoitory.cs
+  public async Task<List<$function_name$Search>> $function_name$($function_name$Parameters param)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("@CreatedBy", param.CreatedBy);
+                $GetParam$
+                var db = conn;
+                using (var multi = await db.QueryMultipleAsync($"[dbo].[$table_prefix$_$function_name$P]", sParam, commandType: CommandType.StoredProcedure))
+                {
+                    return multi.Read<$function_name$Search>().ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+--3.$table_name$Business.cs 
+
+public async Task<List<$function_name$Search>> $function_name$($function_name$Parameters request)
+        {
+            return await _$table_name$Repo.$function_name$(request);
+        }
+
+--4.$table_name$Controller.cs
+
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<ActionResult> $function_name$([FromHeader] string EmployeeId, [FromHeader] string LangCode, [FromBody] $function_name$Parameters request)
+        {
+            try
+            {
+                request.CreatedBy = EmployeeId;
+                return Ok(await _$table_name$Mgr.$function_name$(request));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+--5.$table_name$Api.js
+export function $function_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/$function_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+--6. VUE代碼
+  import { $function_name$ } from '@/api/app/$table_name$Api'
+
+   $function_name$() {
+        var data = {}
+        $function_name$(data).then(response => {
+          console.log(response)
+          console.log('$function_name$')
+        })
+      },
+

@@ -1,0 +1,162 @@
+﻿//        Copyright (C) 2011-2013 xxxxxxxx
+//        All rights reserved
+//
+//        filename :$ClassName$
+//        description :$ClassDescript$外观层
+//
+//        created by $UserName$ at  $Datetime$
+//        Email : $Email$
+//
+//======================================================================
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+using $NameSpace$.ORMappers;
+using $NameSpace$.ORMappers.BasicMapper;
+using $NameSpace$.ORMappers.SystemMapper;
+using $NameSpace$.DomainModel.SystemModel;
+using $NameSpace$.Framework;
+
+namespace $NameSpace$.DomainFace
+{
+    /// <summary>
+    ///  $ClassDescript$外观层
+    /// </summary>
+    public class $ClassName$Face : BaseFace
+    {
+        /// <summary>
+        /// 分页获取$ClassDescript$
+        /// </summary>
+        /// <param name="sortProperty">排序字段</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">显示数</param>
+        /// <param name="itemCount">总数</param>
+        /// <param name="filter">$ClassDescript$条件</param>
+        /// <returns></returns>
+        public static List<$ClassName$> Find$ClassName$sOfPage(string sortProperty, int pageIndex, int pageSize, out int itemCount, $ClassName$_SearchingFilter filter)
+        {
+            return new $ClassName$Mapper().Search$ClassName$s(sortProperty, pageIndex, pageSize, out itemCount, filter);
+        }
+
+        /// <summary>
+        /// 检索指定的$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <returns></returns>
+        public static $ClassName$ Find$ClassName$($PKType$ $LowerClassName$Id)
+        {
+            return new $ClassName$Mapper().Retrieve($LowerClassName$Id);
+        }
+
+        /// <summary>
+        /// 保存$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <param name="message">返回信息</param>
+        /// <returns></returns>
+        public static bool Save$ClassName$($ClassName$ $LowerClassName$, out string message)
+        {   
+            try
+            {
+                 bool returnValue = new $ClassName$Mapper().Insert($LowerClassName$)== DataAccessReturnValue.SUCCESS;
+                 message = returnValue ? SaveSuccess : SaveFail;
+                 if (returnValue)
+                 {
+                    //操作日志补充
+                 }
+
+                 return returnValue;
+            }
+            catch
+            {
+                message = SaveFail;
+                return false;
+            }            
+        }
+
+        /// <summary>
+        /// 更新$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$">$ClassDescript$</param>
+        /// <param name="message">返回信息</param>
+        /// <returns></returns>
+        public static bool Update$ClassName$($ClassName$ $LowerClassName$, out string message)
+        {
+            try
+            {
+                bool returnValue = new $ClassName$Mapper().Update($LowerClassName$) == DataAccessReturnValue.SUCCESS;
+                message = returnValue ? UpdateSuccess : UpdateFail;
+                if (returnValue)
+                {
+                    //操作日志补充
+                }
+
+                return returnValue;
+            }
+            catch
+            {
+                message = UpdateFail;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除$ClassDescript$
+        /// </summary>
+        /// <param name="$LowerClassName$Id">$ClassDescript$主键</param>
+        /// <param name="message">返回信息</param>
+        /// <returns></returns>
+        public static bool Delete$ClassName$($PKType$ $LowerClassName$Id, out string message)
+        {
+            ORMappingManager.NewCurrent();
+            ORMappingManager.Current.NewTransaction();
+
+            try
+            {
+                $ClassName$Mapper mapper = new $ClassName$Mapper();
+                $ClassName$ $LowerClassName$ = mapper.Excute_Retrieve$ClassName$($LowerClassName$Id);
+
+                bool returnValue = mapper.Excute_Delete$ClassName$($LowerClassName$Id) == DataAccessReturnValue.SUCCESS;
+                message = returnValue ? DeleteSuccess : DeleteFail;
+
+                if (returnValue)
+                {
+                    //操作日志补充
+                }
+
+                return returnValue;
+            }
+            catch (ORException orErr)
+            {
+                ORMappingManager.Current.Rollback();
+
+                if (orErr.Number == ORException.INVALID_EFFECT_ROWS)
+                {
+                    message = "要删除的$ClassDescript$已经被其它用户修改或删除";
+                }
+                if (orErr.Number == ORException.FK_ERROR)
+                {
+                    message = "此$ClassDescript$下包含其它资料，不能删除";
+                }
+                else
+                {
+                    message = DeleteFail;
+                }
+
+                return false;
+            }
+            catch (System.Exception err)
+            {
+                ORMappingManager.Current.Rollback();
+                message = DeleteFail;
+
+                return false;
+            }
+            finally
+            {
+                ORMappingManager.Current.Close();
+            }
+        }
+    }
+}

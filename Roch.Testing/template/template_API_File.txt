@@ -1,0 +1,168 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using $project_name$.API.Helper;
+using $project_name$.Entities;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
+using JGPHR.JobAssignment.Business;
+using JGPHR.JobAssignment.Entity;
+using Microsoft.Extensions.Options;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace $project_name$.API.Controllers
+{
+    [Produces("application/json")]
+    [Route("api/$table_name$")]
+    [Route("api/[controller]/[action]")]
+    [Route("$project_name$.API/api/[controller]")]
+    [Route("$project_name$.API/api/[controller]/[action]")]
+    public class $table_name$Controller : Controller
+    {
+        $table_name$Mgr _$table_name$Mgr;
+
+        public $table_name$Controller(IOptions<AppSettings> appSettings)
+        {
+            _$table_name$Mgr = new  $table_name$Mgr(appSettings);
+        }
+
+         
+
+        #region CURD
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<IActionResult> Get$table_name$([FromBody]$table_name$Param param ,[FromHeader] string EmployeeId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            try
+            {
+                param.EmployeeId = EmployeeId;
+                var result = await _$table_name$Mgr.Get$table_name$(param);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<IActionResult>  Get$table_name$Main([FromBody]$table_name$Param param,[FromHeader] string EmployeeId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            try
+            {
+                param.EmployeeId = EmployeeId;
+                var result = await _$table_name$Mgr.Get$table_name$Main(param);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public ActionResult Ins$table_name$([FromBody][FromHeader] string EmployeeId, [FromBody] $table_name$Param param)
+        {
+            try
+            {
+                param.EmployeeId = EmployeeId;
+                var result =  _$table_name$Mgr.Ins$table_name$(param);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<IActionResult> Upd$table_name$([FromHeader] string EmployeeId, [FromBody] $table_name$Param param)
+        {
+            try
+            {
+                param.EmployeeId = EmployeeId;
+                var result = await _$table_name$Mgr.Upd$table_name$(param);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<IActionResult> Del$table_name$([FromBody] $table_name$Param param,[FromHeader] string EmployeeId)
+        {
+            try
+            {
+                param.EmployeeId = EmployeeId;
+                var result = await _$table_name$Mgr.Del$table_name$(param);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [ValidateModelStateAttribute]
+        public async Task<IActionResult> UnintTest([FromBody] $table_name$Param param,[FromHeader] string EmployeeId)
+        {
+            try
+            {
+                // https://localhost:44378/api/$table_name$/UnintTest
+                param.EmployeeId = EmployeeId;
+                var result = await _$table_name$Mgr.UnintTest(param);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        #endregion CURD
+
+        #region Upload
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<int> Bulk$table_name$([FromHeader] string EmployeeId, [FromBody]$table_name$Param request)
+        {
+            int result = 0;
+            try
+            {
+                request.CreatedBy = EmployeeId;
+                DataTable dt = ConvertGenericListToDataTable.ListToDataTable(request.Upload$table_name$);
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        dt.Rows[i]["TM_UID"] = Guid.NewGuid().ToString();
+                        dt.Rows[i]["CreatedBy"] = EmployeeId; //EmployeeId
+                        dt.Rows[i]["CreatedTime"] = DateTime.Now; //DateTime
+                    }
+                }
+                await _$table_name$Mgr.BulkDel$table_name$(request);
+                await _$table_name$Mgr.Bulk$table_name$(dt);
+                result = await _$table_name$Mgr.BulkValid$table_name$(request);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return result;
+        } 
+        #endregion Upload
+    }
+}

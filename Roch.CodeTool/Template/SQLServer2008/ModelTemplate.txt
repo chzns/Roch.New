@@ -1,0 +1,30 @@
+﻿//        Copyright (C) 2011-2013 xxxxxxxx
+//        All rights reserved
+//
+//        filename :$ClassName$
+//        description :$ClassDescript$
+//
+//        created by $UserName$ at  $Datetime$
+//        Email : $Email$
+//
+//======================================================================
+
+using System;
+
+namespace $NameSpace$.DomainModel
+{
+    /// <summary>
+    /// $ClassDescript$
+    /// </summary>
+    [Serializable]
+    public class $ClassName$ 
+    {
+        #region Field		
+        $Field$		
+        #endregion
+		
+        #region Property		
+        $Property$		
+        #endregion
+    }
+}

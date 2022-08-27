@@ -1,0 +1,93 @@
+import request from '@/utils/request'
+import store from '@/store'
+const baseUrl = process.env.APP_API
+
+export function Ins$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Ins$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function Del$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Del$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function Get$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Get$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function Get$table_name$Main(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Get$table_name$Main',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function Upd$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Upd$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function BulkDel$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/BulkDel$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function Bulk$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Bulk$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function BulkValid$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/BulkValid$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+export function BulkConfirm$table_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/BulkConfirm$table_name$',
+      method: 'post',
+      data: data
+    })
+  })
+}

@@ -1,0 +1,58 @@
+﻿//        Copyright (C) 2011-2013 xxxxxxxx
+//        All rights reserved
+//
+//        filename :$ClassName$
+//        description :$ClassDescript$数据映射
+//
+//        created by $UserName$ at  $Datetime$
+//        Email : $Email$
+//
+//======================================================================
+
+--基本语句
+SELECT $Fields$ 
+FROM $TableName$ 
+WHERE $PK$=''
+
+INSERT INTO $TableName$($Fields$)
+VALUES($InsertFieldFormat$)
+
+UPDATE $TableName$
+SET $UpdateFieldFormat$
+WHERE $PK$=''
+
+DELETE FROM $TableName$
+WHERE $PK$=''
+
+--存储过程
+--插入
+CREATE PROCEDURE p_$ClassName$_Add
+    $ParameterTypes$
+as
+	INSERT INTO $TableName$($Fields$)
+	VALUES($Parameters$)
+GO
+
+--更新
+CREATE PROCEDURE p_$ClassName$_Update
+    $ParameterTypes$
+as
+	UPDATE $TableName$
+	SET $UpdateProduceFormat$
+	WHERE $PK$=@$PK$
+GO
+
+--删除
+CREATE PROCEDURE p_$ClassName$_Delete
+    @$PK$ $PKType$
+as
+	DELETE FROM $TableName$	
+	WHERE $PK$=@$PK$
+GO
+
+--数据列描述脚本
+$Addextendedproperty$
+
+--数据脚本
+$InsertData$
+

@@ -1,0 +1,155 @@
+<template>
+  <div class="report-view-container">
+    <el-button type="text"
+               @click="DownloadFile(FileDemoData)">{{ FileDemoData.FileName}}</el-button>
+    <el-upload class="upload-demo"
+               :limit="this.limit"
+               :multiple="false"
+               :show-file-list="false"
+               accept=".xlsx"
+               :before-upload="handleBeforeUpload"
+               :action="uploadURL(FileDemoData)"
+               :on-success="upLoadSuccess"
+               :on-error="upLoadError">
+      <el-button size="small"
+                 type="primary"
+                 plain
+                 v-if="isAdminRole">Click to upload</el-button>
+      <div slot="tip"
+           class="el-upload__tip">Excel files with a size less than 500kb</div>
+    </el-upload>
+  </div>
+</template>
+
+<script>
+  import { GetFile, Download } from '@/api/app/FileApi'
+  import { IsAdminRole } from '@/api/app/securityApi'
+
+  const baseUrl = process.env.APP_API
+
+  export default {
+    name: 'TemplateFile',
+    components: {
+    },
+    data() {
+      return {
+        FileDemoData: {
+          FileActualName: 'Resources\\Template\\aaa.xlsx',
+          FileName: 'aaa.xlsx',
+          FilePath: 'Resources\\Template\\aaa.xlsx',
+          FileType: 'Template',
+          Id: 8,
+          index: 1
+        },
+        isAdminRole: false,
+        limit: 1,
+        tableHeight: {
+          height: 0
+        },
+        listQuery: {
+          Id: null,
+          FileType: null,
+          FileName: null,
+          FileActualName: null,
+          FilePath: null
+        },
+        headerInfo: [{ column: 'FileName', header: 'FileName' }]
+      }
+    },
+    created: function() {
+      this.handleAdminRole()
+    },
+    methods: {
+      handleAdminRole() {
+        const vm = this
+        IsAdminRole().then(response => {
+          if (response.data === 1) {
+            vm.isAdminRole = true
+          } else {
+            vm.isAdminRole = false
+          }
+        })
+      },
+      getList() {
+        return GetFile(this.listQuery)
+      },
+      created() {
+        this.getList()
+      },
+      refresh() {
+        this.$refs.report.getList()
+      },
+      uploadURL(row) {
+        return (
+          baseUrl +
+          '/api/File/Upload?Id=' +
+          row.Id +
+          '&FileType=' +
+          row.FileType +
+          '&FileName=' +
+          row.FileName +
+          '&FileActualName=' +
+          row.FileActualName +
+          '&FilePath=' +
+          row.FilePath +
+          '&EmployeeId=' +
+          this.$store.getters.employeeId
+        )
+      },
+      upLoadSuccess(response, file, fileList) {
+        if (response === 'ok') {
+          this.$notify.success({
+            title: this.$t('success'),
+            message: this.$t('msg.uploadSuccess', [file.name])
+          })
+          this.refresh()
+        } else {
+          this.$notify.error({
+            title: this.$t('error'),
+            message: this.$t('msg.uploadFail', [file.name])
+          })
+        }
+      },
+      upLoadError(response, file, fileList) {
+        this.$notify.error({
+          title: this.$t('error'),
+          message: this.$t('msg.uploadFail', [file])
+        })
+      },
+      handleBeforeUpload(file) {
+        var ext = file.name.substring(file.name.lastIndexOf('.') + 1)
+        if (ext.toLowerCase() !== 'xlsx') {
+          this.$message.error(this.$t('msg.uploadFileType'))
+          return false
+        }
+        const isLt5KB = file.size / 1024 / 1024 < 0.5
+        if (!isLt5KB) {
+          this.$message.error(this.$t('msg.uploadFileSize'))
+          return isLt5KB
+        }
+      },
+      DownloadFile(row) {
+        console.log(row)
+        Download(row).then(response => {
+          var content = response.data
+          var blob = new Blob([content])
+          var fileName = row.FileActualName
+          if ('download' in document.createElement('a')) {
+            // 非IE下载
+            var elink = document.createElement('a')
+            elink.download = fileName
+            elink.style.display = 'none'
+            elink.href = URL.createObjectURL(blob)
+            document.body.appendChild(elink)
+            elink.click()
+            URL.revokeObjectURL(elink.href)
+            document.body.removeChild(elink)
+          } else {
+            // IE10+下载
+            navigator.msSaveBlob(blob, fileName)
+          }
+        })
+      }
+    }
+  }
+</script>

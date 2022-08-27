@@ -1,0 +1,82 @@
+﻿--1.$table_name$.js
+export function Get$table_name$DropDownList(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/Get$table_name$DropDownList',
+      method: 'post',
+      data: data
+    })
+  })
+}
+
+
+--2.$table_name$Controller.cs
+
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<ActionResult> Get$table_name$DropDownList([FromHeader] string EmployeeId, [FromHeader] string LangCode, [FromBody] $table_name$DropDownListParameters request)
+        {
+            try
+            {
+                request.CreatedBy = EmployeeId;
+                return Ok(await _$table_name$Mgr.Get$table_name$DropDownList(request));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+--3.$table_name$Business.cs 
+
+public async Task<List<$table_name$DropDownList>> Get$table_name$DropDownList($table_name$DropDownListParameters request)
+        {
+            return await _$table_name$Mgr.Get$table_name$DropDownList(request);
+        }
+
+
+--4.$table_name$.Respoitory.cs
+  public async Task<List<$table_name$DropDownList>> Get$table_name$DropDownList($table_name$DropDownListParameters parm)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("Attribute_Type", parm.Attribute_Type);
+                sParam.Add("Where_1", parm.Where_1);
+                sParam.Add("Where_2", parm.Where_2);
+                sParam.Add("Where_3", parm.Where_3);
+                sParam.Add("CreatedBy", parm.CreatedBy);
+                var db = conn;
+                using (var multi = await db.QueryMultipleAsync($"[dbo].[$table_prefix$_GetDropDownlistP]", sParam, commandType: CommandType.StoredProcedure))
+                {
+                    return multi.Read<$table_name$DropDownList>().ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+ -5. $table_name$.Entity.cs
+ public partial class $table_name$DropDownList
+    {
+        public string label { get; set; }
+        public string value { get; set; }
+        public string col1 { get; set; }
+
+    }
+
+
+    public class $table_name$DropDownListParameters : Page
+    { 
+         public string Attribute_Type { get; set; }
+
+        public string Where_1 { get; set; }
+
+        public string Where_2 { get; set; }
+
+        public string Where_3 { get; set; }
+    
+    }

@@ -1,0 +1,68 @@
+﻿        /// <summary>
+        /// $ClassDescript$
+        /// </summary>        
+        /// <returns></returns>
+        public bool $ClassName$()
+        {
+            using (DbConnection cn = base.CreateConnection())
+            {
+                cn.Open();
+                DbTransaction tran = cn.BeginTransaction();
+
+                try
+                {
+                    bool isHaveRecord = Excute_$ClassName$();
+                    tran.Commit();
+
+                    return isHaveRecord;
+                }
+                catch (Exception exception)
+                {
+                    tran.Rollback();
+                    ProcessErrorInformation(exception);
+
+                    throw exception;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// $ClassDescript$
+        /// </summary>        
+        /// <returns></returns>
+        public bool Excute_$ClassName$()
+        {
+            try
+            {
+                return m_$ClassName$(CurrentConnection, CurrentTransaction);
+            }
+            catch (Exception exception)
+            {
+                ProcessErrorInformation(exception);
+
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// $ClassDescript$
+        /// </summary>        
+        /// <param name="cn">数据连接</param>
+        /// <param name="tran">数据事务</param>
+        /// <returns></returns>
+        public bool m_$ClassName$(DbConnection cn, DbTransaction tran)
+        {
+            //string sql = string.Format("{0} WHERE [ID]='{1}'", SQL, userId);
+            //DataTable dt = ExcuteDataTable(sql, cn, tran);
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    return GenearatedUserFromDatarow(row);
+            //}
+
+            //return null;
+        }
+                

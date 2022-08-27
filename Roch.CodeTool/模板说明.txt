@@ -1,0 +1,98 @@
+﻿----------------------------------FaceTemplate.txt      外观层模板说明----------------------------------
+$ClassName$                 类名称
+$LowerClassName$            类名称小写
+$ClassDescript$             类描述
+$UserName$                  用户名
+$Datetime$                  创建时间
+$Email$                     电子邮箱
+$NameSpace$                 命名空间
+$PKType$                    主键类型
+----------------------------------FaceTemplate.txt      外观层模板说明----------------------------------
+
+
+----------------------------------MapperparameterTemplate.txt   映射层模板说明--------------------------
+$ClassName$                 类名称
+$LowerClassName$            类名称小写
+$ClassDescript$             类描述
+$UserName$                  用户名
+$Datetime$                  创建时间
+$Email$                     电子邮箱
+$NameSpace$                 命名空间
+$PKType$                    主键类型
+$Fields$                    字段
+$PK$                        主键字段
+$TableName$                 表名称
+$DataRowToClassName$        数据行到类对象
+$PKBegin$                   主键开始
+$PkEnd$                     主键结束
+$InsertFieldsFormat$        插入字段格式
+$UpdateFieldFormat$         更新字段格式
+$PKParameter$               主键参数
+----------------------------------MapperparameterTemplate.txt   映射层模板说明--------------------------
+
+
+----------------------------------MapperTemplate.txt  映射层模板说明------------------------------------
+$ClassName$                 类名称
+$LowerClassName$            类名称小写
+$ClassDescript$             类描述
+$UserName$                  用户名
+$Datetime$                  创建时间
+$Email$                     电子邮箱
+$NameSpace$                 命名空间
+$PKType$                    主键类型
+$Fields$                    字段
+$PK$                        主键字段
+$TableName$                 表名称
+$DataRowToClassName$        数据行到类对象
+$PKBegin$                   主键开始
+$PkEnd$                     主键结束
+$InsertFieldsFormat$        插入字段格式
+$UpdateFieldFormat$         更新字段格式
+$PKParameter$               主键参数
+----------------------------------MapperTemplate.txt  映射层模板说明------------------------------------
+
+
+
+------------------------------------ModelTemplate.txt  实体模板说明-------------------------------------
+$ClassName$                 类名称
+$LowerClassName$            类名称小写
+$ClassDescript$             类描述
+$UserName$                  用户名
+$Datetime$                  创建时间
+$Email$                     电子邮箱
+$NameSpace$                 命名空间
+$Field$                     字段集合
+$Property$                  属性集合
+------------------------------------ModelTemplate.txt  实体模板说明-------------------------------------
+
+
+------------------------------------SQLCodeTemplate.txt 实体模板说明------------------------------------
+$ClassName$                 类名称
+$LowerClassName$            类名称小写
+$ClassDescript$             类描述
+$UserName$                  用户名
+$Datetime$                  创建时间
+$Email$                     电子邮箱
+$Fields$                    表字段
+$TableName$                 表名称
+$PK$                        表主键
+$InsertFieldFormat$         插入字段格式
+$UpdateFieldFormat$         更新字段格式
+$ParameterTypes$            参数类型集合
+$Parameters$                参数集合
+$PKType$                    主键类型
+$InsertData$                插入数据
+------------------------------------SQLCodeTemplate.txt 实体模板说明------------------------------------
+
+
+
+
+
+2017-0-27  GeneratedCode()
+
+RepositoryCode 都写在这个类当中
+
+
+GenerateModelClass
+
+导出 Excel 关键列用红色标记

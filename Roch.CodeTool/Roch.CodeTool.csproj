@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6D65E161-CBC8-459B-B30E-208D043C81CF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Roch.CodeTool</RootNamespace>
+    <AssemblyName>Roch.CodeTool</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>Resources\home_page.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CodeMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeMain.Designer.cs">
+      <DependentUpon>CodeMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CodeMainContentEventHandler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeMainTreeEventHandler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeMainToolEventHandler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInsertModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInsertModel.Designer.cs">
+      <DependentUpon>FrmInsertModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmItemModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmItemModel.Designer.cs">
+      <DependentUpon>FrmItemModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Window\FrmDBSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Window\FrmDBSelect.Designer.cs">
+      <DependentUpon>FrmDBSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Window\FrmDisplay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Window\FrmDisplay.Designer.cs">
+      <DependentUpon>FrmDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F_Window\FrmSetServer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_Window\FrmSetServer.Designer.cs">
+      <DependentUpon>FrmSetServer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\BaseCode.cs" />
+    <Compile Include="GeneratedCode\GenerateCodeFactory.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\RepositoryCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\DomainFaceCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\DomainModelCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\MapperparameterCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\ORMapperCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\SQLCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer2008\UICode.cs" />
+    <Compile Include="GeneratedCode\SQLServer\DomainFaceCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer\DomainModelCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer\MapperparameterCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer\ORMapperCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer\SQLCode.cs" />
+    <Compile Include="GeneratedCode\SQLServer\UICode.cs" />
+    <Compile Include="GeneratedCode\Oracle\DomainFaceCode.cs" />
+    <Compile Include="GeneratedCode\Oracle\DomainModelCode.cs" />
+    <Compile Include="GeneratedCode\Oracle\MapperparameterCode.cs" />
+    <Compile Include="GeneratedCode\Oracle\SQLCode.cs" />
+    <Compile Include="GeneratedCode\Oracle\ORMapperCode.cs" />
+    <Compile Include="GeneratedCode\Oracle\UICode.cs" />
+    <Compile Include="MyCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyCode.Designer.cs">
+      <DependentUpon>MyCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CodeMain.resx">
+      <DependentUpon>CodeMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmInsertModel.resx">
+      <DependentUpon>FrmInsertModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmItemModel.resx">
+      <DependentUpon>FrmItemModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Window\FrmDBSelect.resx">
+      <DependentUpon>FrmDBSelect.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Window\FrmDisplay.resx">
+      <DependentUpon>FrmDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_Window\FrmSetServer.resx">
+      <DependentUpon>FrmSetServer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyCode.resx">
+      <DependentUpon>MyCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Roch.Database\Roch.Database.csproj">
+      <Project>{7F7DA472-567D-4960-948D-C3DA60D316AF}</Project>
+      <Name>Roch.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Roch.DomainModel\Roch.DomainModel.csproj">
+      <Project>{1A4BC7AA-E2EC-45FC-AE11-8BC82BBDF94D}</Project>
+      <Name>Roch.DomainModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Roch.Framework\Roch.Framework.csproj">
+      <Project>{243C3F80-F828-4277-B982-D5C9CE115A2A}</Project>
+      <Name>Roch.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\computer.png" />
+    <None Include="Resources\wrench--pencil.png" />
+    <None Include="Resources\report-excel.png" />
+    <None Include="Resources\receipt--pencil.png" />
+    <None Include="Resources\paper-bag-label.png" />
+    <None Include="Resources\folder-horizontal-open.png" />
+    <None Include="Resources\document-word.png" />
+    <None Include="Resources\document-table.png" />
+    <None Include="Resources\home_page.ico" />
+    <None Include="Resources\bianji.gif" />
+    <Content Include="Template\Oracle\FaceTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Oracle\MapperparameterTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Oracle\MapperTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Oracle\ModelTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Oracle\SQLCodeTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer2008\RepositoryTemplate.txt" />
+    <Content Include="Template\SQLServer2008\FaceTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer2008\MapperparameterTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer2008\MapperTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer2008\ModelTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer2008\SQLCodeTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer2008\UITemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer\FaceTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer\MapperparameterTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer\MapperTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer\ModelTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer\SQLCodeTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\SQLServer\UITemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="模板说明.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

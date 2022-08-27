@@ -1,0 +1,94 @@
+﻿
+====表名table_name====
+$table_name$
+
+===项目名project_name====
+$project_name$
+
+
+===class 类型====
+getModel:$getModel$
+
+===项目开头标记====
+table_prefix: $table_prefix$
+
+
+GetParam: $GetParam$
+
+GetBulkParam: $GetBulkParam$
+
+TestListData:$TestListData$
+
+TMBulk:$TMBulk$
+
+InsProce:$InsProce$
+
+DelProce:$DelProce$
+
+GetProce:$GetProce$"
+
+UpdProce:$UpdProce$"
+
+BulkProce:$BulkProce$"
+
+BulkDelProce:$BulkDelProce$
+
+BulkValidateProce:$BulkValidateProce$
+
+BulkConfirmProce:$BulkConfirmProce$
+
+Gettable_column:$Gettable_column$
+
+get_dialog:$get_dialog$
+
+Key:$Key$
+
+========== AG-Grid 表头===========
+ getGridHeader: $getGridHeader$
+
+
+============中英文切换zh_Json=========
+$zh_Json$
+
+ <!-- Add  Dialog 畫面 -->
+   <el-dialog id="dialog_add"
+               :title="dialogTitle"
+               width="60%"
+               height="100%"
+               @close="cancelDialog()"
+               :visible.sync="dialogOpen">
+      <el-form style="margin-top:5px;"
+               :label-position="labelPosition"
+               :inline="true"
+               class="demo-form-inline">
+        <span>
+          <el-row>
+            $dailog_addform$
+          </el-row>
+        </span>
+      </el-form>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button title="Save"
+                   type="primary"
+                   @click="save()">
+          {{
+          $t('save')
+          }}
+        </el-button>
+        <el-button title="Cancel"
+                   @click="cancel()">
+          {{
+          $t('cancel')
+          }}
+        </el-button>
+      </span>
+    </el-dialog>
+ <!-- Add  Dialog 畫面 -->
+
+  add() {
+        this.dialogOpen = true
+        this.dialogTitle = 'Add'
+        this.Form_Title = this.$t('Dialog_Title.Add_Employee')
+        this.reset()
+      },

@@ -1,0 +1,113 @@
+﻿<template>
+  <div>
+    <ag-grid-vue style="width: 100%; height: 400px"
+                 class="ag-theme-balham"
+                 :columnDefs="columnDefs"
+                 :rowData="rowData"
+                 :gridOptions="gridOptions"
+                 @grid-ready="onGridReady"
+                 :defaultColDef="defaultColDef"
+                 @firstDataRendered="FitColumnSize"
+                 :components="components"
+                 :pagination="true"></ag-grid-vue>
+  </div>
+</template>
+
+<script>
+  import { AgGridVue } from 'ag-grid-vue'
+  import { Get$table_name$ } from '@/api/app/$table_name$Api'
+
+  export default {
+    components: {
+      AgGridVue
+    },
+    props: {
+      ShowFlag: {
+        type: Object
+      }
+    },
+
+    data() {
+      return {
+        gridOptions: null,
+        gridApi: null,
+        columnApi: null,
+        columnDefs: null,
+        rowData: null,
+        components: null,
+        defaultColDef: null,
+        rowSelection: null,
+        rowSelectionObject: null
+      }
+    },
+
+    beforeMount() {
+      this.gridOptions = {}
+      this.columnDefs = this.getGridHeader()
+      this.defaultColDef = {
+        suppressSizeToFit: true,
+        editable: false,
+        resizable: true,
+        filter: true,
+        sortable: true
+      }
+    },
+
+    mounted() {
+      this.gridApi = this.gridOptions.api
+      this.gridColumnApi = this.gridOptions.columnApi
+      this.gridOptions.api.sizeColumnsToFit()
+    },
+
+    created() {
+      this.getGridHeader()
+      this.getGridData()
+    },
+    computed: {
+      Lang() {
+        return this.$store.getters.language
+      }
+    },
+    watch: {
+      Lang: function(newLang, oldLang) {
+        this.getGridHeader()
+        this.gridOptions.api.setColumnDefs(this.getGridHeader())
+      }
+    },
+    methods: {
+      onGridReady(params) {
+        this.gridApi = params.api
+        this.columnApi = params.columnApi
+        this.FitColumnSize()
+      },
+
+      FitColumnSize() {
+        var allColumnIds = []
+        this.gridColumnApi.getAllColumns().forEach(function(column) {
+          allColumnIds.push(column.colId)
+        })
+        this.gridColumnApi.autoSizeColumns(allColumnIds)
+        this.gridApi.sizeColumnsToFit()
+      },
+      getGridData() {
+        this.rowData = []
+        var data = { SearchType: 'log' }
+        Get$table_name$(data).then(response => {
+          this.rowData = response.data
+        })
+      },
+      getGridHeader() {
+        $getGridHeader$
+        return columns
+      },
+      initPage() {
+        setTimeout(() => {
+          this.getGridHeader()
+          this.getGridData()
+          this.FitColumnSize()
+        }, 10)
+      }
+    }
+  }
+</script>
+

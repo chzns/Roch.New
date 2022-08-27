@@ -1,0 +1,62 @@
+using JGPHR.JobAssignment.Entity.Common;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+
+
+namespace $project_name$.Entities
+{
+    public class $table_name$Param: Page
+    {
+        [FromHeader(Name = "Pagination-Page")]
+        public string PaginationPage { get; set; }
+
+        [FromHeader(Name = "Pagination-Limit")]
+        public string PaginationLimit { get; set; }
+        [FromHeader(Name = "EmployeeId")]
+        public string EmployeeId
+        {
+            get;
+            set;
+        }
+
+        public int Page
+        {
+            get
+            {
+                int.TryParse(PaginationPage, out var result);
+                return result;
+            }
+        }
+
+        public int Limit
+        {
+            get
+            {
+                int.TryParse(PaginationLimit, out var result);
+                return result;
+            }
+        }
+
+       $getModel$
+       public List<string> Upload$table_name$  { get; set; }
+    }
+    public class $table_name$
+    {
+        public int index{ get;set;}
+        $getModel$
+    }
+
+     public class $table_name$MainData
+    {
+        public int total { get; set; }
+        public List<$table_name$> data { get; set; }
+    }
+
+    public class Upload$table_name$
+    {
+        public string TM_UID { get; set; }
+        $getModel$
+    }
+}

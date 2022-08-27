@@ -1,0 +1,75 @@
+using $project_name$.Entities;
+using System.Data;
+using System.Threading.Tasks;
+using $project_name$.Repository;
+using $project_name$.Entity;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+
+namespace $project_name$.Business
+{
+    public class $table_name$Mgr
+    {
+        $table_name$Repo _$table_name$Repo;
+
+        public $table_name$Mgr(IOptions<AppSettings> appSettings)
+        {
+            _$table_name$Repo = new $table_name$Repo(appSettings);
+        }
+       
+        #region CURD
+        public  List<string> Ins$table_name$($table_name$Param param)
+        {
+            return  _$table_name$Repo.Ins$table_name$(param);
+        }
+
+        public async Task<int> Del$table_name$($table_name$Param param)
+        {
+            return await _$table_name$Repo.Del$table_name$(param);
+        }
+
+        public async Task<$table_name$MainData> Get$table_name$Main($table_name$Param param)
+        {
+            return await _$table_name$Repo.Get$table_name$Main(param);
+        }
+
+        public async Task<List<$table_name$>> Get$table_name$($table_name$Param param)
+        {
+            return await _$table_name$Repo.Get$table_name$(param);
+        }
+
+        public async Task<int> Upd$table_name$($table_name$Param param)
+        {
+            return await _$table_name$Repo.Upd$table_name$(param);
+        }
+
+       public async Task<string> UnintTest($table_name$Param param)
+        {
+            return await  _$table_name$Repo.UnintTest(param);
+        }
+       #endregion CURD
+
+
+       #region Upload
+        public async Task<bool> Bulk$table_name$ (DataTable dt)
+        {
+            return await _$table_name$Repo.Bulk$table_name$(dt);
+        }
+
+        public async Task<bool> BulkDel$table_name$($table_name$Param param)
+        {
+            return await _$table_name$Repo.BulkDel$table_name$(param);
+        }
+
+        public async Task<int> BulkValid$table_name$($table_name$Param param)
+        {
+            return await _$table_name$Repo.BulkValid$table_name$(param);
+        }
+
+        public async Task<string> BulkConfirm$table_name$($table_name$Param param)
+        {
+            return await _$table_name$Repo.BulkConfirm$table_name$(param);
+        }
+        #endregion
+    }
+}

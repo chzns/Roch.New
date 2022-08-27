@@ -1,0 +1,250 @@
+using Dapper;
+using System;
+using System.Linq;
+using $project_name$.Entities;
+using System.Data;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using $project_name$.Entity;
+using $project_name$.Repository.Common;
+
+namespace $project_name$.Repository
+{
+    public class $table_name$Repo : BaseRepo
+    {
+
+        IOptions<AppSettings> _appSetting;
+
+         public $table_name$Repo(IOptions<AppSettings> appSettings) : base(appSettings)
+        {
+            _appSetting = appSettings;
+        }
+
+        #region CURD
+
+        public  List<string> Ins$table_name$($table_name$Param param)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                $GetParam$
+                var db = conn;
+                using (var multi =  db.QueryMultiple($"$InsProce$", sParam, commandType: CommandType.StoredProcedure))
+                {
+                    return multi.Read<string>().ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<int> Del$table_name$($table_name$Param param)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("$Key$", param.$Key$);
+                /*
+                $GetParam$
+                */
+                var db = conn;
+                return await db.ExecuteAsync(
+                    "$DelProce$",
+                    sParam,
+                    commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+        public async Task<$table_name$MainData> Get$table_name$Main($table_name$Param param)
+        {
+            try
+            {
+                $table_name$MainData vm = new $table_name$MainData();
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("limit", param.pageSize);
+                sParam.Add("page", param.PageNo);
+                sParam.Add("CreatedBy", param.CreatedBy);
+                sParam.Add("SearchType", param.SearchType);
+                /*
+                $GetParam$
+                 */
+                
+                var db = conn;
+                using (var multi = await db.QueryMultipleAsync($"$GetProce$", sParam, commandTimeout: 0, commandType: CommandType.StoredProcedure))
+                 {
+              
+                    vm.total = multi.ReadFirst<int>();
+                    vm.data = multi.Read<$table_name$>().ToList();
+                    return vm;
+                 }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+       public async Task<List<$table_name$>> Get$table_name$($table_name$Param request)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("limit", request.pageSize);
+                sParam.Add("page", request.PageNo);
+                sParam.Add("CreatedBy", request.CreatedBy);
+                sParam.Add("SearchType", request.SearchType);
+                #region XML查询
+                //var UIDXML = "";
+                //var UIDs = request.UIDs;
+                //if (UIDs != null && UIDs.Count > 0)
+                //{
+                 //   UIDXML = XMLHelper.Serialize(UIDs, "UID");
+                //}
+                //sParam.Add("UIDXML", UIDXML); 
+                #endregion
+                var db = conn;
+                using (var multi = await db.QueryMultipleAsync($"$GetProce$", sParam, commandType: CommandType.StoredProcedure))
+                {
+                    return multi.Read<$table_name$>().ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<int> Upd$table_name$($table_name$Param param)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                $GetParam$
+                var db = conn;
+                return await db.ExecuteAsync(
+                    "$UpdProce$",
+                    sParam,
+                    commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<string> UnintTest($table_name$Param param)
+        { 
+           return  DateTime.Now.ToString();
+        }
+    
+        #endregion CURD
+
+       #region Upload
+
+        public async Task<bool> BulkDel$table_name$($table_name$Param param)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("@CreatedBy", param.CreatedBy);
+                var db = conn;
+                await db.ExecuteAsync(
+                    "$BulkDelProce$",
+                    sParam,
+                    commandType: CommandType.StoredProcedure);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        public async Task<bool> Bulk$table_name$ (DataTable dt)
+        {
+            var db = conn;
+            bool result = false;
+            string tableName = "[dbo].[$TMBulk$]";
+            using (var localConnection = new SqlConnection(db.ConnectionString))
+            {
+                localConnection.Open();
+                using (var tran = localConnection.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    using (var bulkCopy = new SqlBulkCopy(localConnection, SqlBulkCopyOptions.Default, tran))
+                    {
+                        bulkCopy.DestinationTableName = tableName;
+                        $GetBulkParam$
+                        bulkCopy.BatchSize = 5000;
+                        try
+                        {
+                            await bulkCopy.WriteToServerAsync(dt);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                        finally
+                        {
+                            tran.Commit();
+                            result = true;
+                        }
+                    }
+                }
+                localConnection.Close();
+                return result;
+            }
+        }
+        public async Task<int> BulkValid$table_name$($table_name$Param param)
+        {
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("@CreatedBy", param.CreatedBy);
+                var db = conn;
+                using (var multi = await db.QueryMultipleAsync($"$BulkValidateProce$", sParam, commandTimeout: 0, commandType: CommandType.StoredProcedure))
+                {
+                    int count = multi.ReadFirst<int>();
+                    return count;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        public async Task<string> BulkConfirm$table_name$($table_name$Param param)
+        {
+            string re = string.Empty;
+            try
+            {
+                DynamicParameters sParam = new DynamicParameters();
+                sParam.Add("@CreatedBy", param.CreatedBy);
+                var db = conn;
+                var result = await db.QueryAsync<string>(
+                     "$BulkConfirmProce$",
+                     sParam,
+                     commandType: CommandType.StoredProcedure);
+                if (result.ToList().Count > 0)
+                {
+                    re = result.ToList().FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return re;
+        }
+        #endregion Upload
+    }
+}

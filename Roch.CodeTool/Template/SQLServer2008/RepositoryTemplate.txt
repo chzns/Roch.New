@@ -1,0 +1,77 @@
+//SPP.Data.Repository.$SpaceTableName$Repository
+
+using SPP.Data.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SPP.Data.Repository
+{
+    public class $SpaceTableName$Repository : RepositoryBase<$PageTableName$>, I$SpaceTableName$Repository
+    {
+        public $SpaceTableName$Repository(IDatabaseFactory databaseFactory)
+            : base(databaseFactory)
+        {
+
+        }
+
+    }
+
+    public interface I$SpaceTableName$Repository: IRepository<$PageTableName$>
+    {
+  
+    }
+}
+
+//SPP.Data.Configuration.$SpaceTableName$Configuration
+
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace SPP.Data.Configuration
+{
+    class $SpaceTableName$Configuration : EntityTypeConfiguration<$PageTableName$>
+    {
+        public $SpaceTableName$Configuration()
+        {
+            HasKey(k => k.$PK$);
+
+        }
+    }
+}
+
+//SPP.Data.SPPEntityConfiguration
+
+ modelBuilder.Configurations.Add(new $SpaceTableName$Configuration());
+
+
+namespace SPP.Model.EntityDTO
+{
+    /// <summary>
+    /// $ClassDescript$
+    /// </summary>
+    [Serializable]
+    public class $ClassName$DTO : EntityDTOBase
+    {
+        #region Property		
+        $Property$		
+        #endregion
+    }
+}
+
+
+//AutoMap
+namespace SPP.WebAPI.Mappings
+
+Mapper.CreateMap<$PageTableName$, $SpaceTableName$DTO>();
+
+Mapper.CreateMap<$SpaceTableName$DTO,$PageTableName$>();
+

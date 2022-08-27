@@ -1,0 +1,134 @@
+﻿--1.$table_name$Controller.cs
+
+        [HttpPost]
+        [ValidateModelStateAttribute]
+        public async Task<ActionResult> $function_name$ ([FromHeader] string EmployeeId, [FromHeader] string LangCode, [FromBody] ProcessCodeDataParam request)
+        {
+            //1. 设定表头 以及 数据源
+            List<ExcelGrid> excelHeaders = new List<ExcelGrid>();
+            GridHeaderParameters p = new GridHeaderParameters();
+            p.PersonnelArea = request.PersonnelArea;
+            p.SizingWeek = request.SizingWeek;
+
+            List<GridHeaderSearch> list =  await _JobAssignmentMainMgr.GridHeader(p);
+            excelHeaders = list.Where(x=>x.headerName!="").ToList().Select (m=>new ExcelGrid {  field =m.field, headerName=m.headerName, hide=m.hide}).ToList();
+
+            request.SearchType = "Download";
+            List<ProcessCodeData> data = await _ProcessCodeDataMgr.GetProcessCodeData(request);
+            //2.下载Excel方法
+            DataTable table = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(data), (typeof(DataTable)));
+            request.CreatedBy = EmployeeId;
+
+
+            var memory = new MemoryStream();
+            try
+            {
+                var fileName = "1.xlsx";
+                using (MemoryStream fs = new MemoryStream())
+                {
+                    IWorkbook workbook;
+                    workbook = new XSSFWorkbook();
+                    ISheet excelSheet = workbook.CreateSheet("Sheet 1");
+                    int rowIndex = 0;
+                    int columnIndex = 0;
+
+                    //Define default column style
+                    XSSFCellStyle defaultStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+                    defaultStyle.WrapText = true;
+                    defaultStyle.Alignment = HorizontalAlignment.Left;
+                    defaultStyle.VerticalAlignment = VerticalAlignment.Top;
+                    defaultStyle.BorderBottom = BorderStyle.Thin;
+                    defaultStyle.BottomBorderColor = IndexedColors.White.Index;
+                    defaultStyle.BorderTop = BorderStyle.Thin;
+                    defaultStyle.TopBorderColor = IndexedColors.White.Index;
+                    defaultStyle.BorderLeft = BorderStyle.Thin;
+                    defaultStyle.LeftBorderColor = IndexedColors.White.Index;
+                    defaultStyle.BorderRight = BorderStyle.Thin;
+                    defaultStyle.RightBorderColor = IndexedColors.White.Index;
+
+                    //Excel Header
+                    IRow row = excelSheet.CreateRow(rowIndex);
+                    rowIndex++;
+
+                    foreach (ExcelGrid column in excelHeaders)
+                    {
+                        row.CreateCell(columnIndex).SetCellValue(column.headerName);
+                        columnIndex++;
+                    }
+
+                    foreach (DataRow dsrow in table.Rows)
+                    {
+                        row = excelSheet.CreateRow(rowIndex);
+                        int cellIndex = 0;
+                        foreach (ExcelGrid column in excelHeaders)
+                        {
+                            row.CreateCell(cellIndex).SetCellValue(dsrow[column.field].ToString());
+                            cellIndex++;
+                        }
+
+                        rowIndex++;
+                    }
+
+                    //Set sheet column auto size
+                    int reportColumnSize = excelHeaders.Count;
+                    for (int i = 0; i < reportColumnSize; i++)
+                    {
+                        excelSheet.AutoSizeColumn(i);
+                        //excelSheet.SetDefaultColumnStyle(i, defaultStyle);
+                    }
+
+                    //Write stream to Excel workbook
+                    workbook.Write(fs);
+                    var byteArray = fs.ToArray();
+                    memory.Write(byteArray, 0, byteArray.Length);
+                }
+
+                memory.Position = 0;
+                return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+--2.$table_name$Api.js
+export function $function_name$(data) {
+  return store.dispatch('GetDataFilter').then(dataFilter => {
+    return request({
+      url: baseUrl + '/api/$table_name$/$function_name$',
+      method: 'post',
+      responseType: 'blob',
+      data: data
+    })
+  })
+}
+
+--3.导入引用
+  import { $function_name$ } from '@/api/app/$table_name$Api'
+
+--3.VUE代碼
+
+   $function_name$(objName) {
+        var data = {  }
+        $function_name$(data).then(response => {
+          console.log('onDownloadClicked')
+          const downloadUrl = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = downloadUrl
+          link.setAttribute('download', '$table_name$.xlsx')
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
+          this.loading = false
+        }).catch(error => {
+          this.loading = false
+          console.log('Excel Error')
+          console.log(error)
+          this.$alert(error, this.$t('Enfo'), {
+            confirmButtonText: 'OK',
+            dangerouslyUseHTMLString: true
+          })
+        })
+        console.log('onDownloadClicked')
+      },
