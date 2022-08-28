@@ -26,6 +26,8 @@ using Roch.DomainModel;
 using System.Linq;
 using System.Dynamic;
 using Roch.Framework;
+using System.CodeDom.Compiler;
+using System.CodeDom;
 
 namespace Roch.CodeTool
 {
@@ -594,6 +596,7 @@ namespace Roch.CodeTool
             var str = GetModel(vm);
             sb.AppendLine(str);
             sb.AppendLine($"   list.Dump();");
+            sb.AppendLine($"Extention.GetTemplateString(\"\",list).Dump();");
             sb.AppendLine("}");
             sb.AppendLine($"public class Model");
             sb.AppendLine("{");
@@ -606,7 +609,12 @@ namespace Roch.CodeTool
                 }
                 sb.AppendLine("}");
             }
+
+            sb.AppendLine(ExtentionClass(vm));
+
             return sb.ToString().TrimEnd(',');
+
+
         }
 
         public static string GetModel(RichTextBoxModel vm)
@@ -718,6 +726,62 @@ namespace Roch.CodeTool
             // 后面可以继续添加
 
             return last.ToString();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            using (var writer = new StringWriter())
+            {
+                using (var provider = CodeDomProvider.CreateProvider("CSharp"))
+                {
+                    provider.GenerateCodeFromExpression(new CodePrimitiveExpression(this.rich_sb_old.Text.ToString()), writer, null);
+                    this.rich_sb_new.Text="string templateString="+ writer.ToString()+";";
+                }
+            }
+
+        }
+
+        public static string ExtentionClass(RichTextBoxModel vm)
+        {
+
+            StringBuilder sb= new StringBuilder();
+            sb.AppendLine($"public static class Extention");
+            sb.AppendLine("{");
+            // 方法1 
+            sb.AppendLine($"public  static string GetTemplateString(string templateString, List<Model> list)");
+            sb.AppendLine("{");
+            sb.AppendLine($"    StringBuilder sb = new StringBuilder();");
+            sb.AppendLine($"    for (int i = 0; i < list.Count; i++)");
+            sb.AppendLine("    {");
+            sb.AppendLine($"        var temp = templateString;");
+            foreach (var item in vm.FirstRow)
+            {
+                sb.AppendLine($"        temp = temp.Replace(\"$Foreach.{item.ToString()}$\", list[i].{item.ToString()});");
+            }
+            sb.AppendLine($"        sb.AppendLine(temp);");
+            sb.AppendLine("    }");
+            sb.AppendLine("    return sb.ToString(); ");
+            sb.AppendLine("}");
+            // 方法二
+            sb.AppendLine($"public  static  string GeTemplateSingle(string templateString,List<string> list)");
+            sb.AppendLine("{");
+            sb.AppendLine($"    StringBuilder sb = new StringBuilder();");
+            sb.AppendLine($"    for (int i = 0; i < list.Count; i++)");
+            sb.AppendLine("    {");
+            sb.AppendLine($"        var temp = templateString;");
+            sb.AppendLine($"        temp = temp.Replace(\"$Foreach.String$\", list[i].ToString());");
+            sb.AppendLine($"        sb.AppendLine(temp);");
+            sb.AppendLine("    }");
+            sb.AppendLine($"    return sb.ToString();");
+            sb.AppendLine("}");
+
+
+            sb.AppendLine("}");
+
+
+
+            return sb.ToString();
+        
         }
     }
 

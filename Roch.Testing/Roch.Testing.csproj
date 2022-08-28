@@ -60,27 +60,69 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="template\template_API_File.txt" />
-    <Content Include="template\template_blank.txt" />
-    <Content Include="template\template_Business_File.txt" />
-    <Content Include="template\template_datetime.txt" />
-    <Content Include="template\template_Dropdownlist.txt" />
-    <Content Include="template\template_Entities_File.txt" />
-    <Content Include="template\template_Download.txt" />
-    <Content Include="template\template_globel.txt" />
-    <Content Include="template\template_GridHeader.txt" />
-    <Content Include="template\template_log.txt" />
-    <Content Include="template\template_Repository_File.txt" />
-    <Content Include="template\template_SearchEmployeee.txt" />
-    <Content Include="template\template_SearchUser.txt" />
-    <Content Include="template\template_GetFunction.txt" />
-    <Content Include="template\template_SingleFunction.txt" />
-    <Content Include="template\template_TestJsonData.txt" />
-    <Content Include="template\template_UploadVUE.txt" />
-    <Content Include="template\template_Upload_File.txt" />
-    <Content Include="template\template_VUE_API.txt" />
-    <Content Include="template\template_VUE_File.txt" />
-    <Content Include="template\template_Web_File.txt" />
+    <Content Include="template\template_API_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_blank.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Business_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_datetime.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Dropdownlist.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Entities_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Download.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_globel.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_GridHeader.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_log.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Repository_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_SearchEmployeee.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_SearchUser.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_GetFunction.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_SingleFunction.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_TestJsonData.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_UploadVUE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Upload_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_VUE_API.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_VUE_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template\template_Web_File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
