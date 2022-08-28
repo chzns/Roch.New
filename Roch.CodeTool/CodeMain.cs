@@ -240,7 +240,15 @@ namespace Roch.CodeTool
 
                     if (!string.IsNullOrEmpty(str3))
                     {
-                        builder.Append(sb + ".AppendLine($\"" + str3.Replace("\"", "\\\"") + "\");\r\n").ToString();
+                        if (str3.Contains("{") || str3.Contains("}"))
+                        {
+                            builder.Append(sb + ".AppendLine(\"" + str3.Replace("\"", "\\\"") + "\");\r\n").ToString();
+                        }
+                        else
+                        {
+                            builder.Append(sb + ".AppendLine($\"" + str3.Replace("\"", "\\\"") + "\");\r\n").ToString();
+                        }
+
                         //builder.Append(string.Format("{0}.AppendLine(\"" + str3.Replace("\"", "\\\"") + "\");\r\n", sb));
                         //builder.Append(sb + ".AppendLine( string.Format($@\"" + str3.Replace("\"", "\\\"") + "\"));\r\n").ToString();
 
@@ -443,7 +451,7 @@ namespace Roch.CodeTool
             //foo.Test = true;
             //string json = Newtonsoft.Json.JsonConvert.SerializeObject(foo);
             var list = new List<Dictionary<string, object>>();
-            
+
             var vm = getRichTextBoxToVM();
             List<string> FirstRow = vm.FirstRow;
             List<List<string>> Rows = vm.Rows;
@@ -588,6 +596,16 @@ namespace Roch.CodeTool
 
         public static string Generate_List(RichTextBoxModel vm)
         {
+            string tempLine = string.Empty;
+            if (vm.FirstRow != null)
+            {
+                foreach (var item in vm.FirstRow)
+                {
+                    tempLine = tempLine + $"间隔 $Foreach.{item.ToString()}$";
+                }
+
+            }
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"void Main()");
             sb.AppendLine("{");
@@ -595,8 +613,8 @@ namespace Roch.CodeTool
             //sb.AppendLine($"   list.Add(new Model{ Item1 =\"1\",Item2=\"1\"});");
             var str = GetModel(vm);
             sb.AppendLine(str);
-            sb.AppendLine($"   list.Dump();");
-            sb.AppendLine($"Extention.GetTemplateString(\"\",list).Dump();");
+            sb.AppendLine($"list.Dump();");
+            sb.AppendLine($"Extention.GetTemplateString(@\"{tempLine}\",list).Dump();");
             sb.AppendLine("}");
             sb.AppendLine($"public class Model");
             sb.AppendLine("{");
@@ -619,7 +637,7 @@ namespace Roch.CodeTool
 
         public static string GetModel(RichTextBoxModel vm)
         {
-        
+
             StringBuilder result = new StringBuilder();
             var FirstModel = vm.FirstRow;
             var DataRow = vm.Rows;
@@ -634,7 +652,7 @@ namespace Roch.CodeTool
                 result.AppendLine("");
             }
             return result.ToString();
-        
+
         }
 
 
@@ -653,7 +671,7 @@ namespace Roch.CodeTool
             RichTextBoxModel vm = new RichTextBoxModel();
             List<List<string>> datalist = new List<List<string>>();
             var list = richboxToList();
-      
+
             for (int i = 0; i < list.Count; i++)
             {
                 var Item = changeStrToList(list[i]);
@@ -735,7 +753,7 @@ namespace Roch.CodeTool
                 using (var provider = CodeDomProvider.CreateProvider("CSharp"))
                 {
                     provider.GenerateCodeFromExpression(new CodePrimitiveExpression(this.rich_sb_old.Text.ToString()), writer, null);
-                    this.rich_sb_new.Text="string templateString="+ writer.ToString()+";";
+                    this.rich_sb_new.Text = "string templateString=" + writer.ToString() + ";";
                 }
             }
 
@@ -744,7 +762,7 @@ namespace Roch.CodeTool
         public static string ExtentionClass(RichTextBoxModel vm)
         {
 
-            StringBuilder sb= new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine($"public static class Extention");
             sb.AppendLine("{");
             // 方法1 
@@ -781,17 +799,17 @@ namespace Roch.CodeTool
 
 
             return sb.ToString();
-        
+
         }
     }
 
     public class RichTextBoxModel
-    { 
+    {
 
         public List<string> FirstRow { get; set; }
         public List<List<string>> Rows { get; set; }
-    
-    
+
+
     }
 
 
