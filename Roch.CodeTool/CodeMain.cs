@@ -28,6 +28,8 @@ using System.Dynamic;
 using Roch.Framework;
 using System.CodeDom.Compiler;
 using System.CodeDom;
+using Dapper;
+using System.Data.SQLite;
 
 namespace Roch.CodeTool
 {
@@ -40,6 +42,9 @@ namespace Roch.CodeTool
         private UserConfigInfo m_ConfigInfo;
         private string m_DirPath;
         private string m_DebugPath;
+        public static string basePath = AppDomain.CurrentDomain.BaseDirectory;
+        public static string sqlitePath = AppDomain.CurrentDomain.BaseDirectory + @"db.db";
+        public SQLiteHelper sqlLiteHelper = null;
 
         public CodeMain()
         {
@@ -59,8 +64,45 @@ namespace Roch.CodeTool
             m_DebugPath = AppDomain.CurrentDomain.BaseDirectory;
         }
 
+        public static string ConnectString()
+        {
+
+            return $"data source={sqlitePath};version=3;";
+
+
+        }
+
         private void CodeMain_Load(object sender, EventArgs e)
         {
+            if (!File.Exists(sqlitePath))
+            {
+                MessageBox.Show("DB数据故障！", "连接失败");
+                return;
+            }
+            sqlLiteHelper = new SQLiteHelper(sqlitePath);
+            for (int i = 0; i < 12; i++)
+            {
+                string sql = string.Format("insert into wechat (number,sex) values ('{0}','{1}')", i.ToString(), "未知");
+                int qwe = sqlLiteHelper.ExeSqlOut(sql);
+            }
+
+            var foos = new List<wechat>();
+            foos.Add(new wechat { number = "1312312", sex = "213123" });
+
+            using (IDbConnection cnn = new SQLiteConnection(ConnectString()))
+            {
+                cnn.Open();
+                var output = cnn.Query<wechat>("select * from wechat", new DynamicParameters());
+                var a= output.ToList();
+            }
+
+
+            //var count = connection.Execute(@"insert MyTable(colA, colB) values (@a, @b)", foos);
+            //Assert.Equal(foos.Count, count);
+
+
+
+
             //tsbServer.PerformClick();
             List<Control> list = new List<Control>();
             list.Add(this.txtClassName);
