@@ -30,6 +30,8 @@ using System.CodeDom.Compiler;
 using System.CodeDom;
 using Dapper;
 using System.Data.SQLite;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Roch.CodeTool
 {
@@ -93,7 +95,7 @@ namespace Roch.CodeTool
             {
                 cnn.Open();
                 var output = cnn.Query<wechat>("select * from wechat", new DynamicParameters());
-                var a= output.ToList();
+                var a = output.ToList();
             }
 
 
@@ -517,11 +519,12 @@ namespace Roch.CodeTool
             this.rich_sb_new.Text = this.WTMEnitiyJson();
         }
 
-        public List<string> richboxToList()
+        public List<string> richboxToListOld()
         {
             List<string> values = new List<string>();
             for (int i = 0; i < rich_sb_old.Lines.Length; i++)
             {
+
                 string value = string.Empty;
                 if (i == rich_sb_old.Lines.Length - 1)
                 {
@@ -546,7 +549,34 @@ namespace Roch.CodeTool
             return values;
         }
 
+        public List<string> richboxToList()
+        {
+            return this.rich_sb_old.Text.Split(new[] {  '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+        }
+
+        public static void RunAsync(Action action)
+        {
+            ((Action)(delegate ()
+            {
+                action.Invoke();
+            })).BeginInvoke(null, null);
+        }
+
+        public void RunInMainthread(Action action)
+        {
+            this.BeginInvoke((Action)(delegate ()
+            {
+                action.Invoke();
+            }));
+        }
+
         private void button8_Click(object sender, EventArgs e)
+        {
+            //generateSQL();
+            generateSQL();
+        }
+
+        public void generateSQL()
         {
 
             StringBuilder sb = new StringBuilder();
@@ -556,7 +586,6 @@ namespace Roch.CodeTool
                 var Item = changeStrToList(list[i]);
                 if (i == 0)
                 {
-
                     sb.AppendLine(ListToSQLTable(Item));
                     sb.AppendLine("insert @table");
                 }
@@ -570,13 +599,13 @@ namespace Roch.CodeTool
                     {
                         sb.AppendLine(ListToSelectColunmData(Item, "  union all"));
                     }
-
                 }
-
             }
             sb.AppendLine("select * from @table");
             this.rich_sb_new.Text = sb.ToString();
+
         }
+
 
         public string ListToSQLTable(List<string> list)
         {
@@ -842,6 +871,27 @@ namespace Roch.CodeTool
 
             return sb.ToString();
 
+        }
+
+        private void btnSQLIN_Click(object sender, EventArgs e)
+        {
+            var list = richboxToList();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"(");
+            for (int i = 0; i < list.Count; i++)
+            {
+                var Item = list[i];
+                if (i == list.Count-1)
+                {
+                    sb.AppendLine($"'{Item}'");
+                }
+                else
+                {
+                    sb.AppendLine($"'{Item}',");
+                }
+            }
+            sb.AppendLine($")");
+            this.rich_sb_new.Text = sb.ToString();
         }
     }
 

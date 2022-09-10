@@ -36,6 +36,7 @@
             this.tsCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.txt_sbname = new System.Windows.Forms.TextBox();
@@ -143,6 +144,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button11);
             this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.txt_sbname);
@@ -169,9 +171,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Function";
             // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(18, 120);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(130, 23);
+            this.button11.TabIndex = 21;
+            this.button11.Text = "SQL(In)";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.btnSQLIN_Click);
+            // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(18, 350);
+            this.button10.Location = new System.Drawing.Point(18, 364);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(130, 23);
             this.button10.TabIndex = 20;
@@ -181,7 +193,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(18, 592);
+            this.button1.Location = new System.Drawing.Point(18, 606);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(130, 23);
             this.button1.TabIndex = 19;
@@ -202,7 +214,7 @@
             // btn_sb_copy
             // 
             this.btn_sb_copy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_sb_copy.Location = new System.Drawing.Point(18, 621);
+            this.btn_sb_copy.Location = new System.Drawing.Point(18, 635);
             this.btn_sb_copy.Name = "btn_sb_copy";
             this.btn_sb_copy.Size = new System.Drawing.Size(130, 21);
             this.btn_sb_copy.TabIndex = 5;
@@ -212,7 +224,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(18, 385);
+            this.button3.Location = new System.Drawing.Point(18, 399);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(130, 21);
             this.button3.TabIndex = 12;
@@ -223,7 +235,7 @@
             // btn_sb_2
             // 
             this.btn_sb_2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_sb_2.Location = new System.Drawing.Point(18, 169);
+            this.btn_sb_2.Location = new System.Drawing.Point(18, 183);
             this.btn_sb_2.Name = "btn_sb_2";
             this.btn_sb_2.Size = new System.Drawing.Size(130, 21);
             this.btn_sb_2.TabIndex = 9;
@@ -233,7 +245,7 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(18, 421);
+            this.button9.Location = new System.Drawing.Point(18, 435);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(130, 21);
             this.button9.TabIndex = 18;
@@ -244,7 +256,7 @@
             // btn_generate_name
             // 
             this.btn_generate_name.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_generate_name.Location = new System.Drawing.Point(18, 250);
+            this.btn_generate_name.Location = new System.Drawing.Point(18, 264);
             this.btn_generate_name.Name = "btn_generate_name";
             this.btn_generate_name.Size = new System.Drawing.Size(130, 21);
             this.btn_generate_name.TabIndex = 10;
@@ -255,7 +267,7 @@
             // btn_sb_n
             // 
             this.btn_sb_n.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_sb_n.Location = new System.Drawing.Point(18, 133);
+            this.btn_sb_n.Location = new System.Drawing.Point(18, 147);
             this.btn_sb_n.Name = "btn_sb_n";
             this.btn_sb_n.Size = new System.Drawing.Size(130, 21);
             this.btn_sb_n.TabIndex = 8;
@@ -265,7 +277,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(18, 457);
+            this.button6.Location = new System.Drawing.Point(18, 471);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(130, 21);
             this.button6.TabIndex = 15;
@@ -275,7 +287,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(18, 313);
+            this.button2.Location = new System.Drawing.Point(18, 327);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 21);
             this.button2.TabIndex = 11;
@@ -285,7 +297,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(18, 493);
+            this.button8.Location = new System.Drawing.Point(18, 507);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(130, 21);
             this.button8.TabIndex = 17;
@@ -307,7 +319,7 @@
             // btn_htm_generate
             // 
             this.btn_htm_generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_htm_generate.Location = new System.Drawing.Point(18, 97);
+            this.btn_htm_generate.Location = new System.Drawing.Point(18, 90);
             this.btn_htm_generate.Name = "btn_htm_generate";
             this.btn_htm_generate.Size = new System.Drawing.Size(130, 21);
             this.btn_htm_generate.TabIndex = 6;
@@ -317,7 +329,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(18, 565);
+            this.button7.Location = new System.Drawing.Point(18, 579);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(130, 21);
             this.button7.TabIndex = 16;
@@ -327,7 +339,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(18, 277);
+            this.button4.Location = new System.Drawing.Point(18, 291);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(130, 21);
             this.button4.TabIndex = 13;
@@ -338,7 +350,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(18, 529);
+            this.button5.Location = new System.Drawing.Point(18, 543);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(130, 21);
             this.button5.TabIndex = 14;
@@ -349,7 +361,7 @@
             // btn_sb_generate
             // 
             this.btn_sb_generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_sb_generate.Location = new System.Drawing.Point(18, 205);
+            this.btn_sb_generate.Location = new System.Drawing.Point(18, 219);
             this.btn_sb_generate.Name = "btn_sb_generate";
             this.btn_sb_generate.Size = new System.Drawing.Size(130, 21);
             this.btn_sb_generate.TabIndex = 5;
@@ -655,6 +667,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button11;
     }
 }
 
