@@ -114,6 +114,14 @@ namespace Roch.Framework
                     LocalFileHelper.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Controls/");
                     writeFile(fileName, rad.Checked.ToString());
                 }
+                if (c is System.Windows.Forms.CheckBox)
+                {
+                    System.Windows.Forms.CheckBox rad = (System.Windows.Forms.CheckBox)c;
+                    string fileName = AppDomain.CurrentDomain.BaseDirectory + "/Controls/" + "/" + rad.Name;
+                    LocalFileHelper.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Controls/");
+                    writeFile(fileName, rad.Checked.ToString());
+                }
+
             }
         }
 
@@ -160,6 +168,21 @@ namespace Roch.Framework
                     }
 
                 }
+
+                if (c is System.Windows.Forms.CheckBox)
+                {
+                    System.Windows.Forms.CheckBox rad = (System.Windows.Forms.CheckBox)c;
+                    string fileName = AppDomain.CurrentDomain.BaseDirectory + "/Controls/" + "/" + rad.Name;
+                    if (File.Exists(fileName))
+                    {
+                        rad.Checked = Convert.ToBoolean(readFile(fileName));
+                    }
+
+                }
+
+
+
+
             }
 
 

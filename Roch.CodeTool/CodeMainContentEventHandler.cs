@@ -36,10 +36,10 @@ namespace Roch.CodeTool
         #region 原来方法
         private void btnGenerated_Click(object sender, EventArgs e)
         {
-            m_ConfigInfo.ClassName = ConvertHelper.ToTitleCase(txtClassName.Text);
-            m_ConfigInfo.ClassDescript = txtDescript.Text;
+            //m_ConfigInfo.ClassName = ConvertHelper.ToTitleCase(txtClassName.Text);
+            //m_ConfigInfo.ClassDescript = txtDescript.Text;
      
-            m_ConfigInfo.PK = txtPK.Text;
+            //m_ConfigInfo.PK = txtPK.Text;
 
 
             if (m_CurrentColumnModels.Count == 0)
@@ -386,10 +386,10 @@ namespace Roch.CodeTool
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             List<Control> list = new List<Control>();
-            list.Add(this.txtClassName);
-            list.Add(this.txtPK);
-            list.Add(this.txtDescript);
-            list.Add(this.txtColumns);
+            //list.Add(this.txtClassName);
+            //list.Add(this.txtPK);
+            //list.Add(this.txtDescript);
+            //list.Add(this.txtColumns);
             list.Add(this.txt_sbname);
             //list.Add(this.txtDomainModel);
             //list.Add(this.txtDataMapper);

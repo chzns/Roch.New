@@ -91,8 +91,8 @@ namespace Roch.CodeTool
 
             ColumnModel columnModel = m_CurrentColumnModels.Find(c => c.IsPK);
 
-            txtClassName.Text = objectName;
-            txtPK.Text = columnModel == null ? string.Empty : columnModel.Name;
+            //txtClassName.Text = objectName;
+            //txtPK.Text = columnModel == null ? string.Empty : columnModel.Name;
 
 
             //列名字
@@ -114,7 +114,7 @@ namespace Roch.CodeTool
             
             }
             
-            txtColumns.Text = columns;
+            //txtColumns.Text = columns;
             GenerateModel(columns, objectName);
             m_ConfigInfo.DatabaseName = databaseName;
             m_ConfigInfo.TableName = objectName;

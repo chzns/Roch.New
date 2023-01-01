@@ -45,10 +45,10 @@ namespace Roch.CodeTool
                 }
             }
             List<Control> list = new List<Control>();
-            list.Add(this.txtClassName);
-            list.Add(this.txtPK);
-            list.Add(this.txtDescript);
-            list.Add(this.txtColumns);
+            //list.Add(this.txtClassName);
+            //list.Add(this.txtPK);
+            //list.Add(this.txtDescript);
+            //list.Add(this.txtColumns);
             list.Add(this.txt_sbname);
 
             //list.Add(this.txtDomainModel);
@@ -151,7 +151,7 @@ namespace Roch.CodeTool
         /// <param name="e"></param>
         private void tsbCoding_Click(object sender, EventArgs e)
         {
-            btnGenerated.PerformClick();
+            //btnGenerated.PerformClick();
             tbControl.SelectedIndex = 0;
         }
 
@@ -182,7 +182,7 @@ namespace Roch.CodeTool
         /// <param name="e"></param>
         private void tsbExportData_Click(object sender, EventArgs e)
         {
-            btnGenerated.PerformClick();
+            //btnGenerated.PerformClick();
             tbControl.SelectedIndex = 5;
         }
 
@@ -193,7 +193,7 @@ namespace Roch.CodeTool
         /// <param name="e"></param>
         private void tsbExportStruct_Click(object sender, EventArgs e)
         {
-            btnGenerated.PerformClick();
+            //btnGenerated.PerformClick();
             tbControl.SelectedIndex = 6;
         }
 
