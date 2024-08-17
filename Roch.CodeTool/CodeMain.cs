@@ -432,17 +432,115 @@ namespace Roch.CodeTool
 
         public string ChildStr(string description, string keyname, string body)
         {
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("\"" + keyname + "\": {");
-            sb.AppendLine("		\"scope\": \"javascript,typescript,html\",");
+            //sb.AppendLine("		\"scope\": \"javascript,typescript,html\",");
             sb.AppendLine("		\"prefix\": \"" + keyname + "\",");
             sb.AppendLine("		\"body\": [");
-            sb.AppendLine("	" + body);
+            sb.AppendLine("	" + ReplaceQuotes(body));
             sb.AppendLine("		],");
             sb.AppendLine("		\"description\": \"" + description + "\"");
+            sb.AppendLine("}");
             return sb.ToString();
+        }
 
+        static string ReplaceQuotes(string input)
+        {
+            string[] lines = input.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                // 统计当前行中的双引号数量
+                int doubleQuoteCount = Regex.Matches(line, "\"").Count;
+
+                // 如果一行中的双引号超过 2 个，替换中间的双引号为单引号
+                if (doubleQuoteCount > 2)
+                {
+                    // 找到第一个和最后一个双引号的索引
+                    int firstQuoteIndex = line.IndexOf("\"");
+                    int lastQuoteIndex = line.LastIndexOf("\"");
+
+                    // 替换中间部分的双引号为单引号
+                    string middleSection = line.Substring(firstQuoteIndex + 1, lastQuoteIndex - firstQuoteIndex - 1);
+                    middleSection = middleSection.Replace("\"", "'");
+                    middleSection = middleSection.Replace("\\", "\\\\");
+                    // 重新组合成完整的行
+                    line = line.Substring(0, firstQuoteIndex + 1) + middleSection + line.Substring(lastQuoteIndex);
+                }
+
+                // 替换后的结果赋值回行
+                lines[i] = line;
+            }
+
+            // 将处理后的行重新拼接为字符串
+            return string.Join(Environment.NewLine, lines);
+        }
+
+        public static string ReplaceDoubleQuotes(string input)
+        {
+            string[] lines = input.Split('\n');
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string line in lines)
+            {
+                int quoteCount = line.Count(c => c == '"');
+                if (quoteCount > 2)
+                {
+                    // 双引号出现次数超过2次，进行替换
+                    sb.AppendLine(Regex.Replace(line, "(?<!^)\"(?!$)", "'"));
+                }
+                else
+                {
+                    // 双引号出现次数小于等于2次，直接添加
+                    sb.AppendLine(line);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public static string ReplaceDoubleQuotesWithSingleQuotes(string input)
+        {
+            // 正则表达式匹配不在行首或行尾的双引号
+            string pattern = @"(?<!^)\""(?!$)";
+
+            // 使用 Regex.Replace 进行替换
+            string result = Regex.Replace(input, pattern, "'");
+
+            return result;
+        }
+
+
+        //public static string ReplaceDoubleQuotesWithSingleQuotes(string input)
+        //{
+        //    string[] lines = input.Split('\n');
+        //    StringBuilder sb = new StringBuilder();
+
+        //    foreach (string line in lines)
+        //    {
+        //        string newLine = line.Replace("\"", "'");
+        //        sb.AppendLine(newLine);
+        //    }
+
+        //    return sb.ToString();
+
+        //}
+
+        public  string ReplaceDoubleQuotesWithSingleQuotes1(string input)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in input)
+            {
+                if (c == '"')
+                {
+                    sb.Append('\'');
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
 
 
@@ -2454,7 +2552,7 @@ namespace Roch.CodeTool
 
             string apiUrl = "https://api.chatanywhere.com.cn/v1/chat/completions";
             string apiKey = "sk-dPo2uNq5n9kt5moY3rwfIDwSMFytBWooCSED4NiDeLj5dsgQ";
-          
+
 
             //string jsonBody = @"{
             //    ""model"": ""gpt-3.5-turbo"",
@@ -2492,11 +2590,11 @@ namespace Roch.CodeTool
                 {
                     string responseJson = streamReader.ReadToEnd();
                     Console.WriteLine(responseJson);
-                   
+
                     JObject json = JObject.Parse(responseJson);
                     JArray choices = (JArray)json["choices"];
                     string content = choices[0]["message"]["content"].ToString();
-                    aiOutput.Text = aiOutput.Text+ "\n"+ DateTime.Now+ inputText   + "\n" + content + "\n";
+                    aiOutput.Text = aiOutput.Text + "\n" + DateTime.Now + inputText + "\n" + content + "\n";
                 }
             }
             catch (WebException ex)
@@ -2509,12 +2607,12 @@ namespace Roch.CodeTool
 
         }
 
-        
-}
+
+    }
 
 }
 
-    public class RichTextBoxModel
+public class RichTextBoxModel
 {
 
     public List<string> FirstRow { get; set; }
