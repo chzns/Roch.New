@@ -1,0 +1,13 @@
+﻿--1.Drop table  mytable ;
+
+--2.创建表
+Create Table If Not Exists "MyTable"(
+"ID" varchar (20) ,
+"Name" varchar (20)
+);	
+
+--3.Iinsert Data
+insert into "MyTable"("ID" ,"Name" ) values('1','2');
+
+--3.查询表
+select * from public."MyTable"

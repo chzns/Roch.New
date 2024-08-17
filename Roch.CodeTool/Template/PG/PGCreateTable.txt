@@ -1,0 +1,47 @@
+﻿
+DROP TABLE IF EXISTS t_temp ;
+create temp table IF NOT EXISTS  $temp$($PGSingleColumns$) ;
+$PGSingleInsertData$
+
+select * from t_temp ;
+
+---游标语法
+do $$
+declare
+   emp record;
+   emp_cur cursor for select * from t_temp limit 100;
+begin
+  open emp_cur;
+  loop
+  fetch emp_cur into emp;
+  exit when not found;
+  
+  --逻辑代码
+  $RaiseNotice$
+
+  end loop;
+  close emp_cur;
+end $$;
+
+
+-- PG表变量赋值
+do $$
+$PGAsignment$
+$$;
+
+---If 语句
+do $$
+Declare i int =4;
+begin
+
+if i < 5 then
+	raise notice 'i的值小于5为：%', i;
+else
+    raise notice 'i的值大于等于5为：%', i;
+end if;
+
+end
+$$;
+
+
+

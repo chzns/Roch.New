@@ -1,0 +1,6 @@
+﻿-- Table: public.ModuleName_Prefix_Table
+--DROP TABLE IF EXISTS public."$FirstRow$";
+CREATE TABLE IF NOT EXISTS public."$FirstRow$"
+(
+     $TrueTableModel$
+)

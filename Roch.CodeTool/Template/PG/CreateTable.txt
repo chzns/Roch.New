@@ -1,0 +1,26 @@
+﻿-- Table: public.ModuleName_Prefix_Table
+--DROP TABLE IF EXISTS public."$ModuleName$_$Prefix$_$Detail$";
+CREATE TABLE IF NOT EXISTS public."$ModuleName$_$Prefix$_$Detail$"
+(
+    "$Detail$ID" uuid NOT NULL,
+     $For_Col_Start$ character varying(255) COLLATE pg_catalog."default",$For_Col_End$
+    "Creator" character varying(200) COLLATE pg_catalog."default",
+   "CreateID" integer,
+    "CreateDate" timestamp(6) without time zone,
+   "Modifier" character varying(200) COLLATE pg_catalog."default",
+   "ModifyID" integer,
+    "ModifyDate" timestamp(6) without time zone,
+    CONSTRAINT "PK_$ModuleName$_$Prefix$_$Detail$" PRIMARY KEY ("$Detail$ID")
+)
+TABLESPACE pg_default;
+ALTER TABLE IF EXISTS public."$ModuleName$_$Prefix$_$Detail$"
+    OWNER to postgres;
+$IsIInsertTestDataStart$
+INSERT INTO public."$ModuleName$_$Prefix$_$Detail$"("$Detail$ID",$PGInsertColums$)VALUES('a1de3cdb-8568-44c6-8b1d-c7e7f144e8fd',$PGInsertColumsData1$);
+INSERT INTO public."$ModuleName$_$Prefix$_$Detail$"("$Detail$ID",$PGInsertColums$)VALUES('a2de3cdb-8568-44c6-8b1d-c7e7f144e8fd',$PGInsertColumsData2$);
+INSERT INTO public."$ModuleName$_$Prefix$_$Detail$"("$Detail$ID",$PGInsertColums$)VALUES('a3de3cdb-8568-44c6-8b1d-c7e7f144e8fd',$PGInsertColumsData3$);
+INSERT INTO public."$ModuleName$_$Prefix$_$Detail$"("$Detail$ID",$PGInsertColums$)VALUES('a4de4cdb-8568-44c6-8b1d-c7e7f144e8fd',$PGInsertColumsData4$);
+INSERT INTO public."$ModuleName$_$Prefix$_$Detail$"("$Detail$ID",$PGInsertColums$)VALUES('a5de4cdb-8568-44c6-8b1d-c7e7f144e8fd',$PGInsertColumsData5$);
+$IsIInsertTestDataEnd$
+SELECT "$Detail$ID",$PGInsertColums$ FROM public."$ModuleName$_$Prefix$_$Detail$";
+SELECT "$Detail$ID",$PGInsertColums$ ,  "Creator","CreateID", "CreateDate" ,  "Modifier",  "ModifyID"  , "ModifyDate"  FROM public."$ModuleName$_$Prefix$_$Detail$";

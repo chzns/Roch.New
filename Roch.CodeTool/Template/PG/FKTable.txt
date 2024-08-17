@@ -1,0 +1,11 @@
+﻿
+ALTER TABLE public."$ModuleName$_$Prefix$_$Detail$" ADD COLUMN "$FKID$" uuid NOT NULL;
+-- ALTER TABLE IF EXISTS public."$ModuleName$_$Prefix$_$Detail$" DROP CONSTRAINT IF EXISTS "FK_$ModuleName$_$Prefix$_$Detail$_$FKID$";
+ALTER TABLE IF EXISTS public."$ModuleName$_$Prefix$_$Detail$"
+    ADD CONSTRAINT "FK_$ModuleName$_$Prefix$_$Detail$_$FKID$" FOREIGN KEY ("$FKID$")
+    REFERENCES public."$FKTable$" ("$FKID$") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+

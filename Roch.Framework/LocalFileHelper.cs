@@ -668,6 +668,14 @@ namespace Roch.Framework
             fi.MoveTo(Path.Combine(new_path));
             File.Delete(old_path);
         }
+
+        public static string GetDesktopPath()
+        {
+            // Get the path to the current user's desktop folder
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            return desktopPath;
+        }
     }
 
  

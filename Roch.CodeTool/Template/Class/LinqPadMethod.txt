@@ -1,0 +1,10 @@
+﻿	try
+	{
+		string vueformate = LocalFileHelper.FileToString(@"#path#\mb.txt");
+		Extention.GetTemplateString(vueformate, list).Dump();
+
+	}
+	catch(Exception ex)
+	{
+		ex.Dump();
+	}

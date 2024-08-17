@@ -35,6 +35,23 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Csv;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
+using Microsoft.CSharp;
+using System.Runtime.Serialization;
+using Microsoft.CodeAnalysis;
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Net.Http;
+using System.Net;
+//using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+//using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace Roch.CodeTool
 {
@@ -50,6 +67,7 @@ namespace Roch.CodeTool
         public static string basePath = AppDomain.CurrentDomain.BaseDirectory;
         //public static string sqlitePath = AppDomain.CurrentDomain.BaseDirectory + @"db.db";
         public static string sqlitePath = ConfigurationManager.AppSettings["SqlLitePath"];
+
         public SQLiteHelper sqlLiteHelper = null;
 
         public CodeMain()
@@ -105,7 +123,7 @@ namespace Roch.CodeTool
 
         }
 
-        private void SaveSQLLiteMethod()
+        private void SaveSQLLiteMethod() //创建数据库
         {
             if (!File.Exists(sqlitePath))
             {
@@ -185,7 +203,6 @@ namespace Roch.CodeTool
                 {
                     List<Settings> list = dt.ToList<Settings>();
                     MessageBox.Show(list.FirstOrDefault()?.Text.ToString());
-
                     //MessageBox.Show(dt[0][0], "提示");
                 }
             }
@@ -213,6 +230,10 @@ namespace Roch.CodeTool
             this.groupBox5.Text = string.Empty;
             this.groupBox6.Text = string.Empty;
             this.groupBox7.Text = string.Empty;
+
+            //加载模板
+
+            DisplayTxtFilesInListView(basePath, this.listView1);
         }
 
         private void tsmSave_Click(object sender, EventArgs e)
@@ -525,6 +546,8 @@ namespace Roch.CodeTool
             return list;
         }
 
+
+
         public List<string> getListAppline()
         {
             string str = this.rich_sb_old.Text.ToString().TrimStart().Trim();
@@ -609,10 +632,86 @@ namespace Roch.CodeTool
                 }
                 list.Add(d);
             }
-            this.rich_sb_new.Text = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+            this.rich_sb_new.Text = FormatJson(Newtonsoft.Json.JsonConvert.SerializeObject(list));
 
             //String str = JSONObject.toJSONString(strList);
         }
+
+
+
+        private string FormatJson(string jsonString)
+        {
+            try
+            {
+                // Parse the input JSON string into a JsonDocument
+                using (JsonDocument document = JsonDocument.Parse(jsonString))
+                {
+                    // Serialize the JsonDocument back to a formatted JSON string
+                    return JsonSerializer.Serialize(document.RootElement, new JsonSerializerOptions
+                    {
+                        WriteIndented = true // Setting WriteIndented to true produces a formatted JSON
+                    });
+                }
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                // If the input is not a valid JSON, return the original string
+                return jsonString;
+            }
+        }
+
+        private static void DisplayTxtFilesInListView1(string folderPath, ListView listView)
+        {
+            // 获取文件夹中的所有txt文件
+            string[] txtFiles = Directory.GetFiles(folderPath, "*.txt");
+
+            foreach (string txtFile in txtFiles)
+            {
+                // 获取文件名和文件大小
+                string fileName = Path.GetFileName(txtFile);
+                long fileSize = new FileInfo(txtFile).Length;
+
+                // 添加到ListView中
+                ListViewItem item = new ListViewItem(fileName);
+                item.SubItems.Add(fileSize.ToString() + " 字节");
+                listView.Items.Add(item);
+
+                //// 读取txt文件的内容并显示在RichTextBox中
+                //string fileContent = File.ReadAllText(txtFile);
+                //richTextBox.AppendText($"文件名：{fileName}\n\n{fileContent}\n\n");
+            }
+        }
+
+        private static void DisplayTxtFilesInListView(string folderPath, ListView listView)
+        {
+            // 获取文件夹中的所有txt文件
+            string[] txtFiles = Directory.GetFiles(folderPath, "*.txt");
+
+            foreach (string txtFile in txtFiles)
+            {
+                // 获取文件名和文件大小
+                string fileName = Path.GetFileName(txtFile);
+                long fileSize = new FileInfo(txtFile).Length;
+
+                // 添加到ListView中
+                ListViewItem item = new ListViewItem(new[] { fileName, fileSize.ToString() + " 字节" });
+                listView.Items.Add(item);
+            }
+        }
+
+
+
+        // 示例用法
+        //public static void Main(string[] args)
+        //{
+        //    string jsonString = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\"}";
+
+        //    // 调用方法并输出结果
+        //    string formattedJson = Example.FormatJson(jsonString);
+        //    Console.WriteLine(formattedJson);
+        //}
+
+
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -1002,7 +1101,7 @@ namespace Roch.CodeTool
             {
                 foreach (var item in vm.FirstRow)
                 {
-                    tempLine = tempLine + $"间隔 $Foreach.{item.ToString()}$";
+                    tempLine = tempLine + $" 间隔  $Foreach.{item.ToString()}$ ";
                 }
 
             }
@@ -1011,28 +1110,33 @@ namespace Roch.CodeTool
             sb.AppendLine($"void Main()");
             sb.AppendLine("{");
             sb.AppendLine($"   List<Model> list =new List<Model>();");
-            //sb.AppendLine($"   list.Add(new Model{ Item1 =\"1\",Item2=\"1\"});");
             var str = GetModel(vm);
             sb.AppendLine(str);
             sb.AppendLine($"list.Dump();");
-            sb.AppendLine($"Extention.GetTemplateString(@\"{tempLine}\",list).Dump();");
+            sb.AppendLine("var template =" + @"""" + tempLine + @"""" + ";");
+            sb.AppendLine("Extention.CheckAndCreateTemplateFileOnDesktop(template);");
+            sb.AppendLine("Extention.GetTemplateString(template,list).Dump();");
+
+            var localmethod = LocalFileHelper.FileToString(vm.class_LinqMethod);
+            localmethod = localmethod.Replace("#path#", LocalFileHelper.GetDesktopPath());
+            sb.AppendLine(localmethod);
             sb.AppendLine("}");
+
+
+            #region Model
+            sb.AppendLine("//分割线 ，下面为静态方法");
             sb.AppendLine($"public class Model");
             sb.AppendLine("{");
-
-            if (vm.FirstRow != null)
+            foreach (var item in vm.FirstRow)
             {
-                foreach (var item in vm.FirstRow)
-                {
-                    sb.AppendLine("  public string " + item.ToString().Trim() + " {get;set;}");
-                }
-                sb.AppendLine("}");
+                sb.AppendLine("  public string " + item.ToString().Trim() + " {get;set;}");
             }
+            sb.AppendLine("}");
+            #endregion
 
             sb.AppendLine(ExtentionClass(vm));
-
+            sb.AppendLine(GetLocalFileHelper(vm));
             return sb.ToString().TrimEnd(',');
-
 
         }
 
@@ -1049,14 +1153,14 @@ namespace Roch.CodeTool
                 {
                     try
                     {
-                        sb.Append(FirstModel[j].ToString() + "=" + "\"" + DataRow[i][j].ToString() + "\"" + ",");
+                        sb.Append(FirstModel[j].ToString() + "=" + "\"" + DataRow[i][j].ToString().Trim() + "\"" + ",");
                     }
                     catch (Exception)
                     {
 
                         sb.Append(FirstModel[j].ToString() + "=" + "\"" + string.Empty + "\"" + ",");
                     }
-                  
+
                 }
                 result.AppendLine("list.Add(new Model{ " + sb.ToString().TrimEnd(',') + " });");
                 result.AppendLine("");
@@ -1072,9 +1176,32 @@ namespace Roch.CodeTool
         private void button9_Click(object sender, EventArgs e)
         {
             var vm = getRichTextBoxToVM();
-            this.rich_sb_new.Text = Generate_List(vm);
+            this.rich_sb_new.Text = FormatCSharpCode(Generate_List(vm));
 
         }
+
+        public string FormatCSharpCode(string code)
+        {
+            using (var provider = new CSharpCodeProvider())
+            {
+                var options = new CodeGeneratorOptions
+                {
+                    BracingStyle = "C", // Use "C" style bracing (Allman style)
+                    IndentString = "    ", // Use four spaces for indentation
+                };
+
+                using (var sw = new StringWriter())
+                {
+                    var codeSnippet = new CodeSnippetCompileUnit(code);
+                    provider.GenerateCodeFromCompileUnit(codeSnippet, sw, options);
+                    return sw.ToString();
+                }
+            }
+
+
+        }
+
+
 
         public RichTextBoxModel getRichTextBoxToVM()
         {
@@ -1083,6 +1210,7 @@ namespace Roch.CodeTool
             List<string> NoFirstList = new List<string>();
             var list = richboxToList();
             var fiterList = getListString();
+            vm.OldRichText = this.rich_sb_old.Text;
             for (int i = 0; i < list.Count; i++)
             {
                 var Item = changeStrToList(list[i]);
@@ -1105,6 +1233,8 @@ namespace Roch.CodeTool
                 }
             }
 
+
+            //基础数据设定
             vm.FiterList = fiterList;
             vm.AllColumns = list;
             vm.Detail = this.txtDetail.Text.Trim().TrimStart();
@@ -1114,10 +1244,28 @@ namespace Roch.CodeTool
             vm.FKTable = this.txtChildTable.Text.Trim().TrimStart();
             vm.OtherRows = datalist;
             vm.NoFirstList = NoFirstList;
+            string FirstRowStr_1 = string.Join(",", vm.FirstRow);
+            string FirstRowStr_2 = "\"" + string.Join("\",\"", vm.FirstRow) + "\"";
+            vm.FirstRowStr_1 = FirstRowStr_1;
+            vm.FirstRowStr_2 = FirstRowStr_2;
+            int charCount = vm.FirstRow.Count;
+            string PGAsingmentChar = string.Empty;
+            for (int i = 0; i < charCount; i++)
+            {
+                PGAsingmentChar = PGAsingmentChar + "%,";
+            }
+            PGAsingmentChar = PGAsingmentChar.TrimEnd(',');
+            vm.PGAsingmentChar = PGAsingmentChar;
+
+
             // 初始话模板路径
             vm.input_template_createtable = System.Environment.CurrentDirectory.ToString() + @"\Template\PG\CreateTable.txt";
             vm.input_template_fktable = System.Environment.CurrentDirectory.ToString() + @"\Template\PG\FKTable.txt";
             vm.input_template_truetable = System.Environment.CurrentDirectory.ToString() + @"\Template\PG\TrueTable.txt";
+            vm.input_template_pgcreatetable = System.Environment.CurrentDirectory.ToString() + @"\Template\PG\PGCreateTable.txt";
+            vm.input_template_pgtemptable = System.Environment.CurrentDirectory.ToString() + @"\Template\PG\PGTempTable.txt";
+            vm.class_LocalFileHelper = System.Environment.CurrentDirectory.ToString() + @"\Template\Class\LocalFileHelper.txt";
+            vm.class_LinqMethod = System.Environment.CurrentDirectory.ToString() + @"\Template\Class\LinqPadMethod.txt";
             vm.IsIInsertTestData = this.IsIInsertTestData.Checked;
             this.richTemplate.Text = LocalFileHelper.FileToString(vm.input_template_createtable);
             this.richFK.Text = LocalFileHelper.FileToString(vm.input_template_fktable);
@@ -1159,6 +1307,73 @@ namespace Roch.CodeTool
             vm.PGInsertColumsData3 = sb_pgdata3.ToString();
             vm.PGInsertColumsData4 = sb_pgdata4.ToString();
             vm.PGInsertColumsData5 = sb_pgdata5.ToString();
+
+            StringBuilder sb_columns = new StringBuilder();
+            StringBuilder sb_leftColumns = new StringBuilder();
+
+            foreach (var item in vm.FirstRow)
+            {
+                sb_columns.Append($@"""{item.ToString().Trim()}""  varchar(200),");
+            }
+
+            vm.PGSingleColumns = sb_columns.ToString().TrimEnd(',');
+            foreach (var item in vm.FirstRow)
+            {
+                sb_leftColumns.Append($@"""{item.ToString()}"",");
+            }
+            vm.PGSingleLeftColumns = sb_leftColumns.ToString();
+
+
+
+            StringBuilder PGSingleInsertData = new StringBuilder();
+            foreach (var item in vm.OtherRows)
+            {
+                string Rows = "'" + string.Join("','", item) + "'";
+                PGSingleInsertData.AppendLine($@" insert into t_temp({vm.PGSingleLeftColumns.TrimEnd(',')}) values({Rows});");
+            }
+            vm.PGSingleInsertData = PGSingleInsertData.ToString();
+
+
+            vm.RaiseNotice = "";
+            string tempRaiseNotice_1 = string.Empty;
+            string tempRaiseNotice_2 = string.Empty;
+            for (int i = 0; i < vm.FirstRow.Count; i++)
+            {
+                tempRaiseNotice_1 = tempRaiseNotice_1 + "%,";
+                tempRaiseNotice_2 = tempRaiseNotice_2 + "emp." + "\"" + vm.FirstRow[i].ToString() + "\"" + ",";
+
+            }
+            tempRaiseNotice_1 = tempRaiseNotice_1.TrimEnd(',');
+            tempRaiseNotice_2 = tempRaiseNotice_2.TrimEnd(',');
+            vm.RaiseNotice = " raise notice " + "\'" + tempRaiseNotice_1 + "\'" + "," + tempRaiseNotice_2 + ";";
+
+            //赋值
+            StringBuilder PGAsignment = new StringBuilder();
+            for (int i = 0; i < vm.FirstRow.Count; i++)
+            {
+                PGAsignment.AppendLine($"DECLARE {vm.FirstRow[i].ToString()} varchar(20)='';");
+            }
+            PGAsignment.AppendLine("BEGIN");
+            PGAsignment.AppendLine($"SELECT  {vm.FirstRowStr_2} from t_temp limit 1");
+            PGAsignment.AppendLine($"INTO {vm.FirstRowStr_1};");
+            PGAsignment.AppendLine($"raise notice '{vm.PGAsingmentChar}',{vm.FirstRowStr_1};");
+            PGAsignment.AppendLine("end");
+            vm.PGAsignment = PGAsignment.ToString();
+
+
+            List<string> LowerFiterList = new List<string>();
+            for (int i = 0; i < vm.FiterList.Count; i++)
+            {
+                LowerFiterList.Add(Common.FirstCharToLower(vm.FiterList[i].TrimStart().TrimEnd()));
+            }
+            vm.LowerFiterList = LowerFiterList;
+
+            //for (int i = 0; i < vm.FiterList.Count; i++)
+            //{
+
+            //}
+
+
             return vm;
         }
 
@@ -1188,6 +1403,9 @@ namespace Roch.CodeTool
             list.Add(this.txtReplace4);
             list.Add(this.txtReplace5);
             list.Add(this.txtReplace6);
+            list.Add(this.txtBegin);
+            list.Add(this.txtEnd);
+            list.Add(this.txtRegex);
             return list;
         }
 
@@ -1278,12 +1496,19 @@ namespace Roch.CodeTool
             sb.AppendLine("}");
 
 
+            //方法三
+
+            sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\FileCreate.txt", Encoding.UTF8));
+
+
             sb.AppendLine("}");
-
-
-
             return sb.ToString();
 
+        }
+
+        public static string GetLocalFileHelper(RichTextBoxModel vm)
+        {
+            return LocalFileHelper.FileToString(vm.class_LocalFileHelper, Encoding.UTF8);
         }
 
         private void btnSQLIN_Click(object sender, EventArgs e)
@@ -1310,10 +1535,14 @@ namespace Roch.CodeTool
         private void SqlLiteSave(object sender, EventArgs e)
         {
             SaveSQLLiteMethod();
+            SaveRichTextBoxToBinaryFile(this.rich_sb_new, basePath + Guid.NewGuid().ToString() + ".txt");
+            //SaveContentFromRichTextBox(this.rich_sb_new);
         }
 
         private void SqlLiteGet(object sender, EventArgs e)
         {
+
+            LoadRichTextBoxFromBinaryFile(this.richTextBox1, basePath + "823053d3-7db2-4229-a5ac-bd8ce15211b6.txt");
             GetSQLLiteMethod();
         }
 
@@ -1390,9 +1619,16 @@ namespace Roch.CodeTool
                 //Template_File = Template_File + LocalFileHelper.FileToString(constRichTextBoxModel.input_template_truetable, Encoding.UTF8);
 
             }
+            if (Type == ConstTemplateType.PGTempTable)
+            {
+                Template_File = LocalFileHelper.FileToString(constRichTextBoxModel.input_template_pgcreatetable, Encoding.UTF8);
+
+            }
+
 
 
             //2.设置通用替换  单个字符替换
+
             Template_File = Template_File.Replace("$Prefix$", constRichTextBoxModel.Prefix);
             Template_File = Template_File.Replace("$ModuleName$", constRichTextBoxModel.ModuleName);
             Template_File = Template_File.Replace("$Detail$", constRichTextBoxModel.Detail);
@@ -1400,6 +1636,11 @@ namespace Roch.CodeTool
             Template_File = Template_File.Replace("$FKTable$", constRichTextBoxModel.FKTable);
             Template_File = Template_File.Replace("$FKID$", constRichTextBoxModel.FKID);
             Template_File = Template_File.Replace("$FirstRow$", constRichTextBoxModel.FirstRow[0]);
+            Template_File = Template_File.Replace("$temp$", "t_temp");
+            Template_File = Template_File.Replace("$PGSingleColumns$", constRichTextBoxModel.PGSingleColumns);
+            Template_File = Template_File.Replace("$PGSingleInsertData$", constRichTextBoxModel.PGSingleInsertData);
+            Template_File = Template_File.Replace("$RaiseNotice$", constRichTextBoxModel.RaiseNotice);
+            Template_File = Template_File.Replace("$PGAsignment$", constRichTextBoxModel.PGAsignment);
 
             //3.自定义方法 Testing Data
             if (Type == ConstTemplateType.CreateTable || Type == ConstTemplateType.FKTable)
@@ -1433,6 +1674,7 @@ namespace Roch.CodeTool
                 Template_File = Template_File.Replace("$PGInsertColumsData3$", constRichTextBoxModel.PGInsertColumsData3);
                 Template_File = Template_File.Replace("$PGInsertColumsData4$", constRichTextBoxModel.PGInsertColumsData4);
                 Template_File = Template_File.Replace("$PGInsertColumsData5$", constRichTextBoxModel.PGInsertColumsData5);
+
 
             }
 
@@ -1474,6 +1716,9 @@ namespace Roch.CodeTool
 
 
         }
+
+
+
 
         private void ReplaceView_Click(object sender, EventArgs e)
         {
@@ -1693,8 +1938,8 @@ namespace Roch.CodeTool
 
         private void button17_Click(object sender, EventArgs e)
         {
-            this.rich_sb_new.Text= this.rich_sb_new.Text.Replace("\"", "\"\"");
-            this.rich_sb_old.Text=this.rich_sb_old.Text.Replace("\"", "\"\"");
+            this.rich_sb_new.Text = this.rich_sb_new.Text.Replace("\"", "\"\"");
+            this.rich_sb_old.Text = this.rich_sb_old.Text.Replace("\"", "\"\"");
 
         }
 
@@ -1704,81 +1949,676 @@ namespace Roch.CodeTool
             this.rich_sb_old.Text = this.rich_sb_old.Text.Replace("\"", "");
         }
 
-        ///字符串转为对象
-        //public List<Object> GetListFromString(string str)
+        private void duplicate_Click(object sender, EventArgs e)
+        {
+            constRichTextBoxModel = this.getRichTextBoxToVM(); //重新加载
+            constRichTextBoxModel.AllColumns = constRichTextBoxModel.AllColumns.Select(m => m.ToString()).Distinct().ToList<string>();
+            this.rich_sb_old.Text = string.Join("\n", constRichTextBoxModel.AllColumns);
+
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            //StringBuilder sb = new StringBuilder();
+            //var list = richboxToList();
+            //this.rich_sb_new.Text = replace_method9(list);
+            constRichTextBoxModel = this.getRichTextBoxToVM(); //重新加载
+            ReplaceALL(ConstTemplateType.PGTempTable);
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            constRichTextBoxModel = this.getRichTextBoxToVM(); //重新加载
+            ReplaceALL(ConstTemplateType.PGTempTableSQL);
+        }
+
+
+        public string replace_JasonStr(string old_str)
+        {
+            string re = old_str;
+            re = re.Replace("required:", $"\"required\":");
+            re = re.Replace("bind:", $"\"bind\":");
+            re = re.Replace("key:", $"\"key\":");
+            re = re.Replace("data:", $"\"data\":");
+            //re = re.Replace("", $"\"data\":");
+            re = re.Replace("\r\n", string.Empty);
+            re = re.Replace("\r", string.Empty);
+            return re;
+        }
+
+        private void ChildrenTokens(JToken jObject, List<JToken> jTokens)
+        {
+            if (jTokens == null) throw new Exception("接收对象不能为空");
+
+            var childrens = jObject.Children();
+            foreach (var item in childrens)
+            {
+                switch (item.Type)
+                {
+                    case JTokenType.Object:
+                        ChildrenTokens(item, jTokens);
+                        break;
+                    case JTokenType.Property:
+                        jTokens.Add(item);
+                        break;
+                    default:
+                        throw new Exception($"暂未适配该类型");
+                }
+            }
+        }
+
+
+
+        private void button20_Click_1(object sender, EventArgs e)
+        {
+            constRichTextBoxModel = this.getRichTextBoxToVM(); //重新加载
+            this.rich_sb_new.Text = replace_JasonStr(constRichTextBoxModel.OldRichText);
+            //var m = JsonConvert.DeserializeObject<object>(this.rich_sb_new.Text).chi;
+
+            var list = JsonConvert.DeserializeObject(this.rich_sb_new.Text) as JArray;
+            var listdata = new List<JToken>();
+            List<VOLModel> reuslt = new List<VOLModel>();
+            foreach (var item in list)
+            {
+
+                var m = JsonConvert.DeserializeObject<List<VOLModel>>(item.ToString());
+                reuslt.AddRange(m);
+
+
+            }
+            this.dataGridView1.DataSource = reuslt;
+            //var myExport = new CsvExport();
+            var myExport = new CsvExport(columnSeparator: ",", includeColumnSeparatorDefinitionPreamble: true, includeHeaderRow: true);
+            myExport.AddRows(reuslt);
+            string csv = myExport.Export();
+
+            this.rich_sb_new.Text = csv;
+
+
+            //this.rich_sb_new.Text = 
+
+            ///字符串转为对象
+            //public List<Object> GetListFromString(string str)
+            //{
+            //    try 
+            //    {
+            //        byte[] array = Encoding.UTF8.GetBytes(str);
+            //        MemoryStream stream = new MemoryStream(array);
+            //        StreamReader reader = new StreamReader(stream);
+
+
+            //        List<Object> newList = new List<Object>();
+            //        Object newModel;
+            //        int line = 0;
+            //        string lineStr;
+            //        while ((lineStr = reader.ReadLine()) != null)
+            //        {
+            //            line++;
+            //            if (line == 1) continue; //跳过第一行                    
+            //            string[] fields = lineStr.Split(new char[] { '|' });
+            //            newModel = new NewModel();
+            //            newModel.CustomerName = fields[0].Trim();
+            //            newModel.IDNo = fields[1].Trim();
+            //            newModel.Address = fields[2].Trim();
+            //            newList.Add(newModel);
+            //        }
+            //        return newList;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("字符串解析异常：throw:" + ex.Message.ToString());
+            //        throw ex;
+            //    }
+            //}
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(Common.FirstCharToLower("ABC"));
+            var vm = getRichTextBoxToVM();
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in vm.LowerFiterList)
+            {
+                var temp = ReplaceCharTwo(item.ToString());
+                temp = temp.TrimEnd().TrimStart();
+                temp = temp.Replace("\r\n", string.Empty);
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    sb.AppendLine(temp);
+                }
+            }
+            this.rich_sb_new.Text = sb.ToString();
+
+        }
+
+        private void btnSubString_Click(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = ExtractTextBetweenStrings(this.rich_sb_old.Text, this.txtBegin.Text, this.txtEnd.Text);
+        }
+
+        public static string ExtractTextData_bak(string inputData, string startSymbol, string endSymbol)
+        {
+            string pattern = $"{startSymbol}\\s*(.*?)\\s*{endSymbol}";
+            MatchCollection matches = Regex.Matches(inputData, pattern, RegexOptions.Multiline);
+            string outputData = "";
+
+            foreach (Match match in matches)
+            {
+                if (match.Groups.Count > 1)
+                {
+                    string data = match.Groups[1].Value.Trim();
+                    outputData += data + "\n";
+                }
+            }
+
+            return outputData;
+        }
+
+        public string ExtractTextBetweenStrings(string input, string startString, string endString)
+        {
+            StringBuilder resultBuilder = new StringBuilder();
+
+            int startIndex = 0;
+            int endIndex = 0;
+
+            while (true)
+            {
+                // Find the starting and ending positions of the substring
+                startIndex = input.IndexOf(startString, endIndex);
+                endIndex = input.IndexOf(endString, startIndex + startString.Length);
+
+                if (startIndex == -1 || endIndex == -1)
+                {
+                    break; // Stop if either startString or endString is not found
+                }
+
+                // Extract the substring between startString and endString and add it to the result builder
+                string extractedText = input.Substring(startIndex + startString.Length, endIndex - startIndex - startString.Length);
+                resultBuilder.AppendLine(extractedText);
+            }
+
+            return resultBuilder.ToString();
+        }
+
+        public List<string> ExtractTextBetweenStrings2(string input, string startString, string endString)
+        {
+            List<string> results = new List<string>();
+
+            int startIndex = 0;
+            int endIndex = 0;
+
+            while (true)
+            {
+                // Find the starting and ending positions of the substring
+                startIndex = input.IndexOf(startString, endIndex);
+                endIndex = input.IndexOf(endString, startIndex + startString.Length);
+
+                if (startIndex == -1 || endIndex == -1)
+                {
+                    break; // Stop if either startString or endString is not found
+                }
+
+                // Extract the substring between startString and endString and add it to the results
+                string extractedText = input.Substring(startIndex + startString.Length, endIndex - startIndex - startString.Length);
+                results.Add(extractedText);
+            }
+
+            return results;
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = ConvertToFormattedString(ExtractDataUsingRegex(this.rich_sb_old.Text, this.txtRegex.Text));
+        }
+        public static string ConvertToFormattedString(List<List<string>> data)
+        {
+            string formattedString = "";
+
+            if (data != null)
+            {
+                foreach (var row in data)
+                {
+                    formattedString += string.Join("\t", row) + Environment.NewLine;
+                }
+
+            }
+            return formattedString;
+        }
+
+        public static List<List<string>> ExtractDataUsingRegex(string inputData, string regexPattern)
+        {
+            List<List<string>> resultList = new List<List<string>>();
+
+            try
+            {
+                MatchCollection matches = Regex.Matches(inputData, regexPattern, RegexOptions.Multiline);
+
+                foreach (Match match in matches)
+                {
+                    List<string> rowValues = new List<string>();
+                    for (int i = 1; i < match.Groups.Count; i++)
+                    {
+                        string value = match.Groups[i].Value.Trim();
+                        rowValues.Add(value);
+                    }
+                    resultList.Add(rowValues);
+                }
+
+            }
+            catch
+            {
+
+                resultList = null;
+            }
+
+
+            return resultList;
+        }
+
+        private void txtRegex_TextChanged(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = ConvertToFormattedString(ExtractDataUsingRegex(this.rich_sb_old.Text, this.txtRegex.Text));
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = RemoveLeadingSpaces(this.rich_sb_new.Text);
+            this.rich_sb_old.Text = RemoveLeadingSpaces(this.rich_sb_old.Text);
+        }
+
+        public string RemoveLeadingSpaces(string input)
+        {
+            // Split the input into individual lines
+            string[] lines = input.Trim().Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Remove leading spaces from all lines
+            StringBuilder resultBuilder = new StringBuilder();
+            foreach (var line in lines)
+            {
+                string trimmedLine = line.TrimStart();
+                resultBuilder.AppendLine(trimmedLine);
+            }
+
+            return resultBuilder.ToString();
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = GetProcessedText(this.rich_sb_old.Text);
+        }
+
+        //public string GetProcessedText(string inputStr, char separator)
         //{
-        //    try
-        //    {
-        //        byte[] array = Encoding.UTF8.GetBytes(str);
-        //        MemoryStream stream = new MemoryStream(array);
-        //        StreamReader reader = new StreamReader(stream);
+        //    string[] words = inputStr.Split(new char[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+        //    StringBuilder stringBuilder = new StringBuilder();
 
-
-        //        List<Object> newList = new List<Object>();
-        //        Object newModel;
-        //        int line = 0;
-        //        string lineStr;
-        //        while ((lineStr = reader.ReadLine()) != null)
-        //        {
-        //            line++;
-        //            if (line == 1) continue; //跳过第一行                    
-        //            string[] fields = lineStr.Split(new char[] { '|' });
-        //            newModel = new NewModel();
-        //            newModel.CustomerName = fields[0].Trim();
-        //            newModel.IDNo = fields[1].Trim();
-        //            newModel.Address = fields[2].Trim();
-        //            newList.Add(newModel);
-        //        }
-        //        return newList;
-        //    }
-        //    catch (Exception ex)
+        //    foreach (string word in words)
         //    {
-        //        MessageBox.Show("字符串解析异常：throw:" + ex.Message.ToString());
-        //        throw ex;
+        //        stringBuilder.AppendLine(word);
         //    }
+
+        //    return stringBuilder.ToString();
         //}
-    }
 
-    public class RichTextBoxModel
-    {
+        public string GetProcessedText(string inputStr)
+        {
+            string separator = "\t";
+            string separator1 = " ";
 
-        public List<string> FirstRow { get; set; }
+            string newLine = Environment.NewLine;
+            string[] lines = inputStr.Split(newLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-        public List<string> FiterList { get; set; }
-        public List<List<string>> OtherRows { get; set; }
-        public List<string> AllColumns { get; set; }
+            for (int i = 0; i < lines.Length; i++)
+            {
 
-        public List<string> NoFirstList { get; set; }
+                string[] columns = lines[i].Split(separator: new string[] { separator, separator1 }, options: StringSplitOptions.None);
+                lines[i] = string.Join(newLine, columns);
+            }
+            string processedText = string.Join(newLine, lines);
+            return processedText;
+        }
 
-        public string Prefix { get; set; }
-        public string Detail { get; set; }
-        public string ModuleName { get; set; }
+        private void btnSplit_Click(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = FormatStrings(this.rich_sb_old.Text, this.txtSplit.Text);
+        }
 
-        public string input_template_createtable { get; set; }
 
-        public string input_template_fktable { get; set; }
+        public string FormatStrings(string input, string split)
+        {
+            //string[] strings = input.Split(this.txtSplit.Text);
 
-        public string input_template_truetable { get; set; }
+            string[] strings = SplitUsingCustomDelimiter(input, split);
 
-        public string PGInsertColums { get; set; }
+            StringBuilder result = new StringBuilder();
+            foreach (string str in strings)
+            {
+                result.AppendLine(str);
+            }
 
-        public string PGInsertColumsData1 { get; set; }
-        public string PGInsertColumsData2 { get; set; }
-        public string PGInsertColumsData3 { get; set; }
-        public string PGInsertColumsData4 { get; set; }
-        public string PGInsertColumsData5 { get; set; }
-        public string FKTable { get; set; }
-        public string FKID { get; set; }
+            return result.ToString();
+        }
 
-        public bool IsIInsertTestData { get; set; }
+        static string[] SplitUsingCustomDelimiter(string input, string delimiter)
+        {
+            return input.Split(new[] { delimiter }, StringSplitOptions.None);
+        }
 
-    }
+        private void SaveContentFromRichTextBox(RichTextBox richTextBox)
+        {
+            // 获取富文本的RTF内容
+            string rtfContent = richTextBox.Rtf;
 
-    public class Settings
-    {
-        public string Name { get; set; }
-        public string Text { get; set; }
-        public string CreateDate { get; set; }
-    }
+            // 使用正则表达式将文本和图片分开
+            string textPattern = @"\\par(.*?)\\par";
+            string imagePattern = @"{\\pict.*?}";
+
+            MatchCollection textMatches = Regex.Matches(rtfContent, textPattern, RegexOptions.Singleline);
+            MatchCollection imageMatches = Regex.Matches(rtfContent, imagePattern, RegexOptions.Singleline);
+
+            // 创建一个文件来保存文本内容
+            string textFileName = $"text_content_{DateTime.Now:yyyyMMddHHmmss}.txt";
+            using (StreamWriter textWriter = new StreamWriter(textFileName))
+            {
+                foreach (Match textMatch in textMatches)
+                {
+                    string text = textMatch.Groups[1].Value.Trim();
+                    textWriter.WriteLine(text);
+                }
+            }
+
+            // 保存图片
+            int imageIndex = 0;
+            foreach (Match imageMatch in imageMatches)
+            {
+                string imageData = imageMatch.Value;
+                byte[] imageBytes = Convert.FromBase64String(imageData.TrimStart('{', '\\', 'p', 'i', 'c', 't').TrimEnd('}'));
+
+                // 创建图片对象
+                using (MemoryStream memoryStream = new MemoryStream(imageBytes))
+                {
+                    Image image = Image.FromStream(memoryStream);
+
+                    // 保存图片为文件
+                    string imageFileName = $"image_{imageIndex++}.png";
+                    image.Save(imageFileName, System.Drawing.Imaging.ImageFormat.Png);
+                    image.Dispose();
+                }
+            }
+
+            // 提示保存完成
+            MessageBox.Show($"文本保存为：{textFileName}\n图片保存完成", "保存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void SaveRichTextBoxToBinaryFile(RichTextBox richTextBox, string filePath)
+        {
+            try
+            {
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
+                {
+                    // 将RichTextBox的RTF内容保存为二进制数据
+                    string rtfContent = richTextBox.Rtf;
+                    byte[] rtfBytes = System.Text.Encoding.UTF8.GetBytes(rtfContent);
+
+                    // 写入二进制文件
+                    binaryWriter.Write(rtfBytes);
+
+                    MessageBox.Show($"RichTextBox内容已成功保存为二进制文件：{filePath}", "保存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"保存二进制文件时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadRichTextBoxFromBinaryFile(RichTextBox richTextBox, string filePath)
+        {
+            try
+            {
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+                using (BinaryReader binaryReader = new BinaryReader(fileStream))
+                {
+                    // 从二进制文件中读取二进制数据
+                    byte[] rtfBytes = binaryReader.ReadBytes((int)fileStream.Length);
+                    string rtfContent = System.Text.Encoding.UTF8.GetString(rtfBytes);
+
+                    // 将RTF内容加载到RichTextBox
+                    richTextBox.Rtf = rtfContent;
+
+                    MessageBox.Show($"成功加载RichTextBox内容从二进制文件：{filePath}", "加载成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"加载二进制文件时出错：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void richTextBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private const string apiKey = "sk-dPo2uNq5n9kt5moY3rwfIDwSMFytBWooCSED4NiDeLj5dsgQ";
+        private const string endpoint = "https://api.chatanywhere.com.cn";
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            string inputText = this.aiInput.Text.Replace("\n", "");
+
+            //using (WebClient client = new WebClient())
+            //{
+            //    client.Headers.Add("Authorization", $"Bearer {apiKey}");
+            //    client.Headers.Add("Content-Type", "application/json");
+
+            //    string json = $"{{\"prompt\": \"{inputText}\", \"max_tokens\": 150}}";
+            //    byte[] postData = Encoding.UTF8.GetBytes(json);
+
+            //    byte[] responseBytes = client.UploadData(endpoint, "POST", postData);
+            //    string responseJson = Encoding.UTF8.GetString(responseBytes);
+
+            //    aiOutput.Text = responseJson;
+            //}
+
+            //using (WebClient client = new WebClient())
+            //{
+            //    client.Headers.Add("Authorization", $"Bearer {apiKey}");
+            //    client.Headers.Add("Content-Type", "application/json");
+
+            //    string json = $"{{\"prompt\": \"{inputText}\", \"max_tokens\": 150}}";
+
+            //    try
+            //    {
+            //        string responseJson = client.UploadString(endpoint, "POST", json);
+            //        aiOutput.Text = responseJson;
+            //    }
+            //    catch (WebException ex)
+            //    {
+            //        if (ex.Response is HttpWebResponse response)
+            //        {
+            //            aiOutput.Text = $"HTTP status code: {response.StatusCode} - {response.StatusDescription}";
+            //        }
+            //        else
+            //        {
+            //            aiOutput.Text = "Error occurred.";
+            //        }
+            //    }
+            //}
+
+            string apiUrl = "https://api.chatanywhere.com.cn/v1/chat/completions";
+            string apiKey = "sk-dPo2uNq5n9kt5moY3rwfIDwSMFytBWooCSED4NiDeLj5dsgQ";
+          
+
+            //string jsonBody = @"{
+            //    ""model"": ""gpt-3.5-turbo"",
+            //    ""messages"": [{""role"": ""user"", ""content"": ""{inputText}""}],
+            //    ""temperature"": 0.7
+            //}";
+
+            // 定义包含 "你好吗" 的变量
+            string userMessage = "你好吗";
+
+            // 使用 String.Format 来动态生成包含用户消息的 JSON 数据
+            string jsonBody = String.Format(@"
+{{
+    ""model"": ""gpt-3.5-turbo"",
+    ""messages"": [{{""role"": ""user"", ""content"": ""{0}""}}],
+    ""temperature"": 0.7
+}}", inputText);
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiUrl);
+            request.Method = "POST";
+            request.Headers.Add("Authorization", $"Bearer {apiKey}");
+            request.ContentType = "application/json";
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                streamWriter.Write(jsonBody);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    string responseJson = streamReader.ReadToEnd();
+                    Console.WriteLine(responseJson);
+                   
+                    JObject json = JObject.Parse(responseJson);
+                    JArray choices = (JArray)json["choices"];
+                    string content = choices[0]["message"]["content"].ToString();
+                    aiOutput.Text = aiOutput.Text+ "\n"+ DateTime.Now+ inputText   + "\n" + content + "\n";
+                }
+            }
+            catch (WebException ex)
+            {
+                HttpWebResponse response = (HttpWebResponse)ex.Response;
+                aiOutput.Text = response.StatusDescription;
+                Console.WriteLine($"HTTP status code: {response.StatusCode} - {response.StatusDescription}");
+            }
+
+
+        }
+
+        
+}
 
 }
+
+    public class RichTextBoxModel
+{
+
+    public List<string> FirstRow { get; set; }
+
+    public List<string> FiterList { get; set; }
+
+    public List<string> LowerFiterList { get; set; }
+    public List<List<string>> OtherRows { get; set; }
+    public List<string> AllColumns { get; set; }
+
+    public List<string> NoFirstList { get; set; }
+
+    public string Prefix { get; set; }
+    public string Detail { get; set; }
+    public string ModuleName { get; set; }
+
+    public string input_template_createtable { get; set; }
+
+    public string input_template_fktable { get; set; }
+
+    public string input_template_truetable { get; set; }
+
+    public string input_template_pgcreatetable { get; set; }
+
+    public string input_template_pgtemptable { get; set; }
+
+    public string class_LocalFileHelper { get; set; }
+
+    public string class_LinqMethod { get; set; }
+
+    public string PGInsertColums { get; set; }
+
+    public string PGInsertColumsData1 { get; set; }
+    public string PGInsertColumsData2 { get; set; }
+    public string PGInsertColumsData3 { get; set; }
+    public string PGInsertColumsData4 { get; set; }
+    public string PGInsertColumsData5 { get; set; }
+    public string FKTable { get; set; }
+    public string FKID { get; set; }
+
+    public bool IsIInsertTestData { get; set; }
+
+    public string PGSingleColumns { get; set; }
+
+    public string PGSingleLeftColumns { get; set; }
+
+    public string PGSingleInsertData { get; set; }
+
+    /// <summary>
+    /// PG 打印数据
+    /// </summary>
+    public string RaiseNotice { get; set; }
+
+    /// <summary>
+    /// PG变量赋值
+    /// </summary>
+    public string PGAsignment { get; set; }
+
+    /// <summary>
+    ///  多个 栏位 用 都逗号隔开 不含引号
+    /// </summary>
+    public string FirstRowStr_1 { get; set; }
+
+    /// <summary>
+    /// 多个 栏位 用 都逗号隔开，含引号
+    /// </summary>
+    public string FirstRowStr_2 { get; set; }
+
+
+    /// <summary>
+    /// PG 变量%个数
+    /// </summary>
+    public string PGAsingmentChar { get; set; }
+
+    public string OldRichText { get; set; }
+    public string NewRichText { get; set; }
+
+
+}
+
+public class Settings
+{
+    public string Name { get; set; }
+    public string Text { get; set; }
+    public string CreateDate { get; set; }
+}
+
+public class VOLModel
+{
+    public string title { get; set; }
+    public string field { get; set; }
+    public string type { get; set; }
+    public string colSize { get; set; }
+    public string required { get; set; }
+
+
+}
+
+
+
+
+//通用方法
+
+
+
+
+

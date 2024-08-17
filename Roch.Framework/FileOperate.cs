@@ -25,7 +25,8 @@ namespace Roch.Framework
             string content = string.Empty;
             FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             StreamReader sr = new StreamReader(fs, Encoding.Default);
-            content = sr.ReadToEnd();
+            content = sr.ReadToEnd().Replace("?", "");
+            //content = sr.ReadToEnd();
             fs.Close();
             sr.Close();
             return content;
@@ -73,7 +74,7 @@ namespace Roch.Framework
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "文本文件(.txt)|*.txt|rtf文件(.rtf)|*.rtf|所有文件(*.*)|*.*";
-            rtb.SaveFile(path, RichTextBoxStreamType.PlainText );
+            rtb.SaveFile(path, RichTextBoxStreamType.PlainText);
         }
         public static void openFile(RichTextBox rtb)//打开文件
         {
@@ -104,7 +105,8 @@ namespace Roch.Framework
                     System.Windows.Forms.RichTextBox rich = (System.Windows.Forms.RichTextBox)c;
                     string fileName = AppDomain.CurrentDomain.BaseDirectory + "/Controls/" + "/" + rich.Name;
                     LocalFileHelper.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Controls/");
-                    rich.SaveFile(fileName, RichTextBoxStreamType.PlainText);
+                    var txt = RichTextBoxStreamType.PlainText;
+                    rich.SaveFile(fileName, txt);
                     //writeFile(fileName, txt.Text);
                 }
                 if (c is System.Windows.Forms.RadioButton)
