@@ -1203,7 +1203,6 @@ namespace Roch.CodeTool
                 }
 
             }
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"void Main()");
             sb.AppendLine("{");
@@ -1218,10 +1217,18 @@ namespace Roch.CodeTool
             var localmethod = LocalFileHelper.FileToString(vm.class_LinqMethod);
             localmethod = localmethod.Replace("#path#", LocalFileHelper.GetDesktopPath());
             sb.AppendLine(localmethod);
+
+            //自定义固定写法
+            sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\MyCodeSet.txt", Encoding.UTF8));
+
+
             sb.AppendLine("}");
+
+            sb.AppendLines(5);
 
 
             #region Model
+            //sb.AppendLinesEx(5);
             sb.AppendLine("//分割线 ，下面为静态方法");
             sb.AppendLine($"public class Model");
             sb.AppendLine("{");
@@ -1237,6 +1244,9 @@ namespace Roch.CodeTool
             return sb.ToString().TrimEnd(',');
 
         }
+
+
+     
 
         public static string GetModel(RichTextBoxModel vm)
         {
@@ -1274,7 +1284,7 @@ namespace Roch.CodeTool
         private void button9_Click(object sender, EventArgs e)
         {
             var vm = getRichTextBoxToVM();
-            this.rich_sb_new.Text = FormatCSharpCode(Generate_List(vm));
+            this.rich_sb_new.Text = new CodeFormatter().FormatCSharpCode(Generate_List(vm));
 
         }
 
@@ -1597,6 +1607,10 @@ namespace Roch.CodeTool
             //方法三
 
             sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\FileCreate.txt", Encoding.UTF8));
+
+
+            //方法四
+            sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\TextProcessor.txt", Encoding.UTF8));
 
 
             sb.AppendLine("}");
@@ -2609,7 +2623,10 @@ namespace Roch.CodeTool
 
         private void button26_Click(object sender, EventArgs e)
         {
-
+            this.rich_sb_new.Text = string.Empty;
+            string keyname = this.txt_sbname.Text.Trim();
+            //string body = GetTemplateStr(this.rich_sb_old.Text.Trim());
+            this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim());
         }
     }
 

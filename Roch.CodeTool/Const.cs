@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Roch.CodeTool
 {
-  public static  class ConstTemplateType
+    public static class ConstTemplateType
     {
         public static string CreateTable = "CreateTable";
         public static string FKTable = "FKTable";
@@ -15,4 +16,5 @@ namespace Roch.CodeTool
         public static string PGTempTableSQL = "PGTempTableSQL";
 
     }
+
 }

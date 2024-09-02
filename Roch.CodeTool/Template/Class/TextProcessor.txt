@@ -1,0 +1,30 @@
+﻿    // 根据数据行，生成List<string> 方法
+    public static List<string> GenerateListFromText(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return new List<string>();
+        }
+
+        var list = text
+            .Split(new[] { Environment.NewLine }, StringSplitOptions.None)  // 按换行符分割文本
+            .Where(line => !string.IsNullOrWhiteSpace(line))  // 过滤掉空白行
+            .ToList();
+
+        return list;
+    }
+
+     // 通用方法，过滤重复数据
+    public static List<T> RemoveDuplicates<T, TKey>(List<T> list, Func<T, TKey> keySelector)
+    {
+        if (list == null)
+        {
+            throw new ArgumentNullException(nameof(list));
+        }
+        if (keySelector == null)
+        {
+            throw new ArgumentNullException(nameof(keySelector));
+        }
+
+        return list.GroupBy(keySelector).Select(group => group.First()).ToList();
+    }
