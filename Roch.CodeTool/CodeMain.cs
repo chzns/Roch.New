@@ -2625,8 +2625,16 @@ namespace Roch.CodeTool
         {
             this.rich_sb_new.Text = string.Empty;
             string keyname = this.txt_sbname.Text.Trim();
-            //string body = GetTemplateStr(this.rich_sb_old.Text.Trim());
             this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim());
+            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text);
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            this.rich_sb_new.Text = string.Empty;
+            string keyname = this.txt_sbname.Text.Trim();
+            this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim(),"SQL");
+            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text);
         }
     }
 

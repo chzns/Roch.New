@@ -36,6 +36,7 @@
             this.tsCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button26 = new System.Windows.Forms.Button();
             this.btnSplit = new System.Windows.Forms.Button();
             this.txtSplit = new System.Windows.Forms.TextBox();
             this.button24 = new System.Windows.Forms.Button();
@@ -135,7 +136,7 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.button26 = new System.Windows.Forms.Button();
+            this.button27 = new System.Windows.Forms.Button();
             this.contexMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -215,6 +216,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button27);
             this.groupBox1.Controls.Add(this.button26);
             this.groupBox1.Controls.Add(this.btnSplit);
             this.groupBox1.Controls.Add(this.txtSplit);
@@ -270,6 +272,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Function";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(151, 335);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(89, 23);
+            this.button26.TabIndex = 49;
+            this.button26.Text = "C# Template";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
             // 
             // btnSplit
             // 
@@ -1272,15 +1284,15 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // button26
+            // button27
             // 
-            this.button26.Location = new System.Drawing.Point(151, 335);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(89, 23);
-            this.button26.TabIndex = 49;
-            this.button26.Text = "VS Template";
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.button26_Click);
+            this.button27.Location = new System.Drawing.Point(153, 356);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(87, 23);
+            this.button27.TabIndex = 50;
+            this.button27.Text = "SQL Template";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // CodeMain
             // 
@@ -1436,6 +1448,7 @@
         private System.Windows.Forms.RichTextBox aiInput;
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button27;
     }
 }
 

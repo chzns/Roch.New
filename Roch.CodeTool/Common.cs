@@ -10,10 +10,11 @@ using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
+using System.IO;
 
 namespace Roch.CodeTool
 {
-   public class Common
+    public class Common
     {
         public static string FirstCharToLower(string input)
         {
@@ -55,7 +56,7 @@ namespace Roch.CodeTool
 
     public class CodeFormatter
     {
-        public  string FormatCSharpCode(string code)
+        public string FormatCSharpCode(string code)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
             SyntaxNode root = syntaxTree.GetRoot();
@@ -74,5 +75,32 @@ namespace Roch.CodeTool
             return formattedNode.ToFullString();
 
         }
+
+
     }
+
+    public class FileSaver
+    {
+        public static void SaveStringToSnappetFile(string content, string fileName)
+        {
+            // 获取桌面路径
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            // 构建完整的文件路径，添加 .snappet 扩展名
+            string filePath = Path.Combine(desktopPath, fileName + ".snippet");
+
+            try
+            {
+                // 将字符串写入文件
+                File.WriteAllText(filePath, content);
+                Console.WriteLine("文件已成功保存到: " + filePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("保存文件时出错: " + ex.Message);
+            }
+        }
+
+    }
+
 }
