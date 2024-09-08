@@ -1,28 +1,47 @@
-public static void CheckAndCreateTemplateFileOnDesktop(string templateContent)
+ public static void CheckAndCreateTemplateFileOnDesktop(string templateContent)
+{
+    // 获取当前用户桌面路径
+    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+    // 获取当前日期，格式为 "yyyyMMdd"，例如 "20240908"
+    string currentDate = DateTime.Now.ToString("yyyyMMdd");
+
+    // 在桌面上创建一个以当前日期命名的文件夹
+    string dateFolderPath = Path.Combine(desktopPath, currentDate);
+
+    // 检查日期文件夹是否存在，如果不存在则创建
+    if (!Directory.Exists(dateFolderPath))
     {
-        // Get the path to the current user's desktop folder
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-        // Combine the desktop path with the file name "mb.txt"
-        string filePath = Path.Combine(desktopPath, "mb.txt");
-
-        // Check if the file exists
-        if (!File.Exists(filePath))
+        try
         {
-            try
-            {
-                // Create the file and write the provided template content
-                File.WriteAllText(filePath, templateContent);
-
-                Console.WriteLine("File 'mb.txt' has been created on the desktop.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occurred while creating the file: " + ex.Message);
-            }
+            Directory.CreateDirectory(dateFolderPath);
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("File '模板.txt' already exists on the desktop.");
+            Console.WriteLine("创建日期文件夹时发生错误: " + ex.Message);
+            return;
         }
     }
+
+    // 组合日期文件夹路径与文件名 "mb.txt"
+    string filePath = Path.Combine(dateFolderPath, "mb.txt");
+
+    // 检查文件是否已经存在
+    if (!File.Exists(filePath))
+    {
+        try
+        {
+            // 创建文件并写入模板内容
+            File.WriteAllText(filePath, templateContent);
+            Console.WriteLine($"文件 'mb.txt' 已创建在 {dateFolderPath} 文件夹中。");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("创建文件时发生错误: " + ex.Message);
+        }
+    }
+    else
+    {
+        Console.WriteLine($"文件 'mb.txt' 已经存在于 {dateFolderPath} 文件夹中。");
+    }
+}

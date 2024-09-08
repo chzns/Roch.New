@@ -1215,7 +1215,8 @@ namespace Roch.CodeTool
             sb.AppendLine("Extention.GetTemplateString(template,list).Dump();");
 
             var localmethod = LocalFileHelper.FileToString(vm.class_LinqMethod);
-            localmethod = localmethod.Replace("#path#", LocalFileHelper.GetDesktopPath());
+            string currentDate = DateTime.Now.ToString("yyyyMMdd");
+            localmethod = localmethod.Replace("#path#", LocalFileHelper.GetDesktopPath()+"\\"+ currentDate);
             sb.AppendLine(localmethod);
 
             //自定义固定写法
@@ -1279,13 +1280,39 @@ namespace Roch.CodeTool
 
 
 
+        public static string GenerateDynamicFileName(string baseName, string extension, bool includeExtension)
+        {
+            // 获取当前时间
+            string timeStamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
+            // 动态生成的文件名部分
+            string fileName = $"{baseName}_{timeStamp}";
+
+            // 如果需要返回完整文件名（带扩展名），则添加扩展名
+            if (includeExtension)
+            {
+                fileName = $"{fileName}.{extension}";
+            }
+
+            return fileName;
+        }
 
         private void button9_Click(object sender, EventArgs e)
         {
             var vm = getRichTextBoxToVM();
             this.rich_sb_new.Text = new CodeFormatter().FormatCSharpCode(Generate_List(vm));
 
+            var fileName = GenerateDynamicFileName("linq", "linq", false);
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine(@"
+<Query Kind=""Program"">
+  <IncludeUncapsulator>false</IncludeUncapsulator>
+</Query>");
+            sb.AppendLine(this.rich_sb_new.Text);
+            //FileSaver.SaveStringToSnappetFile(sb.ToString(), fileName, ".linq");
+            FileSaver.CreateFileInFolderOnDesktop(DateTime.Now.ToString("yyyyMMdd"), "linq", "linq", sb.ToString());
         }
 
         public string FormatCSharpCode(string code)
@@ -2626,7 +2653,7 @@ namespace Roch.CodeTool
             this.rich_sb_new.Text = string.Empty;
             string keyname = this.txt_sbname.Text.Trim();
             this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim());
-            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text);
+            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text, ".snippet");
         }
 
         private void button27_Click(object sender, EventArgs e)
@@ -2634,7 +2661,7 @@ namespace Roch.CodeTool
             this.rich_sb_new.Text = string.Empty;
             string keyname = this.txt_sbname.Text.Trim();
             this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim(),"SQL");
-            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text);
+            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text, ".snippet");
         }
     }
 

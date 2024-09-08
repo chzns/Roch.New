@@ -81,13 +81,13 @@ namespace Roch.CodeTool
 
     public class FileSaver
     {
-        public static void SaveStringToSnappetFile(string content, string fileName)
+        public static void SaveStringToSnappetFile(string content, string fileName,string fileEx)
         {
             // 获取桌面路径
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             // 构建完整的文件路径，添加 .snappet 扩展名
-            string filePath = Path.Combine(desktopPath, fileName + ".snippet");
+            string filePath = Path.Combine(desktopPath, fileName + fileEx);
 
             try
             {
@@ -99,6 +99,34 @@ namespace Roch.CodeTool
             {
                 Console.WriteLine("保存文件时出错: " + ex.Message);
             }
+        }
+
+        public static string CreateFileInFolderOnDesktop(string folderName, string fileName, string extension, string content)
+        {
+            // 获取桌面路径
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            // 组合桌面路径和文件夹名称，生成文件夹路径
+            string folderPath = Path.Combine(desktopPath, folderName);
+
+            // 检查文件夹是否存在，如果不存在则创建
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // 动态生成完整文件名，包含时间戳
+            string timeStamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string fullFileName = $"{fileName}_{timeStamp}.{extension}";
+
+            // 组合文件夹路径和文件名，生成完整文件路径
+            string filePath = Path.Combine(folderPath, fullFileName);
+
+            // 将内容写入文件
+            File.WriteAllText(filePath, content, Encoding.UTF8);
+
+            // 返回文件的完整路径
+            return filePath;
         }
 
     }
