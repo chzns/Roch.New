@@ -50,6 +50,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.Net;
+using System.Diagnostics;
 //using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 //using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
@@ -526,7 +527,7 @@ namespace Roch.CodeTool
 
         //}
 
-        public  string ReplaceDoubleQuotesWithSingleQuotes1(string input)
+        public string ReplaceDoubleQuotesWithSingleQuotes1(string input)
         {
             StringBuilder sb = new StringBuilder();
             foreach (char c in input)
@@ -1216,7 +1217,7 @@ namespace Roch.CodeTool
 
             var localmethod = LocalFileHelper.FileToString(vm.class_LinqMethod);
             string currentDate = DateTime.Now.ToString("yyyyMMdd");
-            localmethod = localmethod.Replace("#path#", LocalFileHelper.GetDesktopPath()+"\\"+ currentDate);
+            localmethod = localmethod.Replace("#path#", LocalFileHelper.GetDesktopPath() + "\\" + currentDate);
             sb.AppendLine(localmethod);
 
             //自定义固定写法
@@ -1247,7 +1248,7 @@ namespace Roch.CodeTool
         }
 
 
-     
+
 
         public static string GetModel(RichTextBoxModel vm)
         {
@@ -1541,6 +1542,8 @@ namespace Roch.CodeTool
             list.Add(this.txtBegin);
             list.Add(this.txtEnd);
             list.Add(this.txtRegex);
+            list.Add(this.txtSQLPath);
+            list.Add(this.txtCPath);
             return list;
         }
 
@@ -2660,110 +2663,195 @@ namespace Roch.CodeTool
         {
             this.rich_sb_new.Text = string.Empty;
             string keyname = this.txt_sbname.Text.Trim();
-            this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim(),"SQL");
-            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text, ".snippet");
+            this.rich_sb_new.Text = ChartCodeTemplate.GenerateSnippet(keyname, this.rich_sb_old.Text.Trim(), "SQL");
+            //FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text, ".snippet");
+            FileSaver.SaveStringToSnappetFile(this.rich_sb_new.Text, this.txt_sbname.Text, ".snippet", this.txtSQLPath.Text);
+        }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+
+        }
+
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "请选择一个文件夹";
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer;  // 设置默认文件夹
+                folderDialog.ShowNewFolderButton = true;  // 是否允许创建新文件夹
+
+                // 显示对话框并处理用户选择
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFolderPath = folderDialog.SelectedPath;  // 获取选择的文件夹路径
+                    this.txtSQLPath.Text = selectedFolderPath;
+                    //MessageBox.Show($"你选择的文件夹路径是：{selectedFolderPath}", "文件夹路径");
+                }
+            }
+        }
+
+        private void OpenFile_Click(object sender, EventArgs e)
+        {
+            OpenPath(this.txtSQLPath.Text);
+        }
+
+        public static void OpenPath(string path)
+        {
+            try
+            {
+                // 检查路径是否为空
+                if (string.IsNullOrEmpty(path))
+                {
+                    Console.WriteLine("路径为空，无法打开。");
+                    return;
+                }
+
+                // 检查路径是否存在
+                if (!Directory.Exists(path) && !File.Exists(path))
+                {
+                    Console.WriteLine("指定的路径不存在。");
+                    return;
+                }
+
+                // 打开文件或文件夹
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = path,
+                    UseShellExecute = true, // 让操作系统根据文件类型选择程序
+                    Verb = "open"  // 打开操作
+                });
+
+                Console.WriteLine($"已成功打开路径: {path}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("打开路径时出错: " + ex.Message);
+            }
+        }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "请选择一个文件夹";
+                folderDialog.RootFolder = Environment.SpecialFolder.MyComputer;  // 设置默认文件夹
+                folderDialog.ShowNewFolderButton = true;  // 是否允许创建新文件夹
+
+                // 显示对话框并处理用户选择
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFolderPath = folderDialog.SelectedPath;  // 获取选择的文件夹路径
+                    this.txtCPath.Text = selectedFolderPath;
+                    //MessageBox.Show($"你选择的文件夹路径是：{selectedFolderPath}", "文件夹路径");
+                }
+            }
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            OpenPath(this.txtCPath.Text);
         }
     }
 
-}
+    public class RichTextBoxModel
+    {
 
-public class RichTextBoxModel
-{
+        public List<string> FirstRow { get; set; }
 
-    public List<string> FirstRow { get; set; }
+        public List<string> FiterList { get; set; }
 
-    public List<string> FiterList { get; set; }
+        public List<string> LowerFiterList { get; set; }
+        public List<List<string>> OtherRows { get; set; }
+        public List<string> AllColumns { get; set; }
 
-    public List<string> LowerFiterList { get; set; }
-    public List<List<string>> OtherRows { get; set; }
-    public List<string> AllColumns { get; set; }
+        public List<string> NoFirstList { get; set; }
 
-    public List<string> NoFirstList { get; set; }
+        public string Prefix { get; set; }
+        public string Detail { get; set; }
+        public string ModuleName { get; set; }
 
-    public string Prefix { get; set; }
-    public string Detail { get; set; }
-    public string ModuleName { get; set; }
+        public string input_template_createtable { get; set; }
 
-    public string input_template_createtable { get; set; }
+        public string input_template_fktable { get; set; }
 
-    public string input_template_fktable { get; set; }
+        public string input_template_truetable { get; set; }
 
-    public string input_template_truetable { get; set; }
+        public string input_template_pgcreatetable { get; set; }
 
-    public string input_template_pgcreatetable { get; set; }
+        public string input_template_pgtemptable { get; set; }
 
-    public string input_template_pgtemptable { get; set; }
+        public string class_LocalFileHelper { get; set; }
 
-    public string class_LocalFileHelper { get; set; }
+        public string class_LinqMethod { get; set; }
 
-    public string class_LinqMethod { get; set; }
+        public string PGInsertColums { get; set; }
 
-    public string PGInsertColums { get; set; }
+        public string PGInsertColumsData1 { get; set; }
+        public string PGInsertColumsData2 { get; set; }
+        public string PGInsertColumsData3 { get; set; }
+        public string PGInsertColumsData4 { get; set; }
+        public string PGInsertColumsData5 { get; set; }
+        public string FKTable { get; set; }
+        public string FKID { get; set; }
 
-    public string PGInsertColumsData1 { get; set; }
-    public string PGInsertColumsData2 { get; set; }
-    public string PGInsertColumsData3 { get; set; }
-    public string PGInsertColumsData4 { get; set; }
-    public string PGInsertColumsData5 { get; set; }
-    public string FKTable { get; set; }
-    public string FKID { get; set; }
+        public bool IsIInsertTestData { get; set; }
 
-    public bool IsIInsertTestData { get; set; }
+        public string PGSingleColumns { get; set; }
 
-    public string PGSingleColumns { get; set; }
+        public string PGSingleLeftColumns { get; set; }
 
-    public string PGSingleLeftColumns { get; set; }
+        public string PGSingleInsertData { get; set; }
 
-    public string PGSingleInsertData { get; set; }
+        /// <summary>
+        /// PG 打印数据
+        /// </summary>
+        public string RaiseNotice { get; set; }
 
-    /// <summary>
-    /// PG 打印数据
-    /// </summary>
-    public string RaiseNotice { get; set; }
+        /// <summary>
+        /// PG变量赋值
+        /// </summary>
+        public string PGAsignment { get; set; }
 
-    /// <summary>
-    /// PG变量赋值
-    /// </summary>
-    public string PGAsignment { get; set; }
+        /// <summary>
+        ///  多个 栏位 用 都逗号隔开 不含引号
+        /// </summary>
+        public string FirstRowStr_1 { get; set; }
 
-    /// <summary>
-    ///  多个 栏位 用 都逗号隔开 不含引号
-    /// </summary>
-    public string FirstRowStr_1 { get; set; }
-
-    /// <summary>
-    /// 多个 栏位 用 都逗号隔开，含引号
-    /// </summary>
-    public string FirstRowStr_2 { get; set; }
+        /// <summary>
+        /// 多个 栏位 用 都逗号隔开，含引号
+        /// </summary>
+        public string FirstRowStr_2 { get; set; }
 
 
-    /// <summary>
-    /// PG 变量%个数
-    /// </summary>
-    public string PGAsingmentChar { get; set; }
+        /// <summary>
+        /// PG 变量%个数
+        /// </summary>
+        public string PGAsingmentChar { get; set; }
 
-    public string OldRichText { get; set; }
-    public string NewRichText { get; set; }
-
-
-}
-
-public class Settings
-{
-    public string Name { get; set; }
-    public string Text { get; set; }
-    public string CreateDate { get; set; }
-}
-
-public class VOLModel
-{
-    public string title { get; set; }
-    public string field { get; set; }
-    public string type { get; set; }
-    public string colSize { get; set; }
-    public string required { get; set; }
+        public string OldRichText { get; set; }
+        public string NewRichText { get; set; }
 
 
+    }
+
+    public class Settings
+    {
+        public string Name { get; set; }
+        public string Text { get; set; }
+        public string CreateDate { get; set; }
+    }
+
+    public class VOLModel
+    {
+        public string title { get; set; }
+        public string field { get; set; }
+        public string type { get; set; }
+        public string colSize { get; set; }
+        public string required { get; set; }
+
+
+    }
 }
 
 

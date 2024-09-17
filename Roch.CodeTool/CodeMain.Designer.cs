@@ -36,6 +36,7 @@
             this.tsCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.btnSplit = new System.Windows.Forms.Button();
             this.txtSplit = new System.Windows.Forms.TextBox();
@@ -129,6 +130,16 @@
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.button29 = new System.Windows.Forms.Button();
+            this.button28 = new System.Windows.Forms.Button();
+            this.txtCPath = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.OpenFile = new System.Windows.Forms.Button();
+            this.btnOpenFile = new System.Windows.Forms.Button();
+            this.txtSQLPath = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tsTool = new System.Windows.Forms.ToolStrip();
@@ -136,7 +147,6 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.button27 = new System.Windows.Forms.Button();
             this.contexMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -158,6 +168,8 @@
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tsTool.SuspendLayout();
             this.SuspendLayout();
@@ -213,6 +225,7 @@
             this.splitContainer1.Size = new System.Drawing.Size(1245, 796);
             this.splitContainer1.SplitterDistance = 258;
             this.splitContainer1.TabIndex = 1;
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // groupBox1
             // 
@@ -272,6 +285,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Function";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // button27
+            // 
+            this.button27.Location = new System.Drawing.Point(153, 356);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(87, 23);
+            this.button27.TabIndex = 50;
+            this.button27.Text = "SQL Template";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // button26
             // 
@@ -767,6 +790,7 @@
             this.tbControl.Controls.Add(this.tabPage2);
             this.tbControl.Controls.Add(this.tabPage3);
             this.tbControl.Controls.Add(this.tabPage4);
+            this.tbControl.Controls.Add(this.tabPage6);
             this.tbControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbControl.Location = new System.Drawing.Point(5, 19);
             this.tbControl.Name = "tbControl";
@@ -1203,6 +1227,106 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.groupBox10);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(955, 685);
+            this.tabPage6.TabIndex = 15;
+            this.tabPage6.Text = "Path Config";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.button29);
+            this.groupBox10.Controls.Add(this.button28);
+            this.groupBox10.Controls.Add(this.txtCPath);
+            this.groupBox10.Controls.Add(this.label10);
+            this.groupBox10.Controls.Add(this.OpenFile);
+            this.groupBox10.Controls.Add(this.btnOpenFile);
+            this.groupBox10.Controls.Add(this.txtSQLPath);
+            this.groupBox10.Controls.Add(this.label9);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox10.Location = new System.Drawing.Point(3, 3);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(949, 679);
+            this.groupBox10.TabIndex = 0;
+            this.groupBox10.TabStop = false;
+            // 
+            // button29
+            // 
+            this.button29.Location = new System.Drawing.Point(773, 59);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(75, 23);
+            this.button29.TabIndex = 7;
+            this.button29.Text = "Open File";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // button28
+            // 
+            this.button28.Location = new System.Drawing.Point(679, 57);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(75, 23);
+            this.button28.TabIndex = 6;
+            this.button28.Text = "ChoseFile";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // txtCPath
+            // 
+            this.txtCPath.Location = new System.Drawing.Point(159, 59);
+            this.txtCPath.Name = "txtCPath";
+            this.txtCPath.Size = new System.Drawing.Size(514, 21);
+            this.txtCPath.TabIndex = 5;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(18, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(101, 12);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "C# Template Path";
+            // 
+            // OpenFile
+            // 
+            this.OpenFile.Location = new System.Drawing.Point(773, 21);
+            this.OpenFile.Name = "OpenFile";
+            this.OpenFile.Size = new System.Drawing.Size(75, 23);
+            this.OpenFile.TabIndex = 3;
+            this.OpenFile.Text = "Open File";
+            this.OpenFile.UseVisualStyleBackColor = true;
+            this.OpenFile.Click += new System.EventHandler(this.OpenFile_Click);
+            // 
+            // btnOpenFile
+            // 
+            this.btnOpenFile.Location = new System.Drawing.Point(679, 20);
+            this.btnOpenFile.Name = "btnOpenFile";
+            this.btnOpenFile.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenFile.TabIndex = 2;
+            this.btnOpenFile.Text = "ChoseFile";
+            this.btnOpenFile.UseVisualStyleBackColor = true;
+            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
+            // 
+            // txtSQLPath
+            // 
+            this.txtSQLPath.Location = new System.Drawing.Point(159, 22);
+            this.txtSQLPath.Name = "txtSQLPath";
+            this.txtSQLPath.Size = new System.Drawing.Size(514, 21);
+            this.txtSQLPath.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(18, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(107, 12);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "SQL Template Path";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
@@ -1284,16 +1408,6 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // button27
-            // 
-            this.button27.Location = new System.Drawing.Point(153, 356);
-            this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(87, 23);
-            this.button27.TabIndex = 50;
-            this.button27.Text = "SQL Template";
-            this.button27.UseVisualStyleBackColor = true;
-            this.button27.Click += new System.EventHandler(this.button27_Click);
-            // 
             // CodeMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1332,6 +1446,9 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.tsTool.ResumeLayout(false);
             this.tsTool.PerformLayout();
@@ -1449,6 +1566,16 @@
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.TextBox txtSQLPath;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnOpenFile;
+        private System.Windows.Forms.Button OpenFile;
+        private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.TextBox txtCPath;
+        private System.Windows.Forms.Label label10;
     }
 }
 

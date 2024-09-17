@@ -56,7 +56,7 @@ namespace Roch.CodeTool
 
     public class CodeFormatter
     {
-        public string FormatCSharpCode(string code)
+         public string FormatCSharpCode(string code)
         {
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
             SyntaxNode root = syntaxTree.GetRoot();
@@ -88,6 +88,26 @@ namespace Roch.CodeTool
 
             // 构建完整的文件路径，添加 .snappet 扩展名
             string filePath = Path.Combine(desktopPath, fileName + fileEx);
+
+            try
+            {
+                // 将字符串写入文件
+                File.WriteAllText(filePath, content);
+                Console.WriteLine("文件已成功保存到: " + filePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("保存文件时出错: " + ex.Message);
+            }
+        }
+
+        public static void SaveStringToSnappetFile(string content, string fileName, string fileEx, string customPath = null)
+        {
+            // 如果路径为空，则使用桌面路径
+            string savePath = string.IsNullOrEmpty(customPath) ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop) : customPath;
+
+            // 构建完整的文件路径，添加文件扩展名
+            string filePath = Path.Combine(savePath, fileName + fileEx);
 
             try
             {

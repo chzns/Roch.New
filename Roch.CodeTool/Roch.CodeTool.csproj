@@ -224,6 +224,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Common.cs" />
+    <Compile Include="ConfigManager.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="EF\Entities.cs" />
     <Compile Include="FrmInsertModel.cs">
