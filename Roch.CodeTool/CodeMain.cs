@@ -1193,6 +1193,26 @@ namespace Roch.CodeTool
 
         }
 
+        public static bool IsSingleStringPerLine(string text)
+        {
+            // 按行分割字符串
+            string[] lines = text.Split('\n');
+
+            foreach (string line in lines)
+            {
+                // 去除行首行尾的空白字符
+                string trimmedLine = line.Trim();
+
+                // 如果修剪后的行包含空格，则说明有多个字符串
+                if (trimmedLine.Contains(" "))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static string Generate_List(RichTextBoxModel vm)
         {
             string tempLine = string.Empty;
@@ -1207,7 +1227,19 @@ namespace Roch.CodeTool
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"void Main()");
             sb.AppendLine("{");
-            sb.AppendLine($"   List<Model> list =new List<Model>();");
+
+            // 只是单行 需要增加一个方法
+            if (vm.IsSingleStringPerLine == true)
+            {
+                sb.AppendLine("//一列字符串处理逻辑开始");
+                sb.AppendLine($"string input = @\"{vm.OldRichText.TrimEnd()}\";");
+                sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\LinqPadStr.txt", Encoding.UTF8));
+                sb.AppendLine("//一列字符串处理逻辑结束");
+            }
+
+            sb.AppendLine("");
+            sb.AppendLine("//多列字符串处理逻辑开始");
+            sb.AppendLine($"List<Model> list =new List<Model>();");
             var str = GetModel(vm);
             sb.AppendLine(str);
             sb.AppendLine($"list.Dump();");
@@ -1222,10 +1254,7 @@ namespace Roch.CodeTool
 
             //自定义固定写法
             sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\MyCodeSet.txt", Encoding.UTF8));
-
-
             sb.AppendLine("}");
-
             sb.AppendLines(5);
 
 
@@ -1273,7 +1302,6 @@ namespace Roch.CodeTool
 
                 }
                 result.AppendLine("list.Add(new Model{ " + sb.ToString().TrimEnd(',') + " });");
-                result.AppendLine("");
             }
             return result.ToString();
 
@@ -1304,6 +1332,8 @@ namespace Roch.CodeTool
             this.rich_sb_new.Text = new CodeFormatter().FormatCSharpCode(Generate_List(vm));
 
             var fileName = GenerateDynamicFileName("linq", "linq", false);
+
+          
 
             StringBuilder sb = new StringBuilder();
 
@@ -1380,18 +1410,29 @@ namespace Roch.CodeTool
             vm.FKTable = this.txtChildTable.Text.Trim().TrimStart();
             vm.OtherRows = datalist;
             vm.NoFirstList = NoFirstList;
-            string FirstRowStr_1 = string.Join(",", vm.FirstRow);
-            string FirstRowStr_2 = "\"" + string.Join("\",\"", vm.FirstRow) + "\"";
-            vm.FirstRowStr_1 = FirstRowStr_1;
-            vm.FirstRowStr_2 = FirstRowStr_2;
-            int charCount = vm.FirstRow.Count;
-            string PGAsingmentChar = string.Empty;
-            for (int i = 0; i < charCount; i++)
+            if (vm.FirstRow != null)
             {
-                PGAsingmentChar = PGAsingmentChar + "%,";
+                string FirstRowStr_1 = string.Join(",", vm.FirstRow);
+                string FirstRowStr_2 = "\"" + string.Join("\",\"", vm.FirstRow) + "\"";
+                vm.FirstRowStr_1 = FirstRowStr_1;
+                vm.FirstRowStr_2 = FirstRowStr_2;
+                int charCount = vm.FirstRow.Count;
+
+                string PGAsingmentChar = string.Empty;
+                for (int i = 0; i < charCount; i++)
+                {
+                    PGAsingmentChar = PGAsingmentChar + "%,";
+                }
+                PGAsingmentChar = PGAsingmentChar.TrimEnd(',');
+                vm.PGAsingmentChar = PGAsingmentChar;
             }
-            PGAsingmentChar = PGAsingmentChar.TrimEnd(',');
-            vm.PGAsingmentChar = PGAsingmentChar;
+            else
+            {
+                List<string> test = new List<string>();
+                test.Add("test");
+                vm.FirstRow = test;
+            }
+        
 
 
             // 初始话模板路径
@@ -1504,12 +1545,7 @@ namespace Roch.CodeTool
             }
             vm.LowerFiterList = LowerFiterList;
 
-            //for (int i = 0; i < vm.FiterList.Count; i++)
-            //{
-
-            //}
-
-
+            vm.IsSingleStringPerLine = IsSingleStringPerLine(this.rich_sb_old.Text);
             return vm;
         }
 
@@ -1544,6 +1580,7 @@ namespace Roch.CodeTool
             list.Add(this.txtRegex);
             list.Add(this.txtSQLPath);
             list.Add(this.txtCPath);
+            list.Add(this.txtVSCode);
             return list;
         }
 
@@ -2752,6 +2789,51 @@ namespace Roch.CodeTool
         {
             OpenPath(this.txtCPath.Text);
         }
+
+        private void button31_Click(object sender, EventArgs e)
+        {
+            //OpenPath(this.txtVSCode.Text);
+            OpenFileWithNotepad(this.txtVSCode.Text);
+        }
+
+        public void OpenFileWithNotepad(string filePath)
+        {
+            try
+            {
+                // 确保文件存在
+                if (System.IO.File.Exists(filePath))
+                {
+                    // 使用记事本打开文件
+                    Process.Start("notepad.exe", filePath);
+                }
+                else
+                {
+                    MessageBox.Show("文件不存在，请检查路径。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"打开文件时出错: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Title = "请选择一个文件";  // 对话框标题
+                fileDialog.Filter = "所有文件 (*.*)|*.*";  // 文件类型过滤器
+
+                // 显示对话框并处理用户选择
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFilePath = fileDialog.FileName;  // 获取选择的文件路径
+                    this.txtVSCode.Text = selectedFilePath;
+
+                    //MessageBox.Show($"你选择的文件路径是：{selectedFilePath}", "文件路径");
+                }
+            }
+        }
     }
 
     public class RichTextBoxModel
@@ -2831,6 +2913,8 @@ namespace Roch.CodeTool
 
         public string OldRichText { get; set; }
         public string NewRichText { get; set; }
+        public  bool IsSingleStringPerLine { get; set; }
+
 
 
     }

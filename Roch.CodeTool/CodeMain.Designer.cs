@@ -132,6 +132,10 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.button31 = new System.Windows.Forms.Button();
+            this.button30 = new System.Windows.Forms.Button();
+            this.txtVSCode = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.button29 = new System.Windows.Forms.Button();
             this.button28 = new System.Windows.Forms.Button();
             this.txtCPath = new System.Windows.Forms.TextBox();
@@ -1240,6 +1244,10 @@
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.button31);
+            this.groupBox10.Controls.Add(this.button30);
+            this.groupBox10.Controls.Add(this.txtVSCode);
+            this.groupBox10.Controls.Add(this.label11);
             this.groupBox10.Controls.Add(this.button29);
             this.groupBox10.Controls.Add(this.button28);
             this.groupBox10.Controls.Add(this.txtCPath);
@@ -1255,13 +1263,49 @@
             this.groupBox10.TabIndex = 0;
             this.groupBox10.TabStop = false;
             // 
+            // button31
+            // 
+            this.button31.Location = new System.Drawing.Point(806, 99);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(106, 23);
+            this.button31.TabIndex = 11;
+            this.button31.Text = "Open File";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
+            // button30
+            // 
+            this.button30.Location = new System.Drawing.Point(679, 100);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(108, 23);
+            this.button30.TabIndex = 10;
+            this.button30.Text = "ChoseFile";
+            this.button30.UseVisualStyleBackColor = true;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
+            // 
+            // txtVSCode
+            // 
+            this.txtVSCode.Location = new System.Drawing.Point(159, 101);
+            this.txtVSCode.Name = "txtVSCode";
+            this.txtVSCode.Size = new System.Drawing.Size(514, 21);
+            this.txtVSCode.TabIndex = 9;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(18, 106);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(101, 12);
+            this.label11.TabIndex = 8;
+            this.label11.Text = "VS Code Template";
+            // 
             // button29
             // 
-            this.button29.Location = new System.Drawing.Point(773, 59);
+            this.button29.Location = new System.Drawing.Point(806, 59);
             this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(75, 23);
+            this.button29.Size = new System.Drawing.Size(106, 23);
             this.button29.TabIndex = 7;
-            this.button29.Text = "Open File";
+            this.button29.Text = "Open File Doc";
             this.button29.UseVisualStyleBackColor = true;
             this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
@@ -1269,9 +1313,9 @@
             // 
             this.button28.Location = new System.Drawing.Point(679, 57);
             this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(75, 23);
+            this.button28.Size = new System.Drawing.Size(108, 23);
             this.button28.TabIndex = 6;
-            this.button28.Text = "ChoseFile";
+            this.button28.Text = "ChoseFileDir";
             this.button28.UseVisualStyleBackColor = true;
             this.button28.Click += new System.EventHandler(this.button28_Click);
             // 
@@ -1293,11 +1337,11 @@
             // 
             // OpenFile
             // 
-            this.OpenFile.Location = new System.Drawing.Point(773, 21);
+            this.OpenFile.Location = new System.Drawing.Point(806, 20);
             this.OpenFile.Name = "OpenFile";
-            this.OpenFile.Size = new System.Drawing.Size(75, 23);
+            this.OpenFile.Size = new System.Drawing.Size(106, 23);
             this.OpenFile.TabIndex = 3;
-            this.OpenFile.Text = "Open File";
+            this.OpenFile.Text = "Open File Doc";
             this.OpenFile.UseVisualStyleBackColor = true;
             this.OpenFile.Click += new System.EventHandler(this.OpenFile_Click);
             // 
@@ -1305,9 +1349,9 @@
             // 
             this.btnOpenFile.Location = new System.Drawing.Point(679, 20);
             this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenFile.Size = new System.Drawing.Size(108, 23);
             this.btnOpenFile.TabIndex = 2;
-            this.btnOpenFile.Text = "ChoseFile";
+            this.btnOpenFile.Text = "ChoseFileDir";
             this.btnOpenFile.UseVisualStyleBackColor = true;
             this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
             // 
@@ -1576,6 +1620,10 @@
         private System.Windows.Forms.Button button28;
         private System.Windows.Forms.TextBox txtCPath;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtVSCode;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button31;
     }
 }
 

@@ -278,6 +278,7 @@
     <Compile Include="GeneratedCode\Oracle\SQLCode.cs" />
     <Compile Include="GeneratedCode\Oracle\ORMapperCode.cs" />
     <Compile Include="GeneratedCode\Oracle\UICode.cs" />
+    <Compile Include="JsonAppender.cs" />
     <Compile Include="MyCode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -398,6 +399,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Template\Class\LinqPadMethod.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Template\Class\LinqPadStr.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Template\Class\MyCodeSet.txt">

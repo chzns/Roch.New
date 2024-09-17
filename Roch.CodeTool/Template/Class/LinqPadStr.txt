@@ -1,0 +1,15 @@
+﻿List<string> listStr = new List<string>();
+
+	// 使用Split方法按换行符分割，并去除空行和每行首尾的空格
+	string[] lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+	// 将分割后的行添加到列表中，并再次去除行内多余空格
+	foreach (string line in lines)
+	{
+		string trimmedLine = line.Trim();
+		if (!string.IsNullOrEmpty(trimmedLine)) // 判断是否为空行
+		{
+			listStr.Add(trimmedLine);
+		}
+	}
+	listStr.Dump();
