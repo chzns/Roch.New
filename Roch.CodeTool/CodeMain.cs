@@ -2834,6 +2834,15 @@ namespace Roch.CodeTool
                 }
             }
         }
+
+        private void button32_Click(object sender, EventArgs e)
+        {
+            var vm = getRichTextBoxToVM();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\LinqUI.txt", Encoding.UTF8));
+            this.rich_sb_new.Text = new CodeFormatter().FormatCSharpCode(sb.ToString());
+            FileSaver.CreateFileInFolderOnDesktop(DateTime.Now.ToString("yyyyMMdd"), "UI", "linq", sb.ToString());
+        }
     }
 
     public class RichTextBoxModel

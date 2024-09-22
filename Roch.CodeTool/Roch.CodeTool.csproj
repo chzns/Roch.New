@@ -404,6 +404,9 @@
     <Content Include="Template\Class\LinqPadStr.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Template\Class\LinqUI.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Template\Class\MyCodeSet.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

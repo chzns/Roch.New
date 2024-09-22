@@ -36,6 +36,7 @@
             this.tsCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button32 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.btnSplit = new System.Windows.Forms.Button();
@@ -233,6 +234,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button32);
             this.groupBox1.Controls.Add(this.button27);
             this.groupBox1.Controls.Add(this.button26);
             this.groupBox1.Controls.Add(this.btnSplit);
@@ -289,6 +291,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Function";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // button32
+            // 
+            this.button32.Location = new System.Drawing.Point(96, 589);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(143, 21);
+            this.button32.TabIndex = 51;
+            this.button32.Text = "Resault->Linq(UI)";
+            this.button32.UseVisualStyleBackColor = true;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
             // 
             // button27
             // 
@@ -377,7 +389,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(154, 616);
+            this.label7.Location = new System.Drawing.Point(149, 634);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(23, 12);
             this.label7.TabIndex = 41;
@@ -1624,6 +1636,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.Button button32;
     }
 }
 

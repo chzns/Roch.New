@@ -1,0 +1,146 @@
+﻿<Query Kind="Program" />
+
+void Main()
+{
+	//1. git diff --name-only  PowerShell 查看语法
+	string path = @"
+src/JEMSmm.UI.SPA/src/app/modules/product/modules/material/components/general/components/general/general.component.ts
+src/JEMSmm.UI.SPA/src/app/modules/product/modules/material/components/general/components/general/material-group-search.config.ts
+";
+	List<string> paths =GenerateListFromText(path);
+	string lintCommand = GenerateLintCommand(paths);
+	Console.WriteLine(lintCommand+",");
+	string prettierCommand = GenerateWriteCommand(paths);
+	Console.WriteLine(prettierCommand+",");
+	string checkCommand = GenerateCheckCommand(paths);
+	Console.WriteLine(checkCommand+",");
+	string testCommand = GenerateTestCommand(paths);
+	Console.WriteLine(testCommand+",");
+	string allCommand =GenerateRunAllCommand(paths);
+    Console.WriteLine(allCommand);
+}
+
+
+
+public static string GenerateLintCommand(List<string> paths)
+{
+	string date = DateTime.Now.ToString ("MMdd"); // 示例日期，可以自动生成或者传入
+	// Check for empty path list
+	if (paths == null || !paths.Any())
+	{
+		throw new ArgumentException("Path list cannot be empty");
+	}
+
+	// Command template with placeholder for paths
+	const string commandTemplate = "ng lint --lint-file-patterns {0}";
+
+	// Build commands using StringBuilder
+	var stringBuilder = new StringBuilder();
+
+	// "lint:custom" script with combined commands
+	stringBuilder.Append($"\"rlint\": \"" + string.Join(" && ", paths.Select(path => string.Format(commandTemplate, path))) + "\"");
+
+	return stringBuilder.ToString();
+}
+
+public static string GenerateWriteCommand(List<string> paths)
+{
+	string date = DateTime.Now.ToString ("MMdd");; // 示例日期，可以自动生成或者传入
+	StringBuilder sb = new StringBuilder();
+	sb.Append($"\"rwrite\": \"prettier --write");
+
+	foreach (var path in paths)
+	{
+		sb.Append($" \\\"{path}\\\"");
+	}
+
+	sb.Append(" \"");
+	return sb.ToString();
+}
+
+public static string GenerateCheckCommand(List<string> paths)
+{
+	string date = DateTime.Now.ToString ("MMdd");; // 示例日期，可以自动生成或者传入
+	StringBuilder sb = new StringBuilder();
+	sb.Append($"\"rcheck\": \"prettier --check");
+
+	foreach (var path in paths)
+	{
+		sb.Append($" \\\"{path}\\\"");
+	}
+
+	sb.Append(" \"");
+	return sb.ToString();
+}
+
+public static string GenerateTestCommand(List<string> paths)
+{
+	StringBuilder sb = new StringBuilder();
+
+	string date = DateTime.Now.ToString ("MMdd");; // 示例日期，可以自动生成或者传入
+	
+
+	for (int i = 0; i < paths.Count; i++)
+	{
+	 // 判断是否是最后一条命令，最后一条不加逗号
+        if (i < paths.Count - 1)
+		{
+			sb.AppendLine($"\"{i+1}test\": \"npm run test  -- --include {paths[i]}\",");
+		}
+		else
+		{
+			sb.AppendLine($"\"{i+1}test\": \"npm run test  -- --include {paths[i]}\"");
+		}
+	}
+
+	return sb.ToString();
+}
+
+public static List<string> GenerateListFromText(string text)
+{
+	if (string.IsNullOrWhiteSpace(text))
+	{
+		return new List<string>();
+	}
+
+	var list = text
+		.Split(new[] { Environment.NewLine }, StringSplitOptions.None)  // 按换行符分割文本
+		.Where(line => !string.IsNullOrWhiteSpace(line))  // 过滤掉空白行
+		.ToList();
+
+	return list;
+}
+
+public static string GenerateRunAllCommand(List<string> paths)
+{
+	// 固定的命令
+	string[] fixedCommands = {
+			"npm run rlint",
+			"npm run rwrite",
+			"npm run rcheck"
+		};
+
+	StringBuilder sb = new StringBuilder();
+	sb.Append("\"rall\": \"");
+
+	// 添加固定的命令
+	foreach (var command in fixedCommands)
+	{
+		sb.Append(command + " && ");
+	}
+
+	// 动态生成测试命令
+	for (int i = 0; i < paths.Count; i++)
+	{
+		sb.Append($"npm run {i+1}test");
+		if (i < paths.Count - 1)
+		{
+			sb.Append(" && ");
+		}
+	}
+
+	sb.Append("\"");
+
+	return sb.ToString();
+}
+
