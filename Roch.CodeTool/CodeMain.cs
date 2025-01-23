@@ -1581,6 +1581,19 @@ namespace Roch.CodeTool
             list.Add(this.txtSQLPath);
             list.Add(this.txtCPath);
             list.Add(this.txtVSCode);
+            list.Add(this.config1);
+            list.Add(this.config2);
+            list.Add(this.config3);
+            list.Add(this.config4);
+            list.Add(this.from1);
+            list.Add(this.from2);
+            list.Add(this.from3);
+            list.Add(this.from4);
+            list.Add(this.to1);
+            list.Add(this.to2);
+            list.Add(this.to3);
+            list.Add(this.to4);
+            list.Add(this.backupPath);
             return list;
         }
 
@@ -2842,6 +2855,165 @@ namespace Roch.CodeTool
             sb.AppendLine(LocalFileHelper.FileToString(System.Environment.CurrentDirectory.ToString() + @"\Template\Class\LinqUI.txt", Encoding.UTF8));
             this.rich_sb_new.Text = new CodeFormatter().FormatCSharpCode(sb.ToString());
             FileSaver.CreateFileInFolderOnDesktop(DateTime.Now.ToString("yyyyMMdd"), "UI", "linq", sb.ToString());
+        }
+
+        private void tabPage7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button33_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.from1);
+        }
+
+        public void SelectFileAndSetTextBox(TextBox textBox)
+        {
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Title = "请选择一个文件";  // 对话框标题
+                fileDialog.Filter = "所有文件 (*.*)|*.*";  // 文件类型过滤器
+
+                // 显示对话框并处理用户选择
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFilePath = fileDialog.FileName;  // 获取选择的文件路径
+                    textBox.Text = selectedFilePath;
+                }
+            }
+        }
+
+        public void SelectFile(TextBox textBox)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "请选择一个目录";  // 对话框描述
+
+                // 显示对话框并处理用户选择
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                
+                    textBox.Text =  folderDialog.SelectedPath;  // 获取选择的目录路径并返回
+                }
+            }
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.from2);
+        }
+
+        private void button41_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.from3);
+        }
+
+        private void button44_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.from4);
+        }
+
+        private void button35_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.to1);
+        }
+
+        private void button36_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.to2);
+        }
+
+        private void button40_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.to3);
+        }
+
+        private void button43_Click(object sender, EventArgs e)
+        {
+            SelectFileAndSetTextBox(this.to4);
+        }
+
+        private void button37_Click(object sender, EventArgs e)
+        {
+            //MessageBoxHelper.ShowTimedMessage("OK", "保存成功", 3000);
+          
+
+            ReplaceAndBackupFile(this.from1.Text, this.to1.Text, this.backupPath.Text);
+            MessageBoxHelper.ShowTimedMessage("替换成功1", "OK", 3);
+
+        }
+
+        public static void ReplaceAndBackupFile(string fromPath, string toPath, string backupDir)
+        {
+            if (!File.Exists(fromPath))
+            {
+                throw new FileNotFoundException("Source file not found", fromPath);
+            }
+
+            if (!File.Exists(toPath))
+            {
+                throw new FileNotFoundException("Destination file not found", toPath);
+            }
+
+            if (!Directory.Exists(backupDir))
+            {
+                Directory.CreateDirectory(backupDir);
+            }
+
+            string fromFileName = Path.GetFileName(fromPath);
+            string toFileName = Path.GetFileName(toPath);
+            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            string backupFromDir = Path.Combine(backupDir, "before");
+            string backupToDir = Path.Combine(backupDir, "after");
+
+            if (!Directory.Exists(backupFromDir))
+            {
+                Directory.CreateDirectory(backupFromDir);
+            }
+
+            if (!Directory.Exists(backupToDir))
+            {
+                Directory.CreateDirectory(backupToDir);
+            }
+
+            string backupFromPath = Path.Combine(backupFromDir, $"{fromFileName}.{timestamp}.bak");
+            string backupToPath = Path.Combine(backupToDir, $"{toFileName}.{timestamp}.bak");
+
+            // Backup the files
+            File.Copy(fromPath, backupFromPath, true);
+            File.Copy(toPath, backupToPath, true);
+
+            // Replace the destination file with the source file
+            File.Copy(fromPath, toPath, true);
+        }
+
+        private void button45_Click(object sender, EventArgs e)
+        {
+            SelectFile(this.backupPath);
+        }
+
+        private void button46_Click(object sender, EventArgs e)
+        {
+            OpenPath(this.backupPath.Text);
+        }
+
+        private void button38_Click(object sender, EventArgs e)
+        {
+            ReplaceAndBackupFile(this.from2.Text, this.to2.Text, this.backupPath.Text);
+            MessageBoxHelper.ShowTimedMessage("替换成功2", "OK", 3);
+        }
+
+        private void button39_Click(object sender, EventArgs e)
+        {
+            ReplaceAndBackupFile(this.from3.Text, this.to3.Text, this.backupPath.Text);
+            MessageBoxHelper.ShowTimedMessage("替换成功3", "OK", 3);
+        }
+
+        private void button42_Click(object sender, EventArgs e)
+        {
+            ReplaceAndBackupFile(this.from4.Text, this.to4.Text, this.backupPath.Text);
+            MessageBoxHelper.ShowTimedMessage("替换成功4", "OK", 3);
         }
     }
 

@@ -390,7 +390,7 @@ namespace Roch.CodeTool
             //list.Add(this.txtPK);
             //list.Add(this.txtDescript);
             //list.Add(this.txtColumns);
-            list.Add(this.txt_sbname);
+            //list.Add(this.txt_sbname);
             //list.Add(this.txtDomainModel);
             //list.Add(this.txtDataMapper);
             //list.Add(this.txtMapperParameter);
@@ -400,15 +400,19 @@ namespace Roch.CodeTool
             //list.Add(this.txtSpp);
             //list.Add(this.txtOld);
             //list.Add(this.txtNew);
-            list.Add(this.rich_sb_old);
-            list.Add(this.rich_sb_new);
+            //list.Add(this.rich_sb_old);
+            //list.Add(this.rich_sb_new);
             //list.Add(this.richJason);
             //list.Add(this.txtDateTime);
             //list.Add(this.txtGuid);
             //list.Add(this.txt_controller);
             //list.Add(this.txt_function);
             //list.Add(this.txt_return_type);
-            FileOperate.saveAllForms(list);
+            //FileOperate.saveAllForms(list);
+
+
+            FileOperate.saveAllForms(getControlList());
+            
         }
         #endregion
 

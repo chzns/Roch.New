@@ -145,6 +145,47 @@
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.txtSQLPath = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.button46 = new System.Windows.Forms.Button();
+            this.button45 = new System.Windows.Forms.Button();
+            this.backupPath = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.config4 = new System.Windows.Forms.TextBox();
+            this.config3 = new System.Windows.Forms.TextBox();
+            this.config2 = new System.Windows.Forms.TextBox();
+            this.config1 = new System.Windows.Forms.TextBox();
+            this.button42 = new System.Windows.Forms.Button();
+            this.button43 = new System.Windows.Forms.Button();
+            this.to4 = new System.Windows.Forms.TextBox();
+            this.from4 = new System.Windows.Forms.TextBox();
+            this.button44 = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.button39 = new System.Windows.Forms.Button();
+            this.button40 = new System.Windows.Forms.Button();
+            this.to3 = new System.Windows.Forms.TextBox();
+            this.from3 = new System.Windows.Forms.TextBox();
+            this.button41 = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.button38 = new System.Windows.Forms.Button();
+            this.button37 = new System.Windows.Forms.Button();
+            this.button36 = new System.Windows.Forms.Button();
+            this.button35 = new System.Windows.Forms.Button();
+            this.to2 = new System.Windows.Forms.TextBox();
+            this.to1 = new System.Windows.Forms.TextBox();
+            this.from2 = new System.Windows.Forms.TextBox();
+            this.from1 = new System.Windows.Forms.TextBox();
+            this.button34 = new System.Windows.Forms.Button();
+            this.button33 = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tsTool = new System.Windows.Forms.ToolStrip();
@@ -175,6 +216,7 @@
             this.groupBox8.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tsTool.SuspendLayout();
             this.SuspendLayout();
@@ -807,6 +849,7 @@
             this.tbControl.Controls.Add(this.tabPage3);
             this.tbControl.Controls.Add(this.tabPage4);
             this.tbControl.Controls.Add(this.tabPage6);
+            this.tbControl.Controls.Add(this.tabPage7);
             this.tbControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbControl.Location = new System.Drawing.Point(5, 19);
             this.tbControl.Name = "tbControl";
@@ -1383,6 +1426,405 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "SQL Template Path";
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.button46);
+            this.tabPage7.Controls.Add(this.button45);
+            this.tabPage7.Controls.Add(this.backupPath);
+            this.tabPage7.Controls.Add(this.label24);
+            this.tabPage7.Controls.Add(this.label23);
+            this.tabPage7.Controls.Add(this.label22);
+            this.tabPage7.Controls.Add(this.label21);
+            this.tabPage7.Controls.Add(this.label20);
+            this.tabPage7.Controls.Add(this.config4);
+            this.tabPage7.Controls.Add(this.config3);
+            this.tabPage7.Controls.Add(this.config2);
+            this.tabPage7.Controls.Add(this.config1);
+            this.tabPage7.Controls.Add(this.button42);
+            this.tabPage7.Controls.Add(this.button43);
+            this.tabPage7.Controls.Add(this.to4);
+            this.tabPage7.Controls.Add(this.from4);
+            this.tabPage7.Controls.Add(this.button44);
+            this.tabPage7.Controls.Add(this.label18);
+            this.tabPage7.Controls.Add(this.label19);
+            this.tabPage7.Controls.Add(this.button39);
+            this.tabPage7.Controls.Add(this.button40);
+            this.tabPage7.Controls.Add(this.to3);
+            this.tabPage7.Controls.Add(this.from3);
+            this.tabPage7.Controls.Add(this.button41);
+            this.tabPage7.Controls.Add(this.label16);
+            this.tabPage7.Controls.Add(this.label17);
+            this.tabPage7.Controls.Add(this.button38);
+            this.tabPage7.Controls.Add(this.button37);
+            this.tabPage7.Controls.Add(this.button36);
+            this.tabPage7.Controls.Add(this.button35);
+            this.tabPage7.Controls.Add(this.to2);
+            this.tabPage7.Controls.Add(this.to1);
+            this.tabPage7.Controls.Add(this.from2);
+            this.tabPage7.Controls.Add(this.from1);
+            this.tabPage7.Controls.Add(this.button34);
+            this.tabPage7.Controls.Add(this.button33);
+            this.tabPage7.Controls.Add(this.label15);
+            this.tabPage7.Controls.Add(this.label14);
+            this.tabPage7.Controls.Add(this.label13);
+            this.tabPage7.Controls.Add(this.label12);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(955, 685);
+            this.tabPage7.TabIndex = 16;
+            this.tabPage7.Text = "WebConfig";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            this.tabPage7.Click += new System.EventHandler(this.tabPage7_Click);
+            // 
+            // button46
+            // 
+            this.button46.Location = new System.Drawing.Point(618, 12);
+            this.button46.Name = "button46";
+            this.button46.Size = new System.Drawing.Size(77, 23);
+            this.button46.TabIndex = 46;
+            this.button46.Text = "OpenDir";
+            this.button46.UseVisualStyleBackColor = true;
+            this.button46.Click += new System.EventHandler(this.button46_Click);
+            // 
+            // button45
+            // 
+            this.button45.Location = new System.Drawing.Point(521, 12);
+            this.button45.Name = "button45";
+            this.button45.Size = new System.Drawing.Size(77, 23);
+            this.button45.TabIndex = 45;
+            this.button45.Text = "ChoseDir";
+            this.button45.UseVisualStyleBackColor = true;
+            this.button45.Click += new System.EventHandler(this.button45_Click);
+            // 
+            // backupPath
+            // 
+            this.backupPath.Location = new System.Drawing.Point(166, 12);
+            this.backupPath.Name = "backupPath";
+            this.backupPath.Size = new System.Drawing.Size(332, 21);
+            this.backupPath.TabIndex = 44;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(26, 12);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(77, 12);
+            this.label24.TabIndex = 43;
+            this.label24.Text = "Back Up Path";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(6, 178);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(11, 12);
+            this.label23.TabIndex = 42;
+            this.label23.Text = "4";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(6, 135);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(11, 12);
+            this.label22.TabIndex = 41;
+            this.label22.Text = "3";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(6, 95);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(11, 12);
+            this.label21.TabIndex = 40;
+            this.label21.Text = "2";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 58);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(11, 12);
+            this.label20.TabIndex = 39;
+            this.label20.Text = "1";
+            // 
+            // config4
+            // 
+            this.config4.Location = new System.Drawing.Point(28, 171);
+            this.config4.Name = "config4";
+            this.config4.Size = new System.Drawing.Size(56, 21);
+            this.config4.TabIndex = 38;
+            // 
+            // config3
+            // 
+            this.config3.Location = new System.Drawing.Point(28, 129);
+            this.config3.Name = "config3";
+            this.config3.Size = new System.Drawing.Size(56, 21);
+            this.config3.TabIndex = 37;
+            // 
+            // config2
+            // 
+            this.config2.Location = new System.Drawing.Point(28, 86);
+            this.config2.Name = "config2";
+            this.config2.Size = new System.Drawing.Size(56, 21);
+            this.config2.TabIndex = 36;
+            // 
+            // config1
+            // 
+            this.config1.Location = new System.Drawing.Point(28, 52);
+            this.config1.Name = "config1";
+            this.config1.Size = new System.Drawing.Size(56, 21);
+            this.config1.TabIndex = 35;
+            // 
+            // button42
+            // 
+            this.button42.Location = new System.Drawing.Point(711, 171);
+            this.button42.Name = "button42";
+            this.button42.Size = new System.Drawing.Size(77, 23);
+            this.button42.TabIndex = 34;
+            this.button42.Text = "Replace(4)";
+            this.button42.UseVisualStyleBackColor = true;
+            this.button42.Click += new System.EventHandler(this.button42_Click);
+            // 
+            // button43
+            // 
+            this.button43.Location = new System.Drawing.Point(618, 173);
+            this.button43.Name = "button43";
+            this.button43.Size = new System.Drawing.Size(77, 23);
+            this.button43.TabIndex = 33;
+            this.button43.Text = "ChoseFile";
+            this.button43.UseVisualStyleBackColor = true;
+            this.button43.Click += new System.EventHandler(this.button43_Click);
+            // 
+            // to4
+            // 
+            this.to4.Location = new System.Drawing.Point(494, 173);
+            this.to4.Name = "to4";
+            this.to4.Size = new System.Drawing.Size(104, 21);
+            this.to4.TabIndex = 32;
+            // 
+            // from4
+            // 
+            this.from4.Location = new System.Drawing.Point(166, 170);
+            this.from4.Name = "from4";
+            this.from4.Size = new System.Drawing.Size(111, 21);
+            this.from4.TabIndex = 31;
+            // 
+            // button44
+            // 
+            this.button44.Location = new System.Drawing.Point(283, 170);
+            this.button44.Name = "button44";
+            this.button44.Size = new System.Drawing.Size(108, 23);
+            this.button44.TabIndex = 30;
+            this.button44.Text = "ChoseFile";
+            this.button44.UseVisualStyleBackColor = true;
+            this.button44.Click += new System.EventHandler(this.button44_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(90, 176);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(59, 12);
+            this.label18.TabIndex = 29;
+            this.label18.Text = "FromPath4";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(401, 175);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(77, 12);
+            this.label19.TabIndex = 28;
+            this.label19.Text = "Target Path4";
+            // 
+            // button39
+            // 
+            this.button39.Location = new System.Drawing.Point(711, 128);
+            this.button39.Name = "button39";
+            this.button39.Size = new System.Drawing.Size(77, 23);
+            this.button39.TabIndex = 27;
+            this.button39.Text = "Replace(3)";
+            this.button39.UseVisualStyleBackColor = true;
+            this.button39.Click += new System.EventHandler(this.button39_Click);
+            // 
+            // button40
+            // 
+            this.button40.Location = new System.Drawing.Point(618, 130);
+            this.button40.Name = "button40";
+            this.button40.Size = new System.Drawing.Size(77, 23);
+            this.button40.TabIndex = 26;
+            this.button40.Text = "ChoseFile";
+            this.button40.UseVisualStyleBackColor = true;
+            this.button40.Click += new System.EventHandler(this.button40_Click);
+            // 
+            // to3
+            // 
+            this.to3.Location = new System.Drawing.Point(494, 130);
+            this.to3.Name = "to3";
+            this.to3.Size = new System.Drawing.Size(104, 21);
+            this.to3.TabIndex = 25;
+            // 
+            // from3
+            // 
+            this.from3.Location = new System.Drawing.Point(166, 127);
+            this.from3.Name = "from3";
+            this.from3.Size = new System.Drawing.Size(111, 21);
+            this.from3.TabIndex = 24;
+            // 
+            // button41
+            // 
+            this.button41.Location = new System.Drawing.Point(283, 127);
+            this.button41.Name = "button41";
+            this.button41.Size = new System.Drawing.Size(108, 23);
+            this.button41.TabIndex = 23;
+            this.button41.Text = "ChoseFile";
+            this.button41.UseVisualStyleBackColor = true;
+            this.button41.Click += new System.EventHandler(this.button41_Click);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(90, 133);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(59, 12);
+            this.label16.TabIndex = 22;
+            this.label16.Text = "FromPath3";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(401, 132);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(77, 12);
+            this.label17.TabIndex = 21;
+            this.label17.Text = "Target Path3";
+            // 
+            // button38
+            // 
+            this.button38.Location = new System.Drawing.Point(711, 84);
+            this.button38.Name = "button38";
+            this.button38.Size = new System.Drawing.Size(77, 23);
+            this.button38.TabIndex = 20;
+            this.button38.Text = "Replace(2)";
+            this.button38.UseVisualStyleBackColor = true;
+            this.button38.Click += new System.EventHandler(this.button38_Click);
+            // 
+            // button37
+            // 
+            this.button37.Location = new System.Drawing.Point(711, 45);
+            this.button37.Name = "button37";
+            this.button37.Size = new System.Drawing.Size(77, 23);
+            this.button37.TabIndex = 19;
+            this.button37.Text = "Replace(1)";
+            this.button37.UseVisualStyleBackColor = true;
+            this.button37.Click += new System.EventHandler(this.button37_Click);
+            // 
+            // button36
+            // 
+            this.button36.Location = new System.Drawing.Point(618, 86);
+            this.button36.Name = "button36";
+            this.button36.Size = new System.Drawing.Size(77, 23);
+            this.button36.TabIndex = 18;
+            this.button36.Text = "ChoseFile";
+            this.button36.UseVisualStyleBackColor = true;
+            this.button36.Click += new System.EventHandler(this.button36_Click);
+            // 
+            // button35
+            // 
+            this.button35.Location = new System.Drawing.Point(618, 45);
+            this.button35.Name = "button35";
+            this.button35.Size = new System.Drawing.Size(77, 23);
+            this.button35.TabIndex = 17;
+            this.button35.Text = "ChoseFile";
+            this.button35.UseVisualStyleBackColor = true;
+            this.button35.Click += new System.EventHandler(this.button35_Click);
+            // 
+            // to2
+            // 
+            this.to2.Location = new System.Drawing.Point(494, 86);
+            this.to2.Name = "to2";
+            this.to2.Size = new System.Drawing.Size(104, 21);
+            this.to2.TabIndex = 16;
+            // 
+            // to1
+            // 
+            this.to1.Location = new System.Drawing.Point(494, 47);
+            this.to1.Name = "to1";
+            this.to1.Size = new System.Drawing.Size(104, 21);
+            this.to1.TabIndex = 15;
+            // 
+            // from2
+            // 
+            this.from2.Location = new System.Drawing.Point(166, 83);
+            this.from2.Name = "from2";
+            this.from2.Size = new System.Drawing.Size(111, 21);
+            this.from2.TabIndex = 14;
+            // 
+            // from1
+            // 
+            this.from1.Location = new System.Drawing.Point(166, 53);
+            this.from1.Name = "from1";
+            this.from1.Size = new System.Drawing.Size(111, 21);
+            this.from1.TabIndex = 13;
+            // 
+            // button34
+            // 
+            this.button34.Location = new System.Drawing.Point(283, 83);
+            this.button34.Name = "button34";
+            this.button34.Size = new System.Drawing.Size(108, 23);
+            this.button34.TabIndex = 12;
+            this.button34.Text = "ChoseFile";
+            this.button34.UseVisualStyleBackColor = true;
+            this.button34.Click += new System.EventHandler(this.button34_Click);
+            // 
+            // button33
+            // 
+            this.button33.Location = new System.Drawing.Point(283, 53);
+            this.button33.Name = "button33";
+            this.button33.Size = new System.Drawing.Size(108, 23);
+            this.button33.TabIndex = 11;
+            this.button33.Text = "ChoseFile";
+            this.button33.UseVisualStyleBackColor = true;
+            this.button33.Click += new System.EventHandler(this.button33_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(90, 89);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(59, 12);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "FromPath2";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(90, 58);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(59, 12);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "FromPath1";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(401, 52);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(77, 12);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "Target Path1";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(401, 88);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "Target Path2";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel1);
@@ -1505,6 +1947,8 @@
             this.tabPage6.ResumeLayout(false);
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.tsTool.ResumeLayout(false);
             this.tsTool.PerformLayout();
@@ -1637,6 +2081,47 @@
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button31;
         private System.Windows.Forms.Button button32;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button button36;
+        private System.Windows.Forms.Button button35;
+        private System.Windows.Forms.TextBox to2;
+        private System.Windows.Forms.TextBox to1;
+        private System.Windows.Forms.TextBox from2;
+        private System.Windows.Forms.TextBox from1;
+        private System.Windows.Forms.Button button34;
+        private System.Windows.Forms.Button button33;
+        private System.Windows.Forms.Button button37;
+        private System.Windows.Forms.Button button38;
+        private System.Windows.Forms.Button button42;
+        private System.Windows.Forms.Button button43;
+        private System.Windows.Forms.TextBox to4;
+        private System.Windows.Forms.TextBox from4;
+        private System.Windows.Forms.Button button44;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button button39;
+        private System.Windows.Forms.Button button40;
+        private System.Windows.Forms.TextBox to3;
+        private System.Windows.Forms.TextBox from3;
+        private System.Windows.Forms.Button button41;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox config4;
+        private System.Windows.Forms.TextBox config3;
+        private System.Windows.Forms.TextBox config2;
+        private System.Windows.Forms.TextBox config1;
+        private System.Windows.Forms.Button button45;
+        private System.Windows.Forms.TextBox backupPath;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button46;
     }
 }
 
